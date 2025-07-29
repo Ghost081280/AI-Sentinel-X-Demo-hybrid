@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Discovery | AI Sentinel-X</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --accent: #7c3aed;
+            --danger: #ff0044;
+            --warning: #ffaa00;
+            --success: #00ff88;
+            --bg-dark: #0a0e1a;
+            --bg-darker: #060912;
+            --bg-card: rgba(10, 20, 40, 0.8);
+            --border: rgba(0, 255, 136, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #8892b0;
+            --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-2: linear-gradient(135deg, #7c3aed 0%, #00ccff 100%);
+            --gradient-network: linear-gradient(135deg, #00ccff 0%, #0066ff 100%);
+            --gradient-external: linear-gradient(135deg, #ff0044 0%, #ff6644 100%);
+            --gradient-internal: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            --gradient-encryption: linear-gradient(135deg, #00ff88 0%, #00aa66 100%);
+            --gradient-quantum: linear-gradient(135deg, #7c3aed 0%, #ff00ff 50%, #00ccff 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Consolas', 'Monaco', monospace;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Network Background */
+        .network-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(0, 204, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(0, 255, 136, 0.12) 0%, transparent 50%);
+        }
+
+        .grid-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 204, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 204, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: bold;
+            background: var(--gradient-network);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Auto Scan Alert */
+        .auto-scan-alert {
+            background: rgba(0, 204, 255, 0.1);
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 16px;
+        }
+
+        /* Hybrid Encryption Status Bar */
+        .encryption-status-bar {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .encryption-status-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.3), transparent);
+            animation: quantumScan 4s linear infinite;
+        }
+
+        @keyframes quantumScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .encryption-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .encryption-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-quantum);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .encryption-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .encryption-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .encryption-status {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .encryption-algorithms {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        .enc-badge {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .enc-badge.quantum {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Network Overview Section */
+        .network-overview {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .overview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .overview-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .threat-exposure {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .exposure-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .exposure-rating {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .exposure-low {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+
+        .exposure-medium {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .exposure-high {
+            background: rgba(255, 0, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .overview-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 255, 136, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+        }
+
+        .overview-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .overview-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+
+        .overview-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Dual Layer Scanning */
+        .scanning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Scan Panel */
+        .scan-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-panel.external {
+            border-color: rgba(255, 0, 68, 0.3);
+        }
+
+        .scan-panel.internal {
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .panel-title {
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .panel-title.external {
+            background: var(--gradient-external);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .panel-title.internal {
+            background: var(--gradient-internal);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .scan-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .scan-status.active {
+            color: var(--success);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        /* Scan Results */
+        .scan-results {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 204, 255, 0.05) 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .result-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            text-align: right;
+            word-break: break-all;
+        }
+
+        /* Service List */
+        .service-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .service-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .service-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .service-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .service-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .service-details {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .service-encryption {
+            font-size: 12px;
+            color: var(--accent);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .service-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-secure {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+
+        .status-vulnerable {
+            background: rgba(255, 0, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .status-warning {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--warning);
+        }
+
+        /* Device Discovery Section */
+        .device-discovery {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .discovery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .device-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 255, 136, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .device-card:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 204, 255, 0.05) 100%);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .device-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .device-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .device-ip {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+        }
+
+        .device-services {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .device-ai-status {
+            font-size: 12px;
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .device-encryption {
+            font-size: 11px;
+            color: var(--success);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .encryption-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 15px;
+            padding: 2px 10px;
+            font-size: 11px;
+            color: var(--accent);
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: var(--bg-darker);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        /* AI Chat Widget */
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .ai-chat-toggle {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-network);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 204, 255, 0.4);
+            transition: all 0.3s ease;
+            font-size: 32px;
+        }
+
+        .ai-chat-toggle:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .ai-chat-window {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 400px;
+            height: 600px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        .ai-chat-window.active {
+            display: flex;
+            animation: chatSlideIn 0.3s ease;
+        }
+
+        @keyframes chatSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .ai-chat-header {
+            background: var(--gradient-network);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ai-chat-close {
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .ai-chat-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-message {
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message-bubble {
+            background: rgba(0, 204, 255, 0.1);
+            border: 1px solid var(--secondary);
+            border-radius: 15px;
+            padding: 15px 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-message-bubble.user {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--primary);
+            align-self: flex-end;
+        }
+
+        .ai-message-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .ai-chat-input-container {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .ai-chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .ai-chat-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: rgba(0, 204, 255, 0.05);
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+        }
+
+        .ai-chat-send {
+            background: var(--gradient-network);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ai-chat-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 204, 255, 0.4);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1200px) {
+            .scanning-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .discovery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .page-header {
+                padding: 20px 15px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+                letter-spacing: 1px;
+            }
+            
+            .page-subtitle {
+                font-size: 14px;
+            }
+            
+            .auto-scan-alert {
+                font-size: 14px;
+                padding: 15px;
+            }
+            
+            .encryption-status-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .network-overview {
+                padding: 20px 15px;
+            }
+            
+            .overview-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .overview-title {
+                font-size: 20px;
+            }
+            
+            .overview-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .overview-card {
+                padding: 15px 10px;
+            }
+            
+            .overview-icon {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+            
+            .overview-value {
+                font-size: 18px;
+            }
+            
+            .overview-label {
+                font-size: 11px;
+            }
+            
+            .scan-panel {
+                padding: 20px 15px;
+            }
+            
+            .panel-title {
+                font-size: 18px;
+            }
+            
+            .scan-results {
+                padding: 15px;
+            }
+            
+            .result-item {
+                padding: 10px 0;
+            }
+            
+            .result-label {
+                font-size: 12px;
+            }
+            
+            .result-value {
+                font-size: 13px;
+            }
+            
+            .service-item {
+                padding: 12px;
+            }
+            
+            .service-info {
+                min-width: 150px;
+            }
+            
+            .service-name {
+                font-size: 14px;
+            }
+            
+            .service-details {
+                font-size: 12px;
+            }
+            
+            .device-discovery {
+                padding: 20px 15px;
+            }
+            
+            .discovery-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .device-card {
+                padding: 15px;
+            }
+            
+            .back-btn {
+                top: 10px;
+                left: 10px;
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+            
+            .ai-chat-widget {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .ai-chat-toggle {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+            
+            .ai-chat-window {
+                width: calc(100vw - 20px);
+                height: calc(100vh - 120px);
+                right: -10px;
+                bottom: 80px;
+            }
+            
+            .ai-chat-input {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+            
+            .ai-chat-send {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 24px;
+            }
+            
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .overview-value {
+                font-size: 20px;
+            }
+            
+            .panel-header {
+                gap: 15px;
+            }
+            
+            .panel-title {
+                font-size: 16px;
+            }
+            
+            .scan-status {
+                font-size: 11px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Check authentication
+        const auth = localStorage.getItem('sentinel_auth');
+        if (!auth) {
+            window.location.href = 'index.html';
+        } else {
+            const authData = JSON.parse(auth);
+            if (Date.now() - authData.timestamp > 24 * 60 * 60 * 1000) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
+    <!-- Back Button -->
+    <a href="dashboard.html" class="back-btn">
+        <span>←</span>
+        <span>Back</span>
+    </a>
+
+    <!-- Network Background -->
+    <div class="network-bg">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">NETWORK DISCOVERY</h1>
+            <p class="page-subtitle">Dual-Layer AI Network Intelligence</p>
+        </div>
+
+        <!-- Auto Scan Alert -->
+        <div class="auto-scan-alert">
+            🤖 Autonomous dual-layer scanning active • External reconnaissance via Shodan API • Internal discovery via deployed agent • No manual intervention required
+        </div>
+
+        <!-- Hybrid Encryption Status Bar -->
+        <div class="encryption-status-bar">
+            <div class="encryption-info">
+                <div class="encryption-icon">🔐</div>
+                <div class="encryption-details">
+                    <div class="encryption-title">Network Communications Protected</div>
+                    <div class="encryption-status">Hybrid encryption active on all channels</div>
+                    <div class="encryption-algorithms">
+                        <span class="enc-badge">AES-256-GCM</span>
+                        <span class="enc-badge">HMAC-SHA256</span>
+                        <span class="enc-badge quantum">CRYSTALS-Kyber</span>
+                        <span class="enc-badge quantum">Dilithium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Overview -->
+        <div class="network-overview">
+            <div class="overview-header">
+                <h2 class="overview-title">Network Scan Overview</h2>
+                <div class="threat-exposure">
+                    <span class="exposure-label">Threat Exposure:</span>
+                    <span class="exposure-rating exposure-medium" id="exposureRating">MEDIUM</span>
+                </div>
+            </div>
+            
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="overview-icon">🌐</div>
+                    <div class="overview-value" id="publicIP">45.67.89.123</div>
+                    <div class="overview-label">Public IP Address</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">🏠</div>
+                    <div class="overview-value" id="internalSubnet">192.168.1.0/24</div>
+                    <div class="overview-label">Internal Subnet</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">📡</div>
+                    <div class="overview-value" id="discoveredDevices">247</div>
+                    <div class="overview-label">Discovered Devices</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">⚠️</div>
+                    <div class="overview-value" id="openServices">42</div>
+                    <div class="overview-label">Open Services</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dual Layer Scanning -->
+        <div class="scanning-grid">
+            <!-- External Scan Panel -->
+            <div class="scan-panel external">
+                <div class="panel-header">
+                    <h2 class="panel-title external">External Scan (Shodan)</h2>
+                    <div class="scan-status active">
+                        <div class="status-dot"></div>
+                        <span>SCANNING</span>
+                    </div>
+                </div>
+                
+                <div class="scan-results">
+                    <div class="result-item">
+                        <span class="result-label">Organization</span>
+                        <span class="result-value" id="orgName">Acme Corporation</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">ISP</span>
+                        <span class="result-value" id="ispName">Business Fiber Network</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Location</span>
+                        <span class="result-value" id="location">Columbia, SC, US</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Open Ports</span>
+                        <span class="result-value" id="openPorts" style="color: var(--warning);">7</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Vulnerabilities</span>
+                        <span class="result-value" id="vulnCount" style="color: var(--danger);">2</span>
+                    </div>
+                </div>
+
+                <div class="service-list">
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">HTTPS (443/tcp)</div>
+                            <div class="service-details">nginx/1.18.0 • TLS 1.3</div>
+                            <div class="service-encryption">
+                                <span>🔐</span>
+                                <span>AES-256-GCM + CRYSTALS-Kyber</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-secure">SECURE</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">SSH (22/tcp)</div>
+                            <div class="service-details">OpenSSH_7.4 • Key Auth Only</div>
+                            <div class="service-encryption">
+                                <span>🔐</span>
+                                <span>Hybrid: Classical + PQ Keys</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-secure">SECURE</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">RDP (3389/tcp)</div>
+                            <div class="service-details">Windows Server 2019 • NLA + TLS 1.2</div>
+                            <div class="service-encryption">
+                                <span>⚠️</span>
+                                <span>Classical only - upgrade needed</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-warning">MONITOR</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">SMB (445/tcp)</div>
+                            <div class="service-details">SMBv2 • Outdated</div>
+                            <div class="service-encryption">
+                                <span>❌</span>
+                                <span>Weak encryption</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-vulnerable">VULNERABLE</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Internal Scan Panel -->
+            <div class="scan-panel internal">
+                <div class="panel-header">
+                    <h2 class="panel-title internal">Internal Scan (Agent)</h2>
+                    <div class="scan-status active">
+                        <div class="status-dot"></div>
+                        <span>AUTO-DISCOVERING</span>
+                    </div>
+                </div>
+                
+                <div class="scan-results">
+                    <div class="result-item">
+                        <span class="result-label">Network Range</span>
+                        <span class="result-value">192.168.1.0/24</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Active Hosts</span>
+                        <span class="result-value" id="activeHosts" style="color: var(--success);">247</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">New Devices (24h)</span>
+                        <span class="result-value" id="newDevices" style="color: var(--secondary);">12</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Unpatched Systems</span>
+                        <span class="result-value" id="unpatchedSystems" style="color: var(--warning);">18</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">AI Monitoring</span>
+                        <span class="result-value" style="color: var(--accent);">REAL-TIME</span>
+                    </div>
+                </div>
+
+                <div class="service-list">
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">Domain Controllers</div>
+                            <div class="service-details">2 servers • AD DS • Kerberos</div>
+                            <div class="service-encryption">
+                                <span>🔐</span>
+                                <span>Full hybrid encryption</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-secure">SECURE</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">Database Servers</div>
+                            <div class="service-details">5 instances • TDE enabled</div>
+                            <div class="service-encryption">
+                                <span>🔐</span>
+                                <span>AES-256 + Kyber-1024</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-secure">SECURE</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">IoT Devices</div>
+                            <div class="service-details">47 devices • Mixed security</div>
+                            <div class="service-encryption">
+                                <span>⚠️</span>
+                                <span>Partial encryption support</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-warning">MONITOR</div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-name">Workstations</div>
+                            <div class="service-details">189 systems • BitLocker enabled</div>
+                            <div class="service-encryption">
+                                <span>🔐</span>
+                                <span>Hybrid disk encryption</span>
+                            </div>
+                        </div>
+                        <div class="service-status status-warning">UPDATE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device Discovery -->
+        <div class="device-discovery">
+            <div class="panel-header">
+                <h2 class="panel-title">Live Device Discovery</h2>
+                <span style="color: var(--text-secondary); font-size: 14px;">Auto-updating every 0.3 seconds</span>
+            </div>
+            
+            <div class="discovery-grid" id="deviceGrid">
+                <!-- Devices will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Widget -->
+    <div class="ai-chat-widget">
+        <div class="ai-chat-window" id="aiChatWindow">
+            <div class="ai-chat-header">
+                <span>NETWORK SCANNER AI</span>
+                <span class="ai-chat-close" onclick="toggleChat()">×</span>
+            </div>
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-message">
+                    <div class="ai-message-bubble">
+                        I'm conducting dual-layer network analysis with hybrid encryption. External scan via Shodan shows your public attack surface. Internal agent discovered 247 devices automatically. All communications secured with both classical and post-quantum algorithms. How can I help analyze your network?
+                    </div>
+                    <div class="ai-message-time">Just now</div>
+                </div>
+            </div>
+            <div class="ai-chat-input-container">
+                <input 
+                    type="text" 
+                    class="ai-chat-input" 
+                    id="aiChatInput" 
+                    placeholder="Ask about external exposure, internal devices, or encryption status..."
+                    onkeypress="handleChatKeyPress(event)"
+                >
+                <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
+            </div>
+        </div>
+        <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
+    </div>
+
+    <script>
+        // Sample devices for demonstration
+        const internalDevices = [
+            { name: 'DC-PRIMARY', ip: '192.168.1.10', type: 'Domain Controller', icon: '🖥️', services: 'AD, DNS, DHCP', status: 'Secure', encryption: 'Hybrid: AES-256 + Kyber' },
+            { name: 'DC-SECONDARY', ip: '192.168.1.11', type: 'Domain Controller', icon: '🖥️', services: 'AD, DNS', status: 'Secure', encryption: 'Hybrid: AES-256 + Kyber' },
+            { name: 'FILE-SERVER-01', ip: '192.168.1.20', type: 'File Server', icon: '📁', services: 'SMB, FTP', status: 'Monitoring', encryption: 'Classical + PQ Ready' },
+            { name: 'DB-PROD-01', ip: '192.168.1.30', type: 'Database', icon: '🗄️', services: 'MySQL 8.0', status: 'Secure', encryption: 'TDE: Hybrid' },
+            { name: 'WEB-APP-01', ip: '192.168.1.40', type: 'Web Server', icon: '🌐', services: 'HTTPS, SSH', status: 'Secure', encryption: 'TLS 1.3 + Kyber' },
+            { name: 'SECURITY-CAM-01', ip: '192.168.1.50', type: 'IoT Device', icon: '📹', services: 'RTSP, HTTP', status: 'Vulnerable', encryption: 'Classical Only' },
+            { name: 'WORKSTATION-101', ip: '192.168.1.101', type: 'Workstation', icon: '💻', services: 'RDP, SMB', status: 'Update Required', encryption: 'BitLocker Hybrid' },
+            { name: 'PRINTER-FINANCE', ip: '192.168.1.200', type: 'Network Printer', icon: '🖨️', services: 'IPP, SNMP', status: 'Default Password', encryption: 'TLS Optional' },
+            { name: 'HVAC-CONTROLLER', ip: '192.168.1.230', type: 'Building System', icon: '🌡️', services: 'BACnet, HTTP', status: 'Monitoring', encryption: 'Basic Auth Only' }
+        ];
+
+        // Populate device grid
+        function populateDeviceGrid() {
+            const grid = document.getElementById('deviceGrid');
+            grid.innerHTML = '';
+            
+            internalDevices.forEach((device, index) => {
+                const card = document.createElement('div');
+                card.className = 'device-card';
+                
+                const encryptionType = device.encryption.includes('Hybrid') || device.encryption.includes('Kyber') 
+                    ? '<span class="encryption-type">🔐 Quantum-Safe</span>' 
+                    : device.encryption.includes('Classical') 
+                    ? '<span class="encryption-type" style="border-color: var(--warning); color: var(--warning);">⚠️ Classical Only</span>'
+                    : '<span class="encryption-type" style="border-color: var(--danger); color: var(--danger);">❌ Weak</span>';
+                
+                card.innerHTML = `
+                    <div class="device-header">
+                        <div class="device-icon">${device.icon}</div>
+                    </div>
+                    <div class="device-name">${device.name}</div>
+                    <div class="device-ip">${device.ip}</div>
+                    <div class="device-services">Services: ${device.services}</div>
+                    <div class="device-ai-status">AI Status: ${device.status}</div>
+                    <div class="device-encryption">
+                        ${encryptionType}
+                        <span style="margin-left: 5px; font-size: 11px;">${device.encryption}</span>
+                    </div>
+                `;
+                
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.onclick = () => showDeviceDetails(device);
+                grid.appendChild(card);
+            });
+        }
+
+        // Show device details
+        function showDeviceDetails(device) {
+            if (!chatOpen) {
+                toggleChat();
+            }
+            setTimeout(() => {
+                let encryptionStatus = '';
+                if (device.encryption.includes('Hybrid') || device.encryption.includes('Kyber')) {
+                    encryptionStatus = '✅ Quantum-safe encryption active: ' + device.encryption;
+                } else if (device.encryption.includes('Classical')) {
+                    encryptionStatus = '⚠️ Classical encryption only. Post-quantum upgrade recommended!';
+                } else {
+                    encryptionStatus = '❌ CRITICAL: Weak or no encryption. Immediate upgrade required!';
+                }
+                
+                addChatMessage(`Analyzing ${device.name} (${device.ip}): Type: ${device.type}, Services: ${device.services}. Status: ${device.status}. ${encryptionStatus} ${device.status.includes('Vulnerable') ? 'Immediate action recommended!' : 'Being monitored by AI.'}`, false);
+            }, 300);
+        }
+
+        // Update metrics
+        function updateMetrics() {
+            // Simulate real-time updates
+            const discovered = document.getElementById('discoveredDevices');
+            const current = parseInt(discovered.textContent);
+            discovered.textContent = Math.max(240, current + Math.floor(Math.random() * 3 - 1));
+            
+            const active = document.getElementById('activeHosts');
+            active.textContent = discovered.textContent;
+            
+            const services = document.getElementById('openServices');
+            services.textContent = Math.floor(40 + Math.random() * 5);
+            
+            // Occasionally find new devices
+            if (Math.random() > 0.9) {
+                const newDev = document.getElementById('newDevices');
+                newDev.textContent = parseInt(newDev.textContent) + 1;
+            }
+            
+            // Update threat exposure based on vulnerabilities
+            const vulns = parseInt(document.getElementById('vulnCount').textContent);
+            const unpatched = parseInt(document.getElementById('unpatchedSystems').textContent);
+            const rating = document.getElementById('exposureRating');
+            
+            if (vulns > 3 || unpatched > 20) {
+                rating.textContent = 'HIGH';
+                rating.className = 'exposure-rating exposure-high';
+            } else if (vulns > 0 || unpatched > 10) {
+                rating.textContent = 'MEDIUM';
+                rating.className = 'exposure-rating exposure-medium';
+            } else {
+                rating.textContent = 'LOW';
+                rating.className = 'exposure-rating exposure-low';
+            }
+        }
+
+        // AI Chat System
+        let chatOpen = false;
+        
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            const chatWindow = document.getElementById('aiChatWindow');
+            if (chatOpen) {
+                chatWindow.classList.add('active');
+            } else {
+                chatWindow.classList.remove('active');
+            }
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesContainer = document.getElementById('aiChatMessages');
+            
+            // Add user message
+            addChatMessage(message, true);
+            input.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Simulate AI response
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = generateAIResponse(message);
+                addChatMessage(response, false);
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function addChatMessage(message, isUser) {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'ai-message';
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="ai-message-bubble ${isUser ? 'user' : ''}">
+                    ${message}
+                </div>
+                <div class="ai-message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-typing';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.style.display = 'flex';
+            typingDiv.style.gap = '5px';
+            typingDiv.style.padding = '10px';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.style.width = '8px';
+                dot.style.height = '8px';
+                dot.style.background = 'var(--secondary)';
+                dot.style.borderRadius = '50%';
+                dot.style.animation = 'typingDot 1.4s ease-in-out infinite';
+                dot.style.animationDelay = `${i * 0.2}s`;
+                typingDiv.appendChild(dot);
+            }
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('encryption') || lowerMessage.includes('crypto')) {
+                return '🔐 Network encryption status: All agent communications use hybrid encryption. Classical: AES-256-GCM + HMAC-SHA256. Post-Quantum: CRYSTALS-Kyber + Dilithium. 189/247 devices have full hybrid protection, 47 IoT devices need upgrades.';
+            }
+            
+            if (lowerMessage.includes('quantum') || lowerMessage.includes('post-quantum')) {
+                return '🔮 Post-quantum protection active: CRYSTALS-Kyber-1024 for key exchange, Dilithium-5 for signatures. Protects against both current and future quantum computer attacks. 76% of network already quantum-safe.';
+            }
+            
+            if (lowerMessage.includes('external') || lowerMessage.includes('shodan')) {
+                return '🌐 External scan via Shodan API shows 7 open ports on your public IP (45.67.89.123). Critical finding: SMB port 445 exposed with outdated encryption. Recommend immediate firewall rule and upgrade to hybrid crypto.';
+            }
+            
+            if (lowerMessage.includes('internal') || lowerMessage.includes('agent')) {
+                return '🏠 Internal agent has auto-discovered 247 devices on 192.168.1.0/24. All agent traffic encrypted with hybrid algorithms. 18 systems need patches, 2 IoT devices have no PQ encryption support.';
+            }
+            
+            if (lowerMessage.includes('vulnerable') || lowerMessage.includes('risk')) {
+                return '⚠️ Critical vulnerabilities: 1) External SMB exposure without PQ encryption, 2) Security camera with classical crypto only, 3) 18 workstations need hybrid BitLocker upgrade. AI is monitoring all risks and can auto-remediate.';
+            }
+            
+            if (lowerMessage.includes('how') && lowerMessage.includes('work')) {
+                return '🤖 Sentinel X uses dual-layer scanning: External layer queries Shodan API (secured with Dilithium signatures) for your public IP. Internal layer uses hybrid-encrypted agent to auto-discover all devices. Full quantum-safe protection throughout.';
+            }
+            
+            if (lowerMessage.includes('device') || lowerMessage.includes('discover')) {
+                return '📡 Device discovery is fully autonomous. The agent uses ARP scanning, service fingerprinting, and behavioral analysis. All communications use hybrid encryption. New devices detected within 0.3 seconds. Currently tracking 247 devices with encryption status.';
+            }
+            
+            if (lowerMessage.includes('manual') || lowerMessage.includes('control')) {
+                return '🎛️ While scanning is automatic, you can: 1) Override AI decisions, 2) Whitelist/blacklist devices, 3) Force encryption upgrades to quantum-safe, 4) Export encrypted reports. The system runs autonomously but supports full manual control.';
+            }
+            
+            return '🤖 I\'m analyzing your network from both external (Shodan) and internal (agent) perspectives with full hybrid encryption. What specific aspect would you like to investigate?';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            populateDeviceGrid();
+            
+            // Auto-update metrics every 3 seconds
+            setInterval(() => {
+                updateMetrics();
+            }, 3000);
+            
+            // Simulate discovering new devices
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const newDevices = document.getElementById('newDevices');
+                    newDevices.textContent = parseInt(newDevices.textContent) + 1;
+                    
+                    // Add a brief highlight effect
+                    newDevices.style.color = 'var(--primary)';
+                    setTimeout(() => {
+                        newDevices.style.color = 'var(--secondary)';
+                    }, 1000);
+                }
+            }, 10000);
+            
+            // Add periodic network events to chat
+            setInterval(() => {
+                if (Math.random() > 0.85 && chatOpen) {
+                    const events = [
+                        '🌐 External scan update: New service detected on port 8080 with TLS 1.3 + Kyber.',
+                        '📡 Internal discovery: New device joined network - checking quantum encryption support...',
+                        '🔒 Security update: Vulnerable device upgraded to hybrid AES-256 + CRYSTALS-Kyber.',
+                        '✅ Encryption status: 3 systems upgraded to post-quantum BitLocker.',
+                        '🛡️ Firewall rule suggested to protect device without PQ crypto support.',
+                        '🔐 Key exchange completed using CRYSTALS-Kyber-1024 for new connection.'
+                    ];
+                    addChatMessage(events[Math.floor(Math.random() * events.length)], false);
+                }
+            }, 25000);
+        });
+
+        // Add CSS animation for typing dots
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes typingDot {
+                0%, 60%, 100% {
+                    transform: translateY(0);
+                    opacity: 0.7;
+                }
+                30% {
+                    transform: translateY(-10px);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Detection | AI Sentinel-X</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --accent: #7c3aed;
+            --danger: #ff0044;
+            --warning: #ffaa00;
+            --success: #00ff88;
+            --bg-dark: #0a0e1a;
+            --bg-darker: #060912;
+            --bg-card: rgba(10, 20, 40, 0.8);
+            --border: rgba(0, 255, 136, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #8892b0;
+            --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-danger: linear-gradient(135deg, #ff0044 0%, #ff6644 100%);
+            --gradient-quantum: linear-gradient(135deg, #7c3aed 0%, #ff00ff 50%, #00ccff 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Consolas', 'Monaco', monospace;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Threat Background */
+        .threat-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(255, 0, 68, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 170, 0, 0.08) 0%, transparent 50%);
+        }
+
+        .scan-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(255, 0, 68, 0.02) 0px, transparent 2px, transparent 100px, rgba(255, 0, 68, 0.02) 102px),
+                repeating-linear-gradient(90deg, rgba(255, 0, 68, 0.02) 0px, transparent 2px, transparent 100px, rgba(255, 0, 68, 0.02) 102px);
+            animation: gridScan 20s linear infinite;
+        }
+
+        @keyframes gridScan {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .page-title {
+            font-size: 40px;
+            font-weight: bold;
+            background: var(--gradient-danger);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        .threat-summary {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--danger);
+            text-shadow: 0 0 20px currentColor;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Status Alert */
+        .status-alert {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .status-alert-icon {
+            font-size: 32px;
+        }
+
+        /* Encryption Banner */
+        .encryption-banner {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            text-align: center;
+            font-size: 14px;
+            animation: encryptionGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes encryptionGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); }
+        }
+
+        .encryption-icon {
+            font-size: 24px;
+        }
+
+        .encryption-text {
+            color: var(--text-secondary);
+        }
+
+        .encryption-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .enc-badge {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .enc-badge.quantum {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Threat Grid */
+        .threat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .threat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+        }
+
+        .threat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 0, 68, 0.3);
+        }
+
+        .threat-card.critical {
+            border-color: rgba(255, 0, 68, 0.5);
+            background: rgba(255, 0, 68, 0.05);
+        }
+
+        .threat-card.high {
+            border-color: rgba(255, 170, 0, 0.5);
+            background: rgba(255, 170, 0, 0.05);
+        }
+
+        .threat-card.medium {
+            border-color: rgba(0, 204, 255, 0.5);
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        .threat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .threat-title {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .threat-type {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .threat-severity {
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .severity-critical {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        .severity-high {
+            background: linear-gradient(135deg, var(--warning) 0%, #ff8844 100%);
+            color: white;
+        }
+
+        .severity-medium {
+            background: linear-gradient(135deg, var(--secondary) 0%, #0088ff 100%);
+            color: white;
+        }
+
+        .threat-details {
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .threat-status {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .encryption-status {
+            margin-top: 15px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .encryption-status-icon {
+            color: var(--accent);
+        }
+
+        /* Real-time Feed */
+        .feed-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(15px);
+        }
+
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .feed-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--danger);
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+        }
+
+        .feed-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .feed-item {
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 3px solid var(--danger);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 0 10px 10px 0;
+            animation: feedSlide 0.3s ease;
+        }
+
+        @keyframes feedSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .feed-item.encryption {
+            border-left-color: var(--accent);
+        }
+
+        .feed-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feed-message {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: var(--bg-darker);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        /* AI Chat Widget */
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .ai-chat-toggle {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            transition: all 0.3s ease;
+            font-size: 32px;
+        }
+
+        .ai-chat-toggle:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .ai-chat-window {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 400px;
+            height: 600px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        .ai-chat-window.active {
+            display: flex;
+            animation: chatSlideIn 0.3s ease;
+        }
+
+        @keyframes chatSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .ai-chat-header {
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ai-chat-close {
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .ai-chat-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-message {
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message-bubble {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-message-bubble.user {
+            background: rgba(0, 204, 255, 0.1);
+            border-color: var(--secondary);
+            align-self: flex-end;
+        }
+
+        .ai-message-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .ai-chat-input-container {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .ai-chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .ai-chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 255, 136, 0.05);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .ai-chat-send {
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: var(--bg-darker);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ai-chat-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .page-header {
+                padding: 25px;
+            }
+            
+            .page-title {
+                font-size: 32px;
+            }
+            
+            .threat-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .threat-summary {
+                justify-content: center;
+            }
+            
+            .back-btn {
+                top: 10px;
+                left: 10px;
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+            
+            .feed-section {
+                height: 400px;
+            }
+            
+            .ai-chat-widget {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .ai-chat-toggle {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+            
+            .ai-chat-window {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 120px);
+                right: -20px;
+                bottom: 80px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--danger);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Check authentication
+        const auth = localStorage.getItem('sentinel_auth');
+        if (!auth) {
+            window.location.href = 'index.html';
+        } else {
+            const authData = JSON.parse(auth);
+            if (Date.now() - authData.timestamp > 24 * 60 * 60 * 1000) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
+    <!-- Back Button -->
+    <a href="dashboard.html" class="back-btn">
+        <span>←</span>
+        <span>Back</span>
+    </a>
+
+    <!-- Threat Background -->
+    <div class="threat-bg">
+        <div class="scan-grid"></div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-content">
+                <div>
+                    <h1 class="page-title">THREAT DETECTION</h1>
+                    <p style="color: var(--text-secondary); margin-top: 5px;">AI-Powered Real-time Threat Analysis</p>
+                </div>
+                <div class="threat-summary">
+                    <div class="summary-item">
+                        <div class="summary-value" id="activeThreats">7</div>
+                        <div class="summary-label">Active Threats</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" style="color: var(--warning);" id="pendingThreats">3</div>
+                        <div class="summary-label">Processing</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" style="color: var(--success);" id="neutralizedThreats">124</div>
+                        <div class="summary-label">Neutralized</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" style="color: var(--accent);" id="predictedThreats">12</div>
+                        <div class="summary-label">Predicted</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Alert -->
+        <div class="status-alert">
+            <div class="status-alert-icon">🤖</div>
+            <div>
+                <div style="font-size: 16px;">AI Protection Active</div>
+                <div style="font-size: 14px; font-weight: normal; margin-top: 5px;">All threats are being analyzed and neutralized autonomously. Manual intervention available.</div>
+            </div>
+        </div>
+
+        <!-- Encryption Banner -->
+        <div class="encryption-banner">
+            <div class="encryption-icon">🔐</div>
+            <div class="encryption-text">All threat data encrypted with hybrid protection:</div>
+            <div class="encryption-badges">
+                <span class="enc-badge">AES-256-GCM</span>
+                <span class="enc-badge">HMAC-SHA256</span>
+                <span class="enc-badge quantum">CRYSTALS-Kyber</span>
+                <span class="enc-badge quantum">Dilithium</span>
+            </div>
+        </div>
+
+        <!-- Threat Grid -->
+        <div class="threat-grid" id="threatGrid">
+            <!-- Threats will be populated by JavaScript -->
+        </div>
+
+        <!-- Real-time Feed -->
+        <div class="feed-section">
+            <div class="feed-header">
+                <h2 class="feed-title">AI Defense Actions</h2>
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    <span>LIVE</span>
+                </div>
+            </div>
+            <div class="feed-content" id="threatFeed">
+                <!-- Feed items will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Widget -->
+    <div class="ai-chat-widget">
+        <div class="ai-chat-window" id="aiChatWindow">
+            <div class="ai-chat-header">
+                <span>THREAT ANALYSIS AI</span>
+                <span class="ai-chat-close" onclick="toggleChat()">×</span>
+            </div>
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-message">
+                    <div class="ai-message-bubble">
+                        Welcome to Threat Analysis. I can provide real-time threat intelligence, impact analysis, and manual control options. All data is protected with hybrid encryption. What would you like to know?
+                    </div>
+                    <div class="ai-message-time">Just now</div>
+                </div>
+            </div>
+            <div class="ai-chat-input-container">
+                <input 
+                    type="text" 
+                    class="ai-chat-input" 
+                    id="aiChatInput" 
+                    placeholder="Ask about specific threats or request manual control..."
+                    onkeypress="handleChatKeyPress(event)"
+                >
+                <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
+            </div>
+        </div>
+        <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
+    </div>
+
+    <script>
+        // Realistic threats data
+        const threats = [
+            {
+                id: 1,
+                name: 'DDoS Attack - Layer 7',
+                type: 'Network Attack',
+                severity: 'critical',
+                source: '45.12.78.* (Botnet)',
+                target: 'API Gateway',
+                status: '🤖 AI Mitigating',
+                duration: '12 minutes',
+                attempts: '45,892',
+                prediction: '87% chance of escalation',
+                encryption: 'Traffic analysis: AES-256-GCM + Kyber-1024'
+            },
+            {
+                id: 2,
+                name: 'SQL Injection Attempt',
+                type: 'Web Application',
+                severity: 'critical',
+                source: '192.168.1.105',
+                target: '/api/users endpoint',
+                status: '🛡️ Blocked',
+                duration: '3 minutes',
+                attempts: '127',
+                prediction: 'Pattern matches known exploit',
+                encryption: 'Logs secured: HMAC-SHA256 + Dilithium-3'
+            },
+            {
+                id: 3,
+                name: 'Brute Force Login',
+                type: 'Authentication',
+                severity: 'high',
+                source: 'Multiple IPs',
+                target: 'Admin Panel',
+                status: '🔒 Rate Limited',
+                duration: '8 minutes',
+                attempts: '3,247',
+                prediction: 'Credential stuffing detected',
+                encryption: 'Auth data: PBKDF2 + SPHINCS+'
+            },
+            {
+                id: 4,
+                name: 'Malware Communication',
+                type: 'C2 Traffic',
+                severity: 'high',
+                source: 'Internal Host',
+                target: 'External C2 Server',
+                status: '🔐 Isolated',
+                duration: '5 minutes',
+                attempts: '892',
+                prediction: 'Ransomware variant detected',
+                encryption: 'Quarantine: AES-256 + Kyber-768'
+            },
+            {
+                id: 5,
+                name: 'Data Exfiltration',
+                type: 'Insider Threat',
+                severity: 'medium',
+                source: 'User Account',
+                target: 'Database',
+                status: '👁️ Monitoring',
+                duration: '15 minutes',
+                attempts: '445',
+                prediction: '73% anomaly score',
+                encryption: 'Data at rest: AES-256-GCM'
+            },
+            {
+                id: 6,
+                name: 'Port Scanning',
+                type: 'Reconnaissance',
+                severity: 'medium',
+                source: '185.*.*.* ',
+                target: 'Network Perimeter',
+                status: '🚫 Blocked',
+                duration: '7 minutes',
+                attempts: '1,024',
+                prediction: 'Pre-attack reconnaissance',
+                encryption: 'Scan logs: HMAC-SHA256'
+            },
+            {
+                id: 7,
+                name: 'Phishing Campaign',
+                type: 'Email Threat',
+                severity: 'high',
+                source: 'External Email',
+                target: 'Employee Mailboxes',
+                status: '📧 Quarantined',
+                duration: '10 minutes',
+                attempts: '178',
+                prediction: 'Spear phishing detected',
+                encryption: 'Email analysis: Dilithium-5'
+            }
+        ];
+
+        // Populate threats
+        function populateThreats() {
+            const grid = document.getElementById('threatGrid');
+            grid.innerHTML = '';
+            
+            threats.forEach((threat, index) => {
+                const card = document.createElement('div');
+                card.className = `threat-card ${threat.severity}`;
+                card.innerHTML = `
+                    <div class="threat-header">
+                        <div>
+                            <div class="threat-title">${threat.name}</div>
+                            <div class="threat-type">${threat.type}</div>
+                        </div>
+                        <span class="threat-severity severity-${threat.severity}">${threat.severity}</span>
+                    </div>
+                    <div class="threat-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Source</span>
+                            <span class="detail-value">${threat.source}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Target</span>
+                            <span class="detail-value">${threat.target}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Duration</span>
+                            <span class="detail-value">${threat.duration}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Attempts</span>
+                            <span class="detail-value">${threat.attempts}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">AI Analysis</span>
+                            <span class="detail-value" style="color: var(--accent);">${threat.prediction}</span>
+                        </div>
+                    </div>
+                    <div class="threat-status">
+                        <span class="status-badge">${threat.status}</span>
+                        <div class="encryption-status">
+                            <span class="encryption-status-icon">🔐</span>
+                            <span>${threat.encryption}</span>
+                        </div>
+                    </div>
+                `;
+                
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.addEventListener('click', () => showThreatDetails(threat));
+                grid.appendChild(card);
+            });
+        }
+
+        // Show threat details in chat
+        function showThreatDetails(threat) {
+            if (!chatOpen) {
+                toggleChat();
+            }
+            setTimeout(() => {
+                addChatMessage(`Analyzing ${threat.name}: ${threat.prediction}. Current status: ${threat.status}. Data protection: ${threat.encryption}. Would you like to take manual control of this threat response?`, false);
+            }, 300);
+        }
+
+        // AI Chat System
+        let chatOpen = false;
+        
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            const chatWindow = document.getElementById('aiChatWindow');
+            if (chatOpen) {
+                chatWindow.classList.add('active');
+            } else {
+                chatWindow.classList.remove('active');
+            }
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesContainer = document.getElementById('aiChatMessages');
+            
+            // Add user message
+            addChatMessage(message, true);
+            input.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Simulate AI response
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = generateAIResponse(message);
+                addChatMessage(response, false);
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function addChatMessage(message, isUser) {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'ai-message';
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="ai-message-bubble ${isUser ? 'user' : ''}">
+                    ${message}
+                </div>
+                <div class="ai-message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-typing';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.style.display = 'flex';
+            typingDiv.style.gap = '5px';
+            typingDiv.style.padding = '10px';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.style.width = '8px';
+                dot.style.height = '8px';
+                dot.style.background = 'var(--primary)';
+                dot.style.borderRadius = '50%';
+                dot.style.animation = 'typingDot 1.4s ease-in-out infinite';
+                dot.style.animationDelay = `${i * 0.2}s`;
+                typingDiv.appendChild(dot);
+            }
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('encryption') || lowerMessage.includes('crypto')) {
+                return '🔐 All threat data is protected with hybrid encryption: Classical AES-256-GCM for real-time analysis + Post-Quantum CRYSTALS-Kyber for long-term storage. Digital signatures use Dilithium-3.';
+            }
+            
+            if (lowerMessage.includes('ddos') || lowerMessage.includes('attack')) {
+                return '⚡ The DDoS attack is being handled by rate limiting and traffic filtering. Current mitigation: 94% effective. Blocking 45,892 requests/second. All logs encrypted with AES-256-GCM + Kyber-1024.';
+            }
+            
+            if (lowerMessage.includes('manual') || lowerMessage.includes('control')) {
+                return '🎛️ Manual control available for: 1) Block specific IPs, 2) Adjust rate limits, 3) Deploy honeypots, 4) Isolate systems. All actions logged with post-quantum signatures. Which action?';
+            }
+            
+            if (lowerMessage.includes('quantum') || lowerMessage.includes('post-quantum')) {
+                return '🔮 Post-quantum encryption active: CRYSTALS-Kyber for key encapsulation, Dilithium for signatures. Protects against future quantum computer attacks while maintaining classical security.';
+            }
+            
+            if (lowerMessage.includes('status') || lowerMessage.includes('overview')) {
+                return '📊 Current threat landscape: 7 active threats (2 critical, 3 high, 2 medium). AI handling all autonomously with 99.7% success rate. Hybrid encryption protecting all data flows.';
+            }
+            
+            return '🤖 I\'m analyzing your query. Please specify which threat or system you\'d like to investigate or control.';
+        }
+
+        // Feed messages
+        const feedMessages = [
+            '🛡️ Blocked 1,247 malicious requests from botnet - logged with AES-256-GCM',
+            '🔍 AI detected new SQL injection pattern - rules updated with Dilithium signature',
+            '⚡ DDoS attack mitigated - 45k requests blocked - data encrypted with Kyber-1024',
+            '🔐 Suspicious login attempt quarantined - credentials protected with PBKDF2',
+            '📊 Threat model updated with new attack vectors - signed with Dilithium-5',
+            '🎯 Zero-day vulnerability patched - update verified with post-quantum signatures',
+            '🧠 Machine learning model accuracy: 99.8% - weights encrypted with hybrid crypto',
+            '🔒 Encrypted C2 communication blocked - traffic analysis using CRYSTALS-Kyber',
+            '📧 Phishing email quarantined - 178 similar blocked - HMAC-SHA256 verification',
+            '🚨 Port scan detected - source IP blacklisted - logs secured with AES-256'
+        ];
+
+        // Add feed item
+        function addFeedItem(message, type = '') {
+            const feed = document.getElementById('threatFeed');
+            const item = document.createElement('div');
+            item.className = `feed-item ${type}`;
+            
+            const time = new Date().toLocaleTimeString();
+            item.innerHTML = `
+                <div class="feed-time">${time}</div>
+                <div class="feed-message">${message}</div>
+            `;
+            
+            feed.insertBefore(item, feed.firstChild);
+            
+            // Keep only last 20 items
+            while (feed.children.length > 20) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        // Update threat counts
+        function updateThreatCounts() {
+            const active = document.getElementById('activeThreats');
+            const neutralized = document.getElementById('neutralizedThreats');
+            const predicted = document.getElementById('predictedThreats');
+            
+            // Occasionally neutralize a threat
+            if (Math.random() > 0.7) {
+                active.textContent = Math.max(0, parseInt(active.textContent) - 1);
+                neutralized.textContent = parseInt(neutralized.textContent) + 1;
+            }
+            
+            // Update predictions
+            if (Math.random() > 0.8) {
+                predicted.textContent = Math.floor(Math.random() * 5 + 10);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            populateThreats();
+            
+            // Add initial feed items
+            addFeedItem('🤖 Threat monitoring system online. AI analyzing patterns with hybrid encryption.', 'encryption');
+            addFeedItem('🛡️ Autonomous defense activated. Zero human intervention required.');
+            
+            // Auto-generate feed items
+            setInterval(() => {
+                const isEncryption = Math.random() > 0.7;
+                const message = feedMessages[Math.floor(Math.random() * feedMessages.length)];
+                addFeedItem(message, isEncryption ? 'encryption' : '');
+                updateThreatCounts();
+            }, 5000);
+        });
+
+        // Add CSS animation for typing dots
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes typingDot {
+                0%, 60%, 100% {
+                    transform: translateY(0);
+                    opacity: 0.7;
+                }
+                30% {
+                    transform: translateY(-10px);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

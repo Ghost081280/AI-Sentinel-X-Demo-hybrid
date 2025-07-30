@@ -200,22 +200,6 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .sidebar-item {
-            display: block;
-            padding: 15px 20px;
-            margin-bottom: 8px;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: 10px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
         .sidebar-item:hover {
             background: rgba(0, 255, 136, 0.05);
             border-color: var(--border);
@@ -464,6 +448,35 @@
             font-weight: bold;
             color: var(--accent);
             margin-bottom: 15px;
+        }
+
+        .agent-shutdown-btn {
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: var(--bg-darker);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .agent-shutdown-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .agent-shutdown-btn.danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .agent-shutdown-btn.danger:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 68, 0.4);
         }
 
         .agent-control-grid {
@@ -872,3 +885,714 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary);
         }
+    </style>
+</head>
+<body>
+    <script>
+        // Check authentication
+        const auth = localStorage.getItem('sentinel_auth');
+        if (!auth) {
+            window.location.href = 'index.html';
+        } else {
+            const authData = JSON.parse(auth);
+            if (Date.now() - authData.timestamp > 24 * 60 * 60 * 1000) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="dot-grid"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div>
+                    <h1 class="brand-title">AI SENTINEL-X | SETTINGS</h1>
+                    <p class="page-subtitle">Agent Configuration & System Controls</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="agent-status" id="headerAgentStatus" onclick="showAgentShutdownModal()">
+                    <span>🤖 AI Agent Active • Fully Autonomous</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- AI Notice -->
+        <div class="ai-notice">
+            🤖 Settings are managed by the Main Agent. Changes affect all sub-agents and are protected with hybrid encryption.
+        </div>
+
+        <!-- Settings Grid -->
+        <div class="settings-grid">
+            <!-- Settings Sidebar -->
+            <div class="settings-sidebar">
+                <div class="sidebar-title">Configuration</div>
+                <a href="#" class="sidebar-item active" onclick="showSection('agent')">
+                    <div class="sidebar-icon">🤖</div>
+                    <span>AI Agent</span>
+                </a>
+                <a href="#" class="sidebar-item" onclick="showSection('encryption')">
+                    <div class="sidebar-icon">🔐</div>
+                    <span>Encryption</span>
+                </a>
+                <a href="#" class="sidebar-item" onclick="showSection('monitoring')">
+                    <div class="sidebar-icon">📊</div>
+                    <span>Monitoring</span>
+                </a>
+                <a href="#" class="sidebar-item" onclick="showSection('network')">
+                    <div class="sidebar-icon">🌐</div>
+                    <span>Network</span>
+                </a>
+                <a href="#" class="sidebar-item" onclick="showSection('alerts')">
+                    <div class="sidebar-icon">🚨</div>
+                    <span>Alerts</span>
+                </a>
+                <a href="#" class="sidebar-item" onclick="showSection('api')">
+                    <div class="sidebar-icon">🔗</div>
+                    <span>API Keys</span>
+                </a>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="settings-content">
+                <!-- Agent Settings Section -->
+                <div id="agent-section" class="settings-section">
+                    <h2 class="section-title">AI Agent Configuration</h2>
+                    
+                    <!-- Agent Control Panel -->
+                    <div class="agent-control-panel">
+                        <div class="agent-control-title">🤖 Main Agent Control</div>
+                        <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                            Current Mode: <span id="agentModeDisplay" style="color: var(--primary); font-weight: bold;">Fully Autonomous</span>
+                        </p>
+                        <button class="agent-shutdown-btn" id="toggleAgentBtn" onclick="toggleAgent()">
+                            PAUSE AI AGENT
+                        </button>
+                        <button class="agent-shutdown-btn danger" onclick="emergencyShutdown()">
+                            EMERGENCY SHUTDOWN
+                        </button>
+                    </div>
+
+                    <!-- Hybrid Encryption Status -->
+                    <div class="encryption-status-panel">
+                        <div class="encryption-status-content">
+                            <div class="encryption-status-title">🔒 Hybrid Encryption Status</div>
+                            <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                                All agent communications protected with Classical + Post-Quantum encryption
+                            </p>
+                            <div class="encryption-layers">
+                                <div class="layer-card">
+                                    <div class="layer-title" style="color: var(--primary);">Classical Layer</div>
+                                    <div class="layer-status">AES-256-GCM + HMAC-SHA256</div>
+                                </div>
+                                <div class="layer-card">
+                                    <div class="layer-title" style="color: var(--accent);">Quantum Layer</div>
+                                    <div class="layer-status">Kyber + Dilithium + SPHINCS+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3 class="group-title">Autonomous Behavior</h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Auto-Response Mode</div>
+                                <div class="setting-description">Allow AI to automatically respond to threats without human approval</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="autoResponse" checked onchange="updateSetting('autoResponse', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Learning Mode</div>
+                                <div class="setting-description">Enable continuous learning from threat patterns and user feedback</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="learningMode" checked onchange="updateSetting('learningMode', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Sub-Agent Coordination</div>
+                                <div class="setting-description">Allow Main Agent to coordinate between sub-agents autonomously</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="coordination" checked onchange="updateSetting('coordination', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Threat Response Level</div>
+                                <div class="setting-description">Set the minimum threat level for autonomous response</div>
+                            </div>
+                            <select class="select-field" id="threatLevel" onchange="updateSetting('threatLevel', this.value)">
+                                <option value="low">Low - Respond to all threats</option>
+                                <option value="medium" selected>Medium - Respond to medium+ threats</option>
+                                <option value="high">High - Respond to high+ threats only</option>
+                                <option value="critical">Critical - Respond to critical threats only</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Encryption Settings Section -->
+                <div id="encryption-section" class="settings-section" style="display: none;">
+                    <h2 class="section-title">Encryption Configuration</h2>
+                    
+                    <div class="setting-group">
+                        <h3 class="group-title">Hybrid Encryption Settings</h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Classical Encryption</div>
+                                <div class="setting-description">AES-256-GCM for symmetric encryption, HMAC-SHA256 for integrity</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="classicalEncryption" checked disabled>
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Post-Quantum Encryption</div>
+                                <div class="setting-description">CRYSTALS-Kyber for key exchange, Dilithium for signatures</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="quantumEncryption" checked disabled>
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Key Rotation Interval</div>
+                                <div class="setting-description">Automatic rotation of encryption keys</div>
+                            </div>
+                            <select class="select-field" id="keyRotation" onchange="updateSetting('keyRotation', this.value)">
+                                <option value="hourly">Every Hour</option>
+                                <option value="daily" selected>Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Signature Algorithm</div>
+                                <div class="setting-description">Primary post-quantum signature algorithm</div>
+                            </div>
+                            <select class="select-field" id="signatureAlgo" onchange="updateSetting('signatureAlgo', this.value)">
+                                <option value="dilithium3" selected>CRYSTALS-Dilithium-3</option>
+                                <option value="dilithium5">CRYSTALS-Dilithium-5</option>
+                                <option value="sphincs">SPHINCS+</option>
+                                <option value="falcon">FALCON (Experimental)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monitoring Settings Section -->
+                <div id="monitoring-section" class="settings-section" style="display: none;">
+                    <h2 class="section-title">Monitoring Configuration</h2>
+                    
+                    <div class="setting-group">
+                        <h3 class="group-title">Data Collection</h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Real-time Analytics</div>
+                                <div class="setting-description">Enable continuous analytics processing by AnalyticsEngine</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="realtimeAnalytics" checked onchange="updateSetting('realtimeAnalytics', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Log Retention Period</div>
+                                <div class="setting-description">How long to keep security logs (all encrypted with Dilithium signatures)</div>
+                            </div>
+                            <select class="select-field" id="logRetention" onchange="updateSetting('logRetention', this.value)">
+                                <option value="30">30 Days</option>
+                                <option value="90" selected>90 Days</option>
+                                <option value="180">180 Days</option>
+                                <option value="365">1 Year</option>
+                                <option value="unlimited">Unlimited</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Performance Monitoring</div>
+                                <div class="setting-description">Monitor AI agent performance and resource usage</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="perfMonitoring" checked onchange="updateSetting('perfMonitoring', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Settings Section -->
+                <div id="network-section" class="settings-section" style="display: none;">
+                    <h2 class="section-title">Network Configuration</h2>
+                    
+                    <div class="setting-group">
+                        <h3 class="group-title">Discovery Settings</h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Auto-Discovery</div>
+                                <div class="setting-description">Automatically discover new devices on the network</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="autoDiscovery" checked onchange="updateSetting('autoDiscovery', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Scan Frequency</div>
+                                <div class="setting-description">How often NetworkMapper scans for new devices</div>
+                            </div>
+                            <select class="select-field" id="scanFreq" onchange="updateSetting('scanFreq', this.value)">
+                                <option value="1">Every Minute</option>
+                                <option value="5" selected>Every 5 Minutes</option>
+                                <option value="15">Every 15 Minutes</option>
+                                <option value="60">Every Hour</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">External Scanning</div>
+                                <div class="setting-description">Use Shodan API for external threat intelligence</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="externalScan" checked onchange="updateSetting('externalScan', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts Settings Section -->
+                <div id="alerts-section" class="settings-section" style="display: none;">
+                    <h2 class="section-title">Alert Configuration</h2>
+                    
+                    <div class="setting-group">
+                        <h3 class="group-title">Notification Settings</h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Real-time Alerts</div>
+                                <div class="setting-description">Show immediate notifications for critical threats</div>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="realtimeAlerts" checked onchange="updateSetting('realtimeAlerts', this.checked)">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Email Notifications</div>
+                                <div class="setting-description">Send security alerts via email</div>
+                            </div>
+                            <input type="email" class="input-field" id="alertEmail" placeholder="admin@company.com" onchange="updateSetting('alertEmail', this.value)">
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Alert Threshold</div>
+                                <div class="setting-description">Minimum severity level for alerts</div>
+                            </div>
+                            <select class="select-field" id="alertThreshold" onchange="updateSetting('alertThreshold', this.value)">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                                <option value="critical">Critical Only</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Settings Section -->
+                <div id="api-section" class="settings-section" style="display: none;">
+                    <h2 class="section-title">API Key Management</h2>
+                    
+                    <div class="setting-group">
+                        <h3 class="group-title">External APIs</h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">OpenAI API Key</div>
+                                <div class="setting-description">Powers the Main AI Agent for threat analysis and decision making</div>
+                            </div>
+                            <input type="password" class="input-field" id="openaiApiKey" placeholder="sk-..." onchange="updateSetting('openaiApiKey', this.value)">
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Shodan API Key</div>
+                                <div class="setting-description">Enables NetworkMapper for external threat intelligence</div>
+                            </div>
+                            <input type="password" class="input-field" id="shodanApiKey" placeholder="Enter Shodan API key" onchange="updateSetting('shodanApiKey', this.value)">
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Sentinel-X API Key</div>
+                                <div class="setting-description">Authenticates Main Agent and enables sub-agent coordination</div>
+                            </div>
+                            <input type="password" class="input-field" id="sentinelApiKey" placeholder="Enter Sentinel-X API key" onchange="updateSetting('sentinelApiKey', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                    <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
+                    <button class="btn btn-secondary" onclick="exportSettings()">Export Configuration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+        ✅ Settings saved successfully!
+    </div>
+
+    <!-- Agent Shutdown Modal -->
+    <div class="modal-overlay" id="agentShutdownModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Emergency AI Shutdown</h2>
+            </div>
+            <div class="modal-content">
+                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. If external APIs or keys are offline, the agent will fallback to local control mode.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="confirmAgentShutdown()">Confirm Shutdown</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Widget -->
+    <div class="ai-chat-widget">
+        <div class="ai-chat-window" id="aiChatWindow">
+            <div class="ai-chat-header">
+                <div class="ai-chat-status">
+                    <span class="chat-status-dot"></span>
+                    <span>MAIN AGENT ONLINE</span>
+                </div>
+                <span class="ai-chat-close" onclick="toggleChat()">×</span>
+            </div>
+            <div class="cli-mode-indicator" id="cliModeIndicator">
+                ⚠️ CLI MODE - Main Agent Offline
+            </div>
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-message-bubble">
+                    Connected to Main Agent settings interface. I can help configure AI behavior, encryption settings, and sub-agent coordination. All changes are protected with hybrid encryption.
+                </div>
+                <div class="ai-message-time">Just now</div>
+            </div>
+            <div class="ai-chat-input-container">
+                <input 
+                    type="text" 
+                    class="ai-chat-input" 
+                    id="aiChatInput" 
+                    placeholder="Ask about settings or configuration..."
+                    onkeypress="handleChatKeyPress(event)"
+                >
+                <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
+            </div>
+        </div>
+        <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        let currentAgentState = true; // true = active, false = paused
+
+        // Settings management
+        const defaultSettings = {
+            autoResponse: true,
+            learningMode: true,
+            coordination: true,
+            threatLevel: 'medium',
+            keyRotation: 'daily',
+            signatureAlgo: 'dilithium3',
+            realtimeAnalytics: true,
+            logRetention: '90',
+            perfMonitoring: true,
+            autoDiscovery: true,
+            scanFreq: '5',
+            externalScan: true,
+            realtimeAlerts: true,
+            alertEmail: '',
+            alertThreshold: 'medium',
+            openaiApiKey: '',
+            shodanApiKey: '',
+            sentinelApiKey: ''
+        };
+
+        // Show settings section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.settings-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active class from all sidebar items
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').style.display = 'block';
+            
+            // Add active class to clicked sidebar item
+            event.target.closest('.sidebar-item').classList.add('active');
+        }
+
+        // Toggle agent state
+        function toggleAgent() {
+            currentAgentState = !currentAgentState;
+            
+            const toggleBtn = document.getElementById('toggleAgentBtn');
+            const modeDisplay = document.getElementById('agentModeDisplay');
+            const headerStatus = document.getElementById('headerAgentStatus');
+            
+            if (currentAgentState) {
+                // Agent is now active
+                toggleBtn.textContent = 'PAUSE AI AGENT';
+                toggleBtn.className = 'agent-shutdown-btn';
+                modeDisplay.textContent = 'Fully Autonomous';
+                modeDisplay.style.color = 'var(--primary)';
+                
+                headerStatus.style.background = 'rgba(0, 255, 136, 0.1)';
+                headerStatus.style.borderColor = '#00ff88';
+                headerStatus.innerHTML = '<span>🤖 AI Agent Active • Fully Autonomous</span>';
+                
+                // Update global state
+                agentActive = true;
+                cliMode = false;
+                
+                showSuccessMessage('AI Agent resumed autonomous operation');
+                
+            } else {
+                // Agent is now paused
+                toggleBtn.textContent = 'RESUME AI AGENT';
+                toggleBtn.className = 'agent-shutdown-btn danger';
+                modeDisplay.textContent = 'Manual Control Only';
+                modeDisplay.style.color = 'var(--warning)';
+                
+                headerStatus.style.background = 'rgba(255, 170, 0, 0.1)';
+                headerStatus.style.borderColor = '#ffaa00';
+                headerStatus.innerHTML = '<span>⚠️ AI Agent Paused • Manual Control Only</span>';
+                
+                // Update global state
+                agentActive = false;
+                
+                showSuccessMessage('AI Agent paused - Manual control active');
+            }
+        }
+
+        // Emergency shutdown
+        function emergencyShutdown() {
+            if (confirm('EMERGENCY SHUTDOWN: This will immediately halt all AI operations. Only manual control will remain. Continue?')) {
+                currentAgentState = false;
+                agentActive = false;
+                cliMode = true;
+                
+                const toggleBtn = document.getElementById('toggleAgentBtn');
+                const modeDisplay = document.getElementById('agentModeDisplay');
+                const headerStatus = document.getElementById('headerAgentStatus');
+                
+                toggleBtn.textContent = 'RESTART AI AGENT';
+                toggleBtn.className = 'agent-shutdown-btn danger';
+                modeDisplay.textContent = 'EMERGENCY SHUTDOWN';
+                modeDisplay.style.color = 'var(--danger)';
+                
+                headerStatus.style.background = 'rgba(255, 0, 68, 0.1)';
+                headerStatus.style.borderColor = '#ff0044';
+                headerStatus.innerHTML = '<span>🚨 EMERGENCY SHUTDOWN • CLI MODE ONLY</span>';
+                
+                // Show CLI mode in chat
+                const cliIndicator = document.getElementById('cliModeIndicator');
+                if (cliIndicator) {
+                    cliIndicator.classList.add('active');
+                }
+                
+                showSuccessMessage('EMERGENCY SHUTDOWN: All AI operations halted');
+            }
+        }
+
+        // Update setting
+        function updateSetting(key, value) {
+            if (chatOpen) {
+                addChatMessage(`Main Agent: Setting "${key}" updated to "${value}". Configuration protected with hybrid encryption.`, false, 'system');
+            }
+        }
+
+        // Save settings
+        function saveSettings() {
+            const settings = {};
+            
+            // Collect all settings
+            Object.keys(defaultSettings).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        settings[key] = element.checked;
+                    } else {
+                        settings[key] = element.value;
+                    }
+                }
+            });
+            
+            // Store settings
+            localStorage.setItem('sentinel_settings', JSON.stringify(settings));
+            
+            showSuccessMessage('All settings saved successfully!');
+            
+            if (chatOpen) {
+                addChatMessage('Main Agent: Configuration saved and encrypted. All sub-agents will receive updated parameters.', false, 'system');
+            }
+        }
+
+        // Reset settings
+        function resetSettings() {
+            if (confirm('Reset all settings to default values?')) {
+                Object.keys(defaultSettings).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = defaultSettings[key];
+                        } else {
+                            element.value = defaultSettings[key];
+                        }
+                    }
+                });
+                
+                showSuccessMessage('Settings reset to defaults');
+            }
+        }
+
+        // Export settings
+        function exportSettings() {
+            const settings = {};
+            Object.keys(defaultSettings).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        settings[key] = element.checked;
+                    } else {
+                        settings[key] = element.value;
+                    }
+                }
+            });
+            
+            const exportData = {
+                version: '1.0',
+                timestamp: new Date().toISOString(),
+                settings: settings
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sentinel-x-config.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showSuccessMessage('Configuration exported successfully!');
+        }
+
+        // Show success message
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = '✅ ' + message;
+            successMsg.classList.add('show');
+            
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Logout? The AI agent will continue protecting your systems.')) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved settings
+            const savedSettings = localStorage.getItem('sentinel_settings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                Object.keys(settings).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = settings[key];
+                        } else {
+                            element.value = settings[key];
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> {
+            display: block;
+            padding: 15px 20px;
+            margin-bottom: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-item

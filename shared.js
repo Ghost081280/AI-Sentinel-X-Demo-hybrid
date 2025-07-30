@@ -81,11 +81,6 @@ window.addEventListener('resize', () => {
     initNeuralBackground();
 });
 
-// Initialize on DOM content loaded
-document.addEventListener('DOMContentLoaded', () => {
-    initNeuralBackground();
-});
-
 // AI Chat functionality
 function toggleChat() {
     chatOpen = !chatOpen;
@@ -163,7 +158,7 @@ function processCommand(command) {
             } else if (lowerCommand.includes('network') || lowerCommand.includes('device')) {
                 addChatMessage('Main Agent: Routing to NetworkMapper sub-agent...', false, 'system');
                 setTimeout(() => {
-                    addChatMessage('NetworkMapper: 247 devices discovered on network. 12 new devices in last hour. All communications secured with Classical + Post-Quantum encryption.', false);
+                    addChatMessage('NetworkMapper: 247 devices discovered on network. Live discovery active - new devices appear every 8-15 seconds. All communications secured with Classical + Post-Quantum encryption.', false);
                 }, 800);
             } else if (lowerCommand.includes('encrypt') || lowerCommand.includes('crypto')) {
                 addChatMessage('Main Agent: Routing to EncryptionManager sub-agent...', false, 'system');
@@ -186,7 +181,11 @@ function processCommand(command) {
                     addChatMessage('AnalyticsEngine: Real-time threat analysis shows 78% phishing increase. ML model accuracy: 99.8%. All data protected with AES-256-GCM + Kyber-1024.', false);
                 }, 800);
             } else if (lowerCommand.includes('pause') && lowerCommand.includes('agent')) {
-                showAgentShutdownModal();
+                if (typeof showAgentShutdownModal === 'function') {
+                    showAgentShutdownModal();
+                } else {
+                    addChatMessage('Main Agent: Agent pause function not available in this interface.', false);
+                }
             } else if (lowerCommand.includes('quarantine')) {
                 const ipMatch = command.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
                 if (ipMatch) {
@@ -197,6 +196,11 @@ function processCommand(command) {
                 } else {
                     addChatMessage('Main Agent: Please specify an IP address to quarantine. Example: quarantine 192.168.1.105', false);
                 }
+            } else if (lowerCommand.includes('discovery') || lowerCommand.includes('scan')) {
+                addChatMessage('Main Agent: Routing to NetworkMapper sub-agent...', false, 'system');
+                setTimeout(() => {
+                    addChatMessage('NetworkMapper: Live device discovery is active. New devices automatically appear in the grid every 8-15 seconds. Current count: 247 devices. Discovery uses hybrid encryption for all communications.', false);
+                }, 800);
             } else if (lowerCommand.includes('status')) {
                 addChatMessage(`Main Agent: System Status
 • AI Mode: ${agentActive ? 'Autonomous' : 'Manual Control'}
@@ -205,7 +209,8 @@ function processCommand(command) {
 • Encryption: Hybrid Active (Classical + Quantum)
 • Uptime: 99.98%
 • Protected Devices: 247
-• Active Threats: 7`, false);
+• Active Threats: 7
+• Device Discovery: ${typeof discoveryActive !== 'undefined' && discoveryActive ? 'ACTIVE' : 'ACTIVE'}`, false);
             } else if (lowerCommand.includes('help')) {
                 addChatMessage(`Main Agent: Available commands:
 • status - View system status
@@ -216,6 +221,7 @@ function processCommand(command) {
 • pause ai agent - Switch to manual mode
 • view logs - Recent security events
 • analytics report - Threat analytics
+• discovery - Device discovery status
 
 All actions are routed through appropriate sub-agents.`, false);
             } else {
@@ -244,6 +250,7 @@ function processCLICommand(command) {
 • view logs - Recent security events
 • quarantine [IP] - Block IP address
 • enable agent - Restore AI control
+• discovery status - Device discovery info
 • status - System overview`, false);
         } else if (lowerCommand.includes('list threats')) {
             addChatMessage(`[CLI] Active Threats:
@@ -252,14 +259,16 @@ function processCLICommand(command) {
 3. Port Scan - 185.*.*.* - MONITORED
 4. Brute Force - SSH - RATE LIMITED
 5. Malware C2 - ISOLATED`, false);
-        } else if (lowerCommand.includes('scan network')) {
-            addChatMessage(`[CLI] Network Scan:
+        } else if (lowerCommand.includes('scan network') || lowerCommand.includes('discovery')) {
+            addChatMessage(`[CLI] Network Discovery:
 • Total Devices: 247
 • Servers: 12
 • Workstations: 189
 • IoT Devices: 46
 • Unknown: 0
-• New (24h): 12`, false);
+• New (24h): 12
+• Discovery Status: ${typeof discoveryActive !== 'undefined' && discoveryActive ? 'ACTIVE' : 'ACTIVE'}
+• Live Updates: Every 8-15 seconds`, false);
         } else if (lowerCommand.includes('show encryption')) {
             addChatMessage(`[CLI] Encryption Status:
 Classical Layer:
@@ -275,9 +284,9 @@ Post-Quantum Layer:
 • FALCON: TESTING`, false);
         } else if (lowerCommand.includes('view logs')) {
             addChatMessage(`[CLI] Recent Events:
+[${new Date().toLocaleTimeString()}] New device discovered - auto-added to grid
 [${new Date().toLocaleTimeString()}] Threat blocked - SQL injection
 [${new Date().toLocaleTimeString()}] Key rotation completed
-[${new Date().toLocaleTimeString()}] New device: 192.168.1.247
 [${new Date().toLocaleTimeString()}] Honeypot triggered
 [${new Date().toLocaleTimeString()}] All logs Dilithium signed`, false);
         } else if (lowerCommand.includes('quarantine')) {
@@ -290,26 +299,20 @@ Post-Quantum Layer:
         } else if (lowerCommand.includes('enable agent')) {
             agentActive = true;
             cliMode = false;
+            if (typeof discoveryActive !== 'undefined') {
+                discoveryActive = true;
+            }
             if (cliIndicator) {
                 cliIndicator.classList.remove('active');
             }
-            addChatMessage('✅ Main Agent re-enabled. Autonomous mode restored.', false, 'system');
+            addChatMessage('✅ Main Agent re-enabled. Autonomous mode restored. Device discovery resumed.', false, 'system');
             
             // Update agent status in header if exists
             const agentStatus = document.querySelector('.agent-status');
             if (agentStatus) {
                 agentStatus.style.background = 'rgba(0, 255, 136, 0.1)';
                 agentStatus.style.borderColor = '#00ff88';
-                
-                const statusTitle = document.querySelector('.agent-title');
-                const statusText = document.querySelector('.agent-status-text');
-                if (statusTitle) {
-                    statusTitle.textContent = 'AI Agent Active';
-                    statusTitle.style.color = '#00ff88';
-                }
-                if (statusText) {
-                    statusText.textContent = 'Fully Autonomous';
-                }
+                agentStatus.innerHTML = '<span>🤖 AI Agent Active • Fully Autonomous</span>';
             }
         } else if (lowerCommand.includes('status')) {
             addChatMessage(`[CLI] System Status:
@@ -317,6 +320,7 @@ Post-Quantum Layer:
 • Threats: 7 active
 • Devices: 247 protected
 • Encryption: Hybrid Active
+• Discovery: ${typeof discoveryActive !== 'undefined' && discoveryActive ? 'ACTIVE' : 'PAUSED'}
 • Uptime: 99.98%`, false);
         } else {
             addChatMessage(`[CLI] Command executed: ${command}`, false);
@@ -339,7 +343,9 @@ function simulateConnectionIssue() {
             chatStatus.textContent = 'CLI MODE - MAIN AGENT OFFLINE';
         }
         
-        addChatMessage('⚠️ Main Agent connection lost. Switching to CLI fallback mode. Type "help" for available commands.', false, 'system');
+        if (chatOpen) {
+            addChatMessage('⚠️ Main Agent connection lost. Switching to CLI fallback mode. Type "help" for available commands.', false, 'system');
+        }
     }
 }
 
@@ -396,58 +402,62 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Agent Shutdown Modal functions
-function showAgentShutdownModal() {
-    const modal = document.getElementById('agentShutdownModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
+// Agent Shutdown Modal functions (fallback if not defined in page)
+if (typeof showAgentShutdownModal === 'undefined') {
+    window.showAgentShutdownModal = function() {
+        const modal = document.getElementById('agentShutdownModal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    };
 }
 
-function closeModal() {
-    const modal = document.getElementById('agentShutdownModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+if (typeof closeModal === 'undefined') {
+    window.closeModal = function() {
+        const modal = document.getElementById('agentShutdownModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    };
 }
 
-function closeModalOnOverlay(event) {
-    if (event.target.classList.contains('modal-overlay')) {
-        closeModal();
-    }
+if (typeof closeModalOnOverlay === 'undefined') {
+    window.closeModalOnOverlay = function(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            closeModal();
+        }
+    };
 }
 
-function confirmAgentShutdown() {
-    agentActive = false;
-    
-    // Update header status
-    const agentStatus = document.querySelector('.agent-status');
-    if (agentStatus) {
-        agentStatus.style.background = 'rgba(255, 170, 0, 0.1)';
-        agentStatus.style.borderColor = '#ffaa00';
+if (typeof confirmAgentShutdown === 'undefined') {
+    window.confirmAgentShutdown = function() {
+        agentActive = false;
         
-        const statusTitle = document.querySelector('.agent-title');
-        const statusText = document.querySelector('.agent-status-text');
-        if (statusTitle) {
-            statusTitle.textContent = 'AI Agent Paused';
-            statusTitle.style.color = '#ffaa00';
+        // Stop discovery if on network page
+        if (typeof discoveryActive !== 'undefined') {
+            discoveryActive = false;
         }
-        if (statusText) {
-            statusText.textContent = 'Manual Control Only';
+        
+        // Update header status
+        const agentStatus = document.querySelector('.agent-status');
+        if (agentStatus) {
+            agentStatus.style.background = 'rgba(255, 170, 0, 0.1)';
+            agentStatus.style.borderColor = '#ffaa00';
+            agentStatus.innerHTML = '<span>⚠️ AI Agent Paused • Manual Control Only</span>';
         }
-    }
-    
-    closeModal();
-    
-    // Show notification in chat
-    if (chatOpen) {
-        addChatMessage('⚠️ Main Agent has been paused. Manual control is now active. I will operate in local CLI mode if external connections fail.', false, 'system');
-    }
-    
-    // Add to security feed if exists
-    if (typeof addFeedItem === 'function') {
-        addFeedItem('⚠️ AI Agent switched to manual control mode', 'warning', 'Main Agent');
-    }
+        
+        closeModal();
+        
+        // Show notification in chat
+        if (chatOpen) {
+            addChatMessage('⚠️ Main Agent has been paused. Manual control is now active. Device discovery stopped. I will operate in local CLI mode if external connections fail.', false, 'system');
+        }
+        
+        // Add to security feed if exists
+        if (typeof addFeedItem === 'function') {
+            addFeedItem('⚠️ AI Agent switched to manual control mode', 'warning', 'Main Agent');
+        }
+    };
 }
 
 // Generate AI response for specific pages
@@ -467,7 +477,10 @@ function generateAIResponse(message, context = 'general') {
             
         case 'network':
             if (lowerMessage.includes('scan') || lowerMessage.includes('discover')) {
-                return '📡 Network discovery is fully autonomous. The agent uses ARP scanning, service fingerprinting, and behavioral analysis. All communications use hybrid encryption. New devices detected within 0.3 seconds.';
+                return '📡 Network discovery is fully autonomous. The agent uses ARP scanning, service fingerprinting, and behavioral analysis. All communications use hybrid encryption. New devices appear automatically every 8-15 seconds in the live grid.';
+            }
+            if (lowerMessage.includes('device')) {
+                return '🌐 Current device count: 247 and growing. Live discovery shows new devices in real-time with quantum-resistant encryption status. Click any device for detailed analysis.';
             }
             break;
             
@@ -497,6 +510,7 @@ function generateHelpResponse(context) {
 • show encryption - Encryption details
 • scan network - Network status
 • view logs - Recent events
+• discovery - Device discovery info
 • help - This message
 
 Context: ${context} module`;
@@ -507,5 +521,11 @@ function generateStatusResponse(context) {
 • AI Mode: ${agentActive ? 'Autonomous' : 'Manual'}
 • Module: ${context}
 • Encryption: Hybrid Active
+• Discovery: ${typeof discoveryActive !== 'undefined' && discoveryActive ? 'ACTIVE' : 'N/A'}
 • Performance: Optimal`;
 }
+
+// Initialize on DOM content loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initNeuralBackground();
+});

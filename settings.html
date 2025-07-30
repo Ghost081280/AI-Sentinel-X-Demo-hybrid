@@ -201,7 +201,9 @@
         }
 
         .sidebar-item {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             padding: 15px 20px;
             margin-bottom: 8px;
             background: transparent;
@@ -211,9 +213,6 @@
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
         .sidebar-item:hover {
@@ -929,27 +928,27 @@
             <!-- Settings Sidebar -->
             <div class="settings-sidebar">
                 <div class="sidebar-title">Configuration</div>
-                <a href="#" class="sidebar-item active" onclick="showSection('agent')">
+                <a href="#" class="sidebar-item active" onclick="showSection('agent', event)">
                     <div class="sidebar-icon">🤖</div>
                     <span>AI Agent</span>
                 </a>
-                <a href="#" class="sidebar-item" onclick="showSection('encryption')">
+                <a href="#" class="sidebar-item" onclick="showSection('encryption', event)">
                     <div class="sidebar-icon">🔐</div>
                     <span>Encryption</span>
                 </a>
-                <a href="#" class="sidebar-item" onclick="showSection('monitoring')">
+                <a href="#" class="sidebar-item" onclick="showSection('monitoring', event)">
                     <div class="sidebar-icon">📊</div>
                     <span>Monitoring</span>
                 </a>
-                <a href="#" class="sidebar-item" onclick="showSection('network')">
+                <a href="#" class="sidebar-item" onclick="showSection('network', event)">
                     <div class="sidebar-icon">🌐</div>
                     <span>Network</span>
                 </a>
-                <a href="#" class="sidebar-item" onclick="showSection('alerts')">
+                <a href="#" class="sidebar-item" onclick="showSection('alerts', event)">
                     <div class="sidebar-icon">🚨</div>
                     <span>Alerts</span>
                 </a>
-                <a href="#" class="sidebar-item" onclick="showSection('api')">
+                <a href="#" class="sidebar-item" onclick="showSection('api', event)">
                     <div class="sidebar-icon">🔗</div>
                     <span>API Keys</span>
                 </a>
@@ -1445,13 +1444,13 @@
         };
 
         // Show settings section
-        function showSection(sectionName) {
+        function showSection(sectionName, event) {
+            event.preventDefault();
+            
             // Hide all sections
             document.querySelectorAll('.settings-section').forEach(section => {
                 section.style.display = 'none';
-        </script>
-</body>
-</html>
+            });
             
             // Remove active class from all sidebar items
             document.querySelectorAll('.sidebar-item').forEach(item => {
@@ -1560,6 +1559,9 @@
                     }
                 }
             });
+            
+            // Save to localStorage
+            localStorage.setItem('sentinel_settings', JSON.stringify(settings));
             
             showSuccessMessage('Settings saved with quantum-resistant encryption!');
             
@@ -1691,3 +1693,6 @@
                 }
             }, 20000);
         });
+    </script>
+</body>
+</html>

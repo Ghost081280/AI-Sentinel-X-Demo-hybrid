@@ -38,8 +38,8 @@
             line-height: 1.6;
         }
 
-        /* Analytics Background */
-        .analytics-bg {
+        /* Animated Dot Background */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -47,335 +47,312 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.5;
-            background: 
-                radial-gradient(circle at 25% 25%, rgba(0, 204, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+            overflow: hidden;
         }
 
-        .container {
+        .dot-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(0, 255, 136, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: dotMove 40s linear infinite;
+        }
+
+        @keyframes dotMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
+            z-index: 10;
         }
 
-        /* Page Header */
-        .page-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 0;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .page-title {
-            font-size: 36px;
-            font-weight: 300;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-            color: var(--text-primary);
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-title {
+            font-size: 24px;
+            font-weight: bold;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
         }
 
         .page-subtitle {
             color: var(--text-secondary);
             font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
-        /* Hybrid Encryption Status */
-        .hybrid-encryption-status {
-            background: var(--bg-card);
-            border: 2px solid var(--accent);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hybrid-encryption-status::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--gradient-hybrid);
-            opacity: 0.05;
-            animation: hybridPulse 8s ease-in-out infinite;
-        }
-
-        @keyframes hybridPulse {
-            0%, 100% { opacity: 0.05; }
-            50% { opacity: 0.1; }
-        }
-
-        .hybrid-status-content {
-            position: relative;
-            z-index: 1;
+        .header-right {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
             gap: 20px;
+            align-items: center;
         }
 
-        .hybrid-info {
-            flex: 1;
-        }
-
-        .hybrid-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 8px;
+        .agent-status {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .hybrid-badge {
-            background: var(--gradient-quantum);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .encryption-algorithms {
-            display: flex;
             gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .algorithm-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .algorithm-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-
-        .algorithm-tags {
-            display: flex;
-            gap: 5px;
-        }
-
-        .algorithm-tag {
+            padding: 10px 20px;
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid var(--primary);
-            border-radius: 15px;
-            padding: 2px 8px;
-            font-size: 10px;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .algorithm-tag.quantum {
-            background: rgba(124, 58, 237, 0.1);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        /* Controls Bar */
-        .controls-bar {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .time-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .control-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 8px 20px;
-            color: var(--text-secondary);
-            font-size: 13px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
         }
 
-        .control-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .control-btn.active {
-            background: var(--primary);
-            color: var(--bg-darker);
-            border-color: var(--primary);
-        }
-
-        .export-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .export-btn {
-            background: rgba(124, 58, 237, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            padding: 8px 20px;
-            color: var(--accent);
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .export-btn:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        /* Stats Overview */
-        .stats-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 24px;
-            backdrop-filter: blur(20px);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            border-color: var(--border);
+        .agent-status:hover {
+            background: rgba(0, 255, 136, 0.2);
             transform: translateY(-2px);
         }
 
-        .stat-card.encrypted::after {
-            content: '🔐';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 16px;
-            opacity: 0.7;
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .stat-icon {
-            font-size: 24px;
-            opacity: 0.8;
-        }
-
-        .stat-trend {
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .trend-up {
-            color: var(--success);
-        }
-
-        .trend-down {
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
             color: var(--danger);
-        }
-
-        .trend-neutral {
-            color: var(--text-secondary);
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .stat-encryption {
-            font-size: 10px;
-            color: var(--accent);
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .logout-btn:hover {
+            background: rgba(255, 0, 68, 0.1);
         }
 
-        /* Chart Section */
-        .charts-section {
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        /* Sub-Agent Status */
+        .sub-agent-status {
+            background: linear-gradient(135deg, rgba(0, 204, 255, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .sub-agent-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sub-agent-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(0, 204, 255, 0.3);
+        }
+
+        .sub-agent-details h3 {
+            font-size: 18px;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .sub-agent-details p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .sub-agent-metrics {
+            display: flex;
+            gap: 30px;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* Compact Encryption Status */
+        .encryption-compact {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Real-time Analytics Dashboard */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .metric-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .metric-main-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .metric-main-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .metric-change {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .change-positive {
+            color: var(--success);
+        }
+
+        .change-negative {
+            color: var(--danger);
+        }
+
+        /* Charts Section */
+        .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+            gap: 25px;
+            margin-bottom: 30px;
         }
 
         .chart-card {
             background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 30px;
-            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
         }
 
         .chart-header {
-            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .chart-title {
             font-size: 18px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary);
         }
 
         .chart-subtitle {
             font-size: 13px;
             color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .chart-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chart-option {
+            padding: 5px 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chart-option.active {
+            background: var(--primary);
+            color: var(--bg-darker);
+            border-color: var(--primary);
         }
 
         .chart-area {
-            height: 300px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
+            height: 250px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -383,11 +360,11 @@
             padding: 20px;
         }
 
-        /* Clean Bar Chart */
+        /* Simple Bar Chart */
         .bar-chart {
             display: flex;
             align-items: flex-end;
-            gap: 4px;
+            gap: 8px;
             height: 100%;
             width: 100%;
         }
@@ -404,137 +381,79 @@
 
         .bar:hover {
             opacity: 1;
+            transform: translateY(-5px);
         }
 
-        .bar-danger {
+        .bar.danger {
             background: var(--danger);
         }
 
-        .bar-warning {
+        .bar.warning {
             background: var(--warning);
         }
 
-        .bar-quantum {
+        .bar.quantum {
             background: var(--accent);
         }
 
-        /* Encryption Performance Section */
-        .encryption-performance {
+        /* AI Insights Section */
+        .insights-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
         }
 
-        .performance-header {
+        .insights-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .performance-title {
+        .insights-title {
             font-size: 20px;
             font-weight: bold;
             color: var(--primary);
-        }
-
-        .performance-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .perf-metric {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(124, 58, 237, 0.02) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .perf-algorithm {
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .perf-algorithm.quantum {
-            color: var(--accent);
-        }
-
-        .perf-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-        }
-
-        .perf-label {
-            font-size: 12px;
-            color: var(--text-secondary);
             text-transform: uppercase;
-        }
-
-        /* Insights Section */
-        .insights-section {
-            margin-bottom: 40px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 300;
-            color: var(--text-primary);
             letter-spacing: 1px;
         }
 
         .insights-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
 
         .insight-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+            border: 1px solid rgba(124, 58, 237, 0.3);
             border-radius: 12px;
-            padding: 24px;
-            backdrop-filter: blur(20px);
+            padding: 20px;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .insight-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
         }
 
-        .insight-card.quantum-secured {
-            border-color: rgba(124, 58, 237, 0.3);
-        }
-
-        .insight-header {
+        .insight-header-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .insight-icon {
             width: 40px;
             height: 40px;
-            background: rgba(124, 58, 237, 0.1);
-            border-radius: 8px;
+            background: var(--gradient-2);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -542,112 +461,130 @@
         }
 
         .insight-type {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 600;
+            font-weight: bold;
         }
 
         .insight-content {
-            color: var(--text-primary);
             font-size: 14px;
             line-height: 1.6;
-            margin-bottom: 20px;
+            color: var(--text-primary);
+            margin-bottom: 15px;
         }
 
-        .insight-footer {
+        .insight-action {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .insight-stat {
-            font-size: 20px;
-            font-weight: 600;
+        .insight-metric {
+            font-size: 18px;
+            font-weight: bold;
             color: var(--primary);
         }
 
-        .insight-action {
+        .insight-button {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
             color: var(--accent);
             font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .insight-action:hover {
-            color: var(--primary);
+        .insight-button:hover {
+            background: var(--accent);
+            color: white;
         }
 
-        /* Quantum Readiness Indicator */
-        .quantum-readiness {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-            border: 1px solid var(--accent);
-            border-radius: 12px;
+        /* Agent Coordination Panel */
+        .coordination-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
             padding: 25px;
-            margin-bottom: 40px;
-            text-align: center;
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
         }
 
-        .readiness-title {
-            font-size: 20px;
-            font-weight: bold;
-            background: var(--gradient-quantum);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-        }
-
-        .readiness-gauge {
+        .coordination-header {
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 20px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .gauge-item {
-            text-align: center;
-        }
-
-        .gauge-value {
-            font-size: 36px;
+        .coordination-title {
+            font-size: 18px;
             font-weight: bold;
-            color: var(--accent);
-            margin-bottom: 5px;
-        }
-
-        .gauge-label {
-            font-size: 12px;
-            color: var(--text-secondary);
+            color: var(--primary);
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(10, 20, 40, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 10px 20px;
-            color: var(--text-secondary);
-            text-decoration: none;
+        .agent-flow {
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            font-size: 14px;
-            font-weight: 500;
+            justify-content: space-around;
+            padding: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .back-btn:hover {
+        .agent-node {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(124, 58, 237, 0.2) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-width: 150px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .agent-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .agent-node.main {
             border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 255, 136, 0.2) 100%);
+        }
+
+        .agent-node-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .agent-node-name {
+            font-weight: bold;
+            margin-bottom: 5px;
             color: var(--primary);
+        }
+
+        .agent-node-status {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .agent-flow-arrow {
+            font-size: 24px;
+            color: var(--accent);
+            animation: flowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes flowPulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         /* AI Chat Widget */
@@ -661,74 +598,96 @@
         .ai-chat-toggle {
             width: 60px;
             height: 60px;
-            background: var(--gradient-hybrid);
+            background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
             transition: all 0.3s ease;
             font-size: 28px;
         }
 
         .ai-chat-toggle:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(124, 58, 237, 0.4);
         }
 
         .ai-chat-window {
             position: absolute;
             bottom: 80px;
             right: 0;
-            width: 380px;
-            height: 500px;
+            width: 400px;
+            height: 600px;
             background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
             display: none;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(20px);
         }
 
         .ai-chat-window.active {
             display: flex;
-            animation: fadeSlideIn 0.3s ease;
+            animation: chatSlideIn 0.3s ease;
         }
 
-        @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes chatSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .ai-chat-header {
-            background: var(--gradient-hybrid);
-            color: white;
-            padding: 16px 20px;
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: 500;
+            font-weight: bold;
+        }
+
+        .ai-chat-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 14px;
+        }
+
+        .chat-status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bg-darker);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
         }
 
         .ai-chat-close {
             cursor: pointer;
-            font-size: 20px;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
+            font-size: 24px;
         }
 
-        .ai-chat-close:hover {
-            opacity: 1;
+        .cli-mode-indicator {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 0 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--warning);
+            display: none;
+        }
+
+        .cli-mode-indicator.active {
+            display: block;
         }
 
         .ai-chat-messages {
@@ -737,99 +696,203 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .ai-message-bubble {
-            background: rgba(124, 58, 237, 0.1);
-            border-radius: 12px;
-            padding: 12px 16px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 15px 20px;
             max-width: 80%;
-            font-size: 14px;
-            line-height: 1.5;
+            word-wrap: break-word;
         }
 
         .ai-message-bubble.user {
-            background: rgba(0, 255, 136, 0.1);
+            background: rgba(0, 204, 255, 0.1);
+            border-color: var(--secondary);
             align-self: flex-end;
         }
 
+        .ai-message-bubble.system {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent);
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .ai-message-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
         .ai-chat-input-container {
-            padding: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-top: 1px solid var(--border);
             display: flex;
-            gap: 12px;
+            gap: 15px;
+            align-items: center;
         }
 
         .ai-chat-input {
             flex: 1;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 15px;
             color: var(--text-primary);
             font-size: 14px;
-            transition: all 0.3s ease;
         }
 
         .ai-chat-input:focus {
             outline: none;
-            border-color: var(--accent);
-            background: rgba(124, 58, 237, 0.05);
+            border-color: var(--primary);
         }
 
         .ai-chat-send {
-            background: var(--accent);
+            background: var(--gradient-1);
             border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            color: white;
-            font-weight: 500;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: var(--bg-darker);
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
+            text-transform: uppercase;
         }
 
-        .ai-chat-send:hover {
-            background: var(--primary);
+        /* Agent Shutdown Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .modal-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .charts-section {
+        @media (max-width: 1200px) {
+            .charts-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .insights-grid {
                 grid-template-columns: 1fr;
             }
             
-            .controls-bar {
+            .agent-flow {
                 flex-direction: column;
+            }
+            
+            .agent-flow-arrow {
+                transform: rotate(90deg);
             }
             
             .ai-chat-window {
                 width: calc(100vw - 40px);
+                height: calc(100vh - 120px);
                 right: -20px;
+                bottom: 80px;
             }
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
+            background: var(--secondary);
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--primary);
         }
     </style>
 </head>
@@ -848,286 +911,272 @@
         }
     </script>
 
-    <!-- Back Button -->
-    <a href="dashboard.html" class="back-btn">
-        <span>←</span>
-        <span>Back to Dashboard</span>
-    </a>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="dot-grid"></div>
+    </div>
 
-    <!-- Analytics Background -->
-    <div class="analytics-bg"></div>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div>
+                    <h1 class="brand-title">AI SENTINEL-X | SECURITY ANALYTICS</h1>
+                    <p class="page-subtitle">AnalyticsEngine Sub-Agent Active</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="agent-status" onclick="showAgentShutdownModal()">
+                    <span>🤖 AI Agent Active • Fully Autonomous</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
 
     <!-- Container -->
     <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">SECURITY ANALYTICS</h1>
-            <p class="page-subtitle">Hybrid Encryption-Protected Intelligence</p>
-        </div>
-
-        <!-- Hybrid Encryption Status -->
-        <div class="hybrid-encryption-status">
-            <div class="hybrid-status-content">
-                <div class="hybrid-info">
-                    <div class="hybrid-title">
-                        🔐 Hybrid Cryptographic Protection Active
-                        <span class="hybrid-badge">CLASSICAL + QUANTUM</span>
-                    </div>
-                    <div class="encryption-algorithms">
-                        <div class="algorithm-group">
-                            <span class="algorithm-label">Classical:</span>
-                            <div class="algorithm-tags">
-                                <span class="algorithm-tag">AES-256-GCM</span>
-                                <span class="algorithm-tag">HMAC-SHA256</span>
-                                <span class="algorithm-tag">PBKDF2</span>
-                                <span class="algorithm-tag">HKDF</span>
-                            </div>
-                        </div>
-                        <div class="algorithm-group">
-                            <span class="algorithm-label">Post-Quantum:</span>
-                            <div class="algorithm-tags">
-                                <span class="algorithm-tag quantum">CRYSTALS-Kyber</span>
-                                <span class="algorithm-tag quantum">CRYSTALS-Dilithium</span>
-                                <span class="algorithm-tag quantum">SPHINCS+</span>
-                                <span class="algorithm-tag quantum">FALCON</span>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Sub-Agent Status -->
+        <div class="sub-agent-status">
+            <div class="sub-agent-info">
+                <div class="sub-agent-icon">📊</div>
+                <div class="sub-agent-details">
+                    <h3>AnalyticsEngine Sub-Agent</h3>
+                    <p>Processing 2.4M metrics • ML predictions • Reports to Main Agent</p>
+                </div>
+            </div>
+            <div class="sub-agent-metrics">
+                <div class="metric">
+                    <div class="metric-value" id="metricsProcessed">2.4M</div>
+                    <div class="metric-label">Metrics/Hour</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">99.8%</div>
+                    <div class="metric-label">Accuracy</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="predictions">847</div>
+                    <div class="metric-label">Predictions Today</div>
                 </div>
             </div>
         </div>
 
-        <!-- Controls Bar -->
-        <div class="controls-bar">
-            <div class="time-controls">
-                <button class="control-btn active" onclick="changeTimeframe(this, '24H')">Last 24 Hours</button>
-                <button class="control-btn" onclick="changeTimeframe(this, '7D')">Last 7 Days</button>
-                <button class="control-btn" onclick="changeTimeframe(this, '30D')">Last 30 Days</button>
-            </div>
-            <div class="export-controls">
-                <button class="export-btn" onclick="exportData('pdf')">
-                    <span>📄</span>
-                    <span>Export PDF</span>
-                </button>
-                <button class="export-btn" onclick="exportData('csv')">
-                    <span>📊</span>
-                    <span>Export CSV</span>
-                </button>
-            </div>
+        <!-- Compact Encryption Status -->
+        <div class="encryption-compact">
+            🔒 CLASSICAL + QUANTUM ACTIVE
         </div>
 
-        <!-- Stats Overview -->
-        <div class="stats-overview">
-            <div class="stat-card encrypted">
-                <div class="stat-header">
-                    <span class="stat-icon">🛡️</span>
-                    <span class="stat-trend trend-up">↑ 18%</span>
-                </div>
-                <div class="stat-value" id="threatsBlocked">12,487</div>
-                <div class="stat-label">Threats Blocked</div>
-                <div class="stat-encryption">
-                    <span>📡</span>
-                    <span>Data secured with hybrid encryption</span>
-                </div>
+        <!-- Real-time Analytics Dashboard -->
+        <div class="analytics-grid">
+            <div class="metric-card">
+                <div class="metric-icon">🛡️</div>
+                <div class="metric-main-value" id="threatsBlocked">12,487</div>
+                <div class="metric-main-label">Threats Blocked</div>
+                <div class="metric-change change-positive">↑ 18% from yesterday</div>
             </div>
-            <div class="stat-card encrypted">
-                <div class="stat-header">
-                    <span class="stat-icon">⚡</span>
-                    <span class="stat-trend trend-down">↓ 3ms</span>
-                </div>
-                <div class="stat-value" id="responseTime">12ms</div>
-                <div class="stat-label">Response Time</div>
-                <div class="stat-encryption">
-                    <span>🔐</span>
-                    <span>Kyber-768 + AES-256</span>
-                </div>
+            <div class="metric-card">
+                <div class="metric-icon">⏱️</div>
+                <div class="metric-main-value" id="avgResponse">12ms</div>
+                <div class="metric-main-label">Avg Response Time</div>
+                <div class="metric-change change-positive">↓ 3ms improvement</div>
             </div>
-            <div class="stat-card encrypted">
-                <div class="stat-header">
-                    <span class="stat-icon">🎯</span>
-                    <span class="stat-trend trend-up">↑ 0.2%</span>
-                </div>
-                <div class="stat-value" id="accuracy">99.8%</div>
-                <div class="stat-label">AI Accuracy</div>
-                <div class="stat-encryption">
-                    <span>✓</span>
-                    <span>Dilithium3 signatures</span>
-                </div>
+            <div class="metric-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-main-value">99.8%</div>
+                <div class="metric-main-label">Detection Accuracy</div>
+                <div class="metric-change change-positive">↑ 0.2% increase</div>
             </div>
-            <div class="stat-card encrypted">
-                <div class="stat-header">
-                    <span class="stat-icon">🌐</span>
-                    <span class="stat-trend trend-neutral">→</span>
-                </div>
-                <div class="stat-value" id="endpoints">247</div>
-                <div class="stat-label">Protected Endpoints</div>
-                <div class="stat-encryption">
-                    <span>🔒</span>
-                    <span>SPHINCS+-256s secured</span>
-                </div>
+            <div class="metric-card">
+                <div class="metric-icon">🌐</div>
+                <div class="metric-main-value" id="devicesProtected">247</div>
+                <div class="metric-main-label">Protected Devices</div>
+                <div class="metric-change">No change</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">💾</div>
+                <div class="metric-main-value">2.8TB</div>
+                <div class="metric-main-label">Data Analyzed</div>
+                <div class="metric-change change-positive">↑ 124GB today</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">🔐</div>
+                <div class="metric-main-value">2.1M</div>
+                <div class="metric-main-label">Crypto Ops/Sec</div>
+                <div class="metric-change">Hybrid Active</div>
             </div>
         </div>
 
         <!-- Charts Section -->
-        <div class="charts-section">
-            <!-- Threat Activity Chart -->
+        <div class="charts-grid">
             <div class="chart-card">
                 <div class="chart-header">
-                    <h3 class="chart-title">Threat Activity</h3>
-                    <p class="chart-subtitle">Quantum-secured threat analysis over time</p>
+                    <div>
+                        <div class="chart-title">Threat Activity Timeline</div>
+                        <div class="chart-subtitle">24-hour threat detection pattern</div>
+                    </div>
+                    <div class="chart-options">
+                        <button class="chart-option active">24H</button>
+                        <button class="chart-option">7D</button>
+                        <button class="chart-option">30D</button>
+                    </div>
                 </div>
                 <div class="chart-area">
-                    <div class="bar-chart" id="threatChart"></div>
+                    <div class="bar-chart" id="threatChart">
+                        <!-- Bars will be generated by JavaScript -->
+                    </div>
                 </div>
             </div>
 
-            <!-- Attack Types Chart -->
             <div class="chart-card">
                 <div class="chart-header">
-                    <h3 class="chart-title">Attack Distribution</h3>
-                    <p class="chart-subtitle">By threat category with encryption layer</p>
+                    <div>
+                        <div class="chart-title">Attack Type Distribution</div>
+                        <div class="chart-subtitle">Breakdown by threat category</div>
+                    </div>
                 </div>
                 <div class="chart-area" style="justify-content: center; align-items: center;">
-                    <div class="donut-container">
-                        <div class="donut-chart">
-                            <svg viewBox="0 0 200 200" style="transform: rotate(-90deg);">
-                                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="30"/>
-                                <circle cx="100" cy="100" r="80" fill="none" stroke="#ff0044" stroke-width="30" 
-                                        stroke-dasharray="125.6 377" stroke-dashoffset="0"/>
-                                <circle cx="100" cy="100" r="80" fill="none" stroke="#ffaa00" stroke-width="30" 
-                                        stroke-dasharray="87.92 377" stroke-dashoffset="-125.6"/>
-                                <circle cx="100" cy="100" r="80" fill="none" stroke="#00ccff" stroke-width="30" 
-                                        stroke-dasharray="62.8 377" stroke-dashoffset="-213.52"/>
-                                <circle cx="100" cy="100" r="80" fill="none" stroke="#7c3aed" stroke-width="30" 
-                                        stroke-dasharray="100.48 377" stroke-dashoffset="-276.32"/>
-                            </svg>
-                            <div class="donut-center">
-                                <div class="donut-value">4</div>
-                                <div class="donut-label">Types</div>
-                            </div>
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background: #ff0044;"></div>
-                                <span>DDoS (34%)</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background: #ffaa00;"></div>
-                                <span>SQL Injection (23%)</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background: #00ccff;"></div>
-                                <span>XSS (17%)</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-dot" style="background: #7c3aed;"></div>
-                                <span>Quantum (26%)</span>
-                            </div>
-                        </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🎯</div>
+                        <div style="color: var(--danger);">DDoS: 34%</div>
+                        <div style="color: var(--warning);">SQL Injection: 23%</div>
+                        <div style="color: var(--secondary);">XSS: 17%</div>
+                        <div style="color: var(--accent);">Quantum: 26%</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Encryption Performance Section -->
-        <div class="encryption-performance">
-            <div class="performance-header">
-                <h2 class="performance-title">Hybrid Encryption Performance</h2>
+        <!-- Agent Coordination Panel -->
+        <div class="coordination-panel">
+            <div class="coordination-header">
+                <h2 class="coordination-title">Sub-Agent Data Flow</h2>
             </div>
-            <div class="performance-grid">
-                <div class="perf-metric">
-                    <div class="perf-algorithm">AES-256-GCM</div>
-                    <div class="perf-value">1.2ms</div>
-                    <div class="perf-label">Classical Latency</div>
+            <div class="agent-flow">
+                <div class="agent-node" onclick="showAgentDetails('ThreatScanner')">
+                    <div class="agent-node-icon">🛡️</div>
+                    <div class="agent-node-name">ThreatScanner</div>
+                    <div class="agent-node-status">147K events/sec</div>
                 </div>
-                <div class="perf-metric">
-                    <div class="perf-algorithm quantum">CRYSTALS-Kyber</div>
-                    <div class="perf-value">0.8ms</div>
-                    <div class="perf-label">KEM Latency</div>
+                <div class="agent-flow-arrow">→</div>
+                <div class="agent-node main" onclick="showAgentDetails('MainAgent')">
+                    <div class="agent-node-icon">🤖</div>
+                    <div class="agent-node-name">Main Agent</div>
+                    <div class="agent-node-status">Orchestrating</div>
                 </div>
-                <div class="perf-metric">
-                    <div class="perf-algorithm">HMAC-SHA256</div>
-                    <div class="perf-value">0.3ms</div>
-                    <div class="perf-label">Signature Time</div>
-                </div>
-                <div class="perf-metric">
-                    <div class="perf-algorithm quantum">CRYSTALS-Dilithium</div>
-                    <div class="perf-value">1.5ms</div>
-                    <div class="perf-label">PQ Signature</div>
+                <div class="agent-flow-arrow">→</div>
+                <div class="agent-node" onclick="showAgentDetails('AnalyticsEngine')">
+                    <div class="agent-node-icon">📊</div>
+                    <div class="agent-node-name">AnalyticsEngine</div>
+                    <div class="agent-node-status">ML Processing</div>
                 </div>
             </div>
         </div>
 
-        <!-- AI Intelligence Section -->
+        <!-- AI Insights Section -->
         <div class="insights-section">
-            <div class="section-header">
-                <h2 class="section-title">AI Intelligence with Hybrid Protection</h2>
+            <div class="insights-header">
+                <h2 class="insights-title">AI-Generated Insights</h2>
             </div>
             <div class="insights-grid">
-                <div class="insight-card quantum-secured">
-                    <div class="insight-header">
+                <div class="insight-card">
+                    <div class="insight-header-row">
                         <div class="insight-icon">📈</div>
-                        <div>
-                            <div class="insight-type">QUANTUM-SECURED TREND</div>
-                        </div>
+                        <div class="insight-type">TREND ANALYSIS</div>
                     </div>
                     <div class="insight-content">
-                        Phishing attempts increased 78% in 48 hours. Pattern analysis protected by CRYSTALS-Kyber KEM + AES-256-GCM encryption. All signatures verified with Dilithium3.
+                        Phishing attempts increased by 78% in the last 48 hours. Pattern suggests coordinated campaign targeting finance department. AnalyticsEngine predicts 94% chance of escalation.
                     </div>
-                    <div class="insight-footer">
-                        <div class="insight-stat">78%</div>
-                        <div class="insight-action" onclick="viewDetails('phishing')">View Details →</div>
+                    <div class="insight-action">
+                        <div class="insight-metric">78% ↑</div>
+                        <button class="insight-button" onclick="viewInsight('phishing')">View Details</button>
                     </div>
                 </div>
-                <div class="insight-card quantum-secured">
-                    <div class="insight-header">
+
+                <div class="insight-card">
+                    <div class="insight-header-row">
                         <div class="insight-icon">🔍</div>
-                        <div>
-                            <div class="insight-type">ANOMALY DETECTED</div>
-                        </div>
+                        <div class="insight-type">ANOMALY DETECTED</div>
                     </div>
                     <div class="insight-content">
-                        Unusual traffic from Eastern Europe. 347 attempts blocked. Analysis secured with SPHINCS+-256s signatures. Hybrid encryption protecting all logs.
+                        Unusual traffic pattern from Eastern Europe detected. 347 connection attempts from previously unknown IPs. ML model confidence: 87% malicious.
                     </div>
-                    <div class="insight-footer">
-                        <div class="insight-stat">347</div>
-                        <div class="insight-action" onclick="viewDetails('anomaly')">Investigate →</div>
+                    <div class="insight-action">
+                        <div class="insight-metric">347</div>
+                        <button class="insight-button" onclick="viewInsight('anomaly')">Investigate</button>
                     </div>
                 </div>
-                <div class="insight-card quantum-secured">
-                    <div class="insight-header">
+
+                <div class="insight-card">
+                    <div class="insight-header-row">
                         <div class="insight-icon">⚡</div>
-                        <div>
-                            <div class="insight-type">OPTIMIZATION</div>
-                        </div>
+                        <div class="insight-type">PERFORMANCE</div>
                     </div>
                     <div class="insight-content">
-                        ML model can reduce false positives by 15%. Recommendation encrypted with FALCON-512 for compact storage. Classical backup via PBKDF2-HMAC-SHA256.
+                        Response time optimization opportunity identified. AnalyticsEngine suggests caching strategy that could reduce latency by 15% without compromising security.
                     </div>
-                    <div class="insight-footer">
-                        <div class="insight-stat">15%</div>
-                        <div class="insight-action" onclick="viewDetails('optimization')">Apply Now →</div>
+                    <div class="insight-action">
+                        <div class="insight-metric">15%</div>
+                        <button class="insight-button" onclick="viewInsight('optimization')">Apply Now</button>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-header-row">
+                        <div class="insight-icon">🔮</div>
+                        <div class="insight-type">PREDICTION</div>
+                    </div>
+                    <div class="insight-content">
+                        Based on current patterns, AnalyticsEngine predicts DDoS attack within next 6 hours. Confidence: 82%. DefenseOrchestrator pre-positioning resources.
+                    </div>
+                    <div class="insight-action">
+                        <div class="insight-metric">6h</div>
+                        <button class="insight-button" onclick="viewInsight('prediction')">Prepare</button>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-header-row">
+                        <div class="insight-icon">🔐</div>
+                        <div class="insight-type">ENCRYPTION</div>
+                    </div>
+                    <div class="insight-content">
+                        Hybrid encryption performing optimally. Quantum layer (Kyber + Dilithium) adds only 2.3ms latency. All analytics data protected against future quantum threats.
+                    </div>
+                    <div class="insight-action">
+                        <div class="insight-metric">2.3ms</div>
+                        <button class="insight-button" onclick="viewInsight('encryption')">Status</button>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-header-row">
+                        <div class="insight-icon">🎯</div>
+                        <div class="insight-type">ACCURACY</div>
+                    </div>
+                    <div class="insight-content">
+                        ML model accuracy improved to 99.8% after latest training cycle. False positives reduced by 47%. AnalyticsEngine continuously learning from new patterns.
+                    </div>
+                    <div class="insight-action">
+                        <div class="insight-metric">99.8%</div>
+                        <button class="insight-button" onclick="viewInsight('accuracy')">Model Info</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Quantum Readiness Indicator -->
-        <div class="quantum-readiness">
-            <h2 class="readiness-title">Quantum Threat Protection Status</h2>
-            <div class="readiness-gauge">
-                <div class="gauge-item">
-                    <div class="gauge-value">100%</div>
-                    <div class="gauge-label">Classical Protected</div>
-                </div>
-                <div class="gauge-item">
-                    <div class="gauge-value">100%</div>
-                    <div class="gauge-label">Quantum Resistant</div>
-                </div>
-                <div class="gauge-item">
-                    <div class="gauge-value">ACTIVE</div>
-                    <div class="gauge-label">Hybrid Mode</div>
-                </div>
+    <!-- Agent Shutdown Modal -->
+    <div class="modal-overlay" id="agentShutdownModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Emergency AI Shutdown</h2>
+            </div>
+            <div class="modal-content">
+                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. If external APIs or keys are offline, the agent will fallback to local control mode.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="confirmAgentShutdown()">Confirm Shutdown</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
             </div>
         </div>
     </div>
@@ -1136,254 +1185,147 @@
     <div class="ai-chat-widget">
         <div class="ai-chat-window" id="aiChatWindow">
             <div class="ai-chat-header">
-                <span>HYBRID ANALYTICS AI</span>
+                <div class="ai-chat-status">
+                    <span class="chat-status-dot"></span>
+                    <span>MAIN AGENT ONLINE</span>
+                </div>
                 <span class="ai-chat-close" onclick="toggleChat()">×</span>
+            </div>
+            <div class="cli-mode-indicator" id="cliModeIndicator">
+                ⚠️ CLI MODE - Main Agent Offline
             </div>
             <div class="ai-chat-messages" id="aiChatMessages">
                 <div class="ai-message-bubble">
-                    I analyze security metrics with hybrid encryption protection. All data secured with both NIST classical (AES-256-GCM) and post-quantum (CRYSTALS-Kyber) algorithms. Ask me about trends, predictions, or encryption details.
+                    Connected to Main Agent. I can route commands to AnalyticsEngine for insights, predictions, and reports. All analytics data is protected with hybrid encryption.
                 </div>
+                <div class="ai-message-time">Just now</div>
             </div>
             <div class="ai-chat-input-container">
                 <input 
                     type="text" 
                     class="ai-chat-input" 
                     id="aiChatInput" 
-                    placeholder="Ask about analytics or encryption..."
+                    placeholder="Ask for analytics, predictions, or reports..."
                     onkeypress="handleChatKeyPress(event)"
                 >
-                <button class="ai-chat-send" onclick="sendChatMessage()">Send</button>
+                <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
             </div>
         </div>
         <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
     </div>
 
+    <script src="shared.js"></script>
     <script>
-        // Chart legend styles
-        const legendStyle = document.createElement('style');
-        legendStyle.textContent = `
-            .donut-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
+        // Initialize threat chart
+        function initThreatChart() {
+            const chartContainer = document.getElementById('threatChart');
+            chartContainer.innerHTML = '';
             
-            .donut-chart {
-                width: 200px;
-                height: 200px;
-                position: relative;
-            }
-            
-            .donut-center {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-            }
-            
-            .donut-value {
-                font-size: 32px;
-                font-weight: 600;
-                color: var(--text-primary);
-            }
-            
-            .donut-label {
-                font-size: 12px;
-                color: var(--text-secondary);
-                text-transform: uppercase;
-            }
-            
-            .chart-legend {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-                justify-content: center;
-            }
-            
-            .legend-item {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                font-size: 13px;
-                color: var(--text-secondary);
-            }
-            
-            .legend-dot {
-                width: 12px;
-                height: 12px;
-                border-radius: 2px;
-            }
-        `;
-        document.head.appendChild(legendStyle);
-
-        // Initialize charts with more realistic data
-        function initCharts() {
-            const threatChart = document.getElementById('threatChart');
-            // More realistic threat data with quantum attack patterns
-            const data = [
-                { value: 45, type: 'normal' },
-                { value: 52, type: 'normal' },
-                { value: 48, type: 'normal' },
-                { value: 67, type: 'warning' },
-                { value: 73, type: 'warning' },
-                { value: 69, type: 'normal' },
-                { value: 55, type: 'normal' },
-                { value: 48, type: 'normal' },
-                { value: 51, type: 'normal' },
-                { value: 59, type: 'normal' },
-                { value: 78, type: 'danger' },
-                { value: 85, type: 'danger' },
-                { value: 92, type: 'quantum' }, // Quantum attack attempt
-                { value: 87, type: 'danger' },
-                { value: 79, type: 'warning' },
-                { value: 71, type: 'warning' },
-                { value: 65, type: 'normal' },
-                { value: 58, type: 'normal' },
-                { value: 62, type: 'normal' },
-                { value: 68, type: 'normal' },
-                { value: 75, type: 'warning' },
-                { value: 82, type: 'quantum' }, // Quantum attack attempt
-                { value: 88, type: 'danger' },
-                { value: 91, type: 'danger' }
-            ];
-            
-            data.forEach((item, index) => {
+            // Generate 24 bars for 24 hours
+            for (let i = 0; i < 24; i++) {
                 const bar = document.createElement('div');
                 bar.className = 'bar';
-                bar.style.height = item.value + '%';
                 
-                // Color based on type
-                if (item.type === 'danger') bar.classList.add('bar-danger');
-                else if (item.type === 'warning') bar.classList.add('bar-warning');
-                else if (item.type === 'quantum') bar.classList.add('bar-quantum');
+                // Random height and threat level
+                const height = Math.random() * 80 + 20;
+                bar.style.height = height + '%';
                 
-                // Stagger animation
-                bar.style.animation = `fadeIn 0.5s ease-out ${index * 0.02}s forwards`;
-                bar.style.opacity = '0';
+                // Color based on threat level
+                if (height > 70) {
+                    bar.classList.add('danger');
+                } else if (height > 50) {
+                    bar.classList.add('warning');
+                } else if (Math.random() > 0.9) {
+                    bar.classList.add('quantum');
+                }
                 
-                threatChart.appendChild(bar);
-            });
-        }
-
-        // Fade in animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeIn {
-                to { opacity: 1; }
+                chartContainer.appendChild(bar);
             }
-        `;
-        document.head.appendChild(style);
-
-        // Change timeframe
-        function changeTimeframe(button, period) {
-            const buttons = button.parentElement.querySelectorAll('.control-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            // Refresh charts
-            document.getElementById('threatChart').innerHTML = '';
-            initCharts();
         }
 
-        // Export data
-        function exportData(format) {
-            const filename = `AI_Sentinel_Analytics_Hybrid_${new Date().toISOString().split('T')[0]}.${format}`;
-            console.log(`Exporting ${filename}...`);
+        // Update metrics
+        function updateMetrics() {
+            // Update threats blocked
+            const threats = document.getElementById('threatsBlocked');
+            const current = parseInt(threats.textContent.replace(',', ''));
+            threats.textContent = (current + Math.floor(Math.random() * 10)).toLocaleString();
             
-            // Show notification
-            if (!chatOpen) toggleChat();
-            setTimeout(() => {
-                addChatMessage(`Exported ${filename} with CRYSTALS-Dilithium signature. All data encrypted with AES-256-GCM + Kyber-768.`, false);
-            }, 500);
+            // Update predictions
+            const predictions = document.getElementById('predictions');
+            predictions.textContent = parseInt(predictions.textContent) + Math.floor(Math.random() * 3);
+            
+            // Update devices
+            if (Math.random() > 0.9) {
+                const devices = document.getElementById('devicesProtected');
+                devices.textContent = parseInt(devices.textContent) + 1;
+            }
         }
 
-        // View insight details
-        function viewDetails(type) {
-            if (!chatOpen) toggleChat();
-            
-            const details = {
-                phishing: 'Phishing analysis: 2,847 attempts blocked. All logs encrypted with hybrid system: AES-256-GCM for speed + CRYSTALS-Kyber for quantum resistance. Digital signatures using Dilithium3.',
-                anomaly: 'Anomaly data: Traffic from 185.220.x.x. Behavior analysis stored with SPHINCS+-256s signatures for long-term quantum safety. Classical HMAC-SHA256 provides immediate verification.',
-                optimization: 'Model optimization: Encrypted with FALCON-512 for compact storage (40% smaller than Dilithium). Classical fallback using PBKDF2-HMAC-SHA256. Full hybrid protection active.'
-            };
+        // Show agent details
+        function showAgentDetails(agent) {
+            if (!chatOpen) {
+                toggleChat();
+            }
             
             setTimeout(() => {
-                addChatMessage(details[type], false);
+                addChatMessage(`Routing to Main Agent for ${agent} information...`, false, 'system');
+                
+                setTimeout(() => {
+                    const messages = {
+                        'ThreatScanner': 'ThreatScanner is processing 147K events/second. It feeds threat data to AnalyticsEngine for pattern recognition and prediction. All data encrypted with AES-256-GCM + Kyber-1024.',
+                        'MainAgent': 'Main Agent orchestrates all sub-agents. Currently coordinating: ThreatScanner → AnalyticsEngine → DefenseOrchestrator. All communications use hybrid encryption.',
+                        'AnalyticsEngine': 'AnalyticsEngine (this sub-agent) processes 2.4M metrics/hour using ML models. Accuracy: 99.8%. Predictions protected with Dilithium-3 signatures.'
+                    };
+                    
+                    addChatMessage(`Main Agent: ${messages[agent]}`, false);
+                }, 800);
             }, 300);
         }
 
-        // Update stats
-        function updateStats() {
-            document.getElementById('threatsBlocked').textContent = 
-                (12000 + Math.floor(Math.random() * 1000)).toLocaleString();
-            document.getElementById('responseTime').textContent = 
-                (10 + Math.floor(Math.random() * 5)) + 'ms';
-            document.getElementById('accuracy').textContent = 
-                (99.5 + Math.random() * 0.4).toFixed(1) + '%';
-        }
-
-        // AI Chat
-        let chatOpen = false;
-        
-        function toggleChat() {
-            chatOpen = !chatOpen;
-            const chatWindow = document.getElementById('aiChatWindow');
-            chatWindow.classList.toggle('active', chatOpen);
-        }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter') sendChatMessage();
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('aiChatInput');
-            const message = input.value.trim();
-            if (!message) return;
-
-            addChatMessage(message, true);
-            input.value = '';
-
-            // Simulate response
+        // View insight details
+        function viewInsight(type) {
+            if (!chatOpen) {
+                toggleChat();
+            }
+            
             setTimeout(() => {
-                const response = generateResponse(message);
-                addChatMessage(response, false);
-            }, 1000);
+                const insights = {
+                    'phishing': 'AnalyticsEngine: Deep analysis shows phishing emails using new zero-font technique. Targets: CFO, Controller, AP Manager. Recommended action: Update email filters, alert finance team.',
+                    'anomaly': 'AnalyticsEngine: Traffic originates from 185.220.101.0/24 (known Tor exit nodes). Pattern matches cryptocurrency mining botnet. DefenseOrchestrator blocking range.',
+                    'optimization': 'AnalyticsEngine: Cache frequently accessed threat signatures in memory. Reduces database queries by 67%. Implementation requires 2GB RAM. No security impact.',
+                    'prediction': 'AnalyticsEngine: DDoS indicators - increasing SYN packets, suspicious geographic distribution, previous attack pattern match. Confidence intervals: 82% ±5%.',
+                    'encryption': 'AnalyticsEngine: Hybrid encryption metrics - Classical: 1.5ms avg, Quantum: 2.3ms avg. Total overhead: 3.8ms. Processing 2.1M crypto operations/second.',
+                    'accuracy': 'AnalyticsEngine: Model v3.2.1 trained on 147M samples. Improvements: 47% fewer false positives, 12% faster inference. Next training: 6 hours.'
+                };
+                
+                addChatMessage(`Routing to AnalyticsEngine sub-agent...`, false, 'system');
+                setTimeout(() => {
+                    addChatMessage(insights[type], false);
+                }, 800);
+            }, 300);
         }
 
-        function addChatMessage(message, isUser) {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'ai-message-bubble' + (isUser ? ' user' : '');
-            messageDiv.textContent = message;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function generateResponse(message) {
-            const lower = message.toLowerCase();
-            
-            if (lower.includes('hybrid') || lower.includes('encryption')) {
-                return 'Hybrid encryption active: Classical AES-256-GCM (1.2ms) + Quantum CRYSTALS-Kyber (0.8ms). Total overhead: 2ms. All analytics data protected against both current and quantum threats.';
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Logout? The AI agent will continue protecting your systems.')) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
             }
-            if (lower.includes('quantum') || lower.includes('threat')) {
-                return 'Quantum threat detection: 2 potential quantum attacks identified today. Both neutralized using SPHINCS+-256s signatures. Post-quantum algorithms ensuring long-term security.';
-            }
-            if (lower.includes('performance')) {
-                return 'Hybrid system performance: Classical: 99.98% uptime. Quantum layer: 99.95% uptime. Combined protection with automatic failover. Zero data breaches since deployment.';
-            }
-            if (lower.includes('falcon') || lower.includes('compact')) {
-                return 'FALCON-512 provides 40% smaller signatures than Dilithium, ideal for high-volume analytics. Currently in experimental use for non-critical data. Production ready Q2 2025.';
-            }
-            
-            return 'I analyze threats with hybrid encryption protection. All data secured with both classical (AES, HMAC) and post-quantum (Kyber, Dilithium) algorithms. What would you like to know?';
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            initCharts();
-            setInterval(updateStats, 5000);
+            initThreatChart();
+            
+            // Update metrics periodically
+            setInterval(updateMetrics, 3000);
+            
+            // Refresh chart
+            setInterval(() => {
+                if (Math.random() > 0.8) {
+                    initThreatChart();
+                }
+            }, 10000);
         });
     </script>
 </body>

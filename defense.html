@@ -25,10 +25,8 @@
             --text-primary: #ffffff;
             --text-secondary: #8892b0;
             --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
-            --gradient-2: linear-gradient(135deg, #7c3aed 0%, #00ccff 100%);
-            --gradient-encryption: linear-gradient(135deg, #00ff88 0%, #00aa66 100%);
+            --gradient-defense: linear-gradient(135deg, #00ff88 0%, #00aa66 100%);
             --gradient-quantum: linear-gradient(135deg, #7c3aed 0%, #ff00ff 50%, #00ccff 100%);
-            --gradient-hybrid: linear-gradient(135deg, #00ff88 0%, #7c3aed 50%, #00ccff 100%);
         }
 
         body {
@@ -36,10 +34,11 @@
             background: var(--bg-darker);
             color: var(--text-primary);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Defense Background */
-        .defense-bg {
+        /* Animated Dot Background */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -47,255 +46,226 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 80% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 40%);
+            overflow: hidden;
         }
 
-        .shield-grid {
+        .dot-grid {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: 
-                repeating-linear-gradient(0deg, rgba(0, 255, 136, 0.03) 0px, transparent 2px, transparent 50px, rgba(0, 255, 136, 0.03) 52px),
-                repeating-linear-gradient(90deg, rgba(124, 58, 237, 0.03) 0px, transparent 2px, transparent 50px, rgba(124, 58, 237, 0.03) 52px);
-            animation: shieldPulse 4s ease-in-out infinite;
+            background-image: radial-gradient(circle, rgba(0, 255, 136, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: dotMove 40s linear infinite;
         }
 
-        @keyframes shieldPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        @keyframes dotMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
         }
 
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Page Header */
-        .page-header {
+        /* Header */
+        .header {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 15px;
-            padding: 35px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            text-align: center;
+            padding: 20px 30px;
+            margin: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
         }
 
-        .page-title {
-            font-size: 42px;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-title {
+            font-size: 24px;
             font-weight: bold;
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         .page-subtitle {
             color: var(--text-secondary);
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* Defense Alert */
-        .defense-alert {
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            padding: 20px 25px;
-            margin-bottom: 30px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 16px;
-        }
-
-        /* Hybrid Encryption Status Panel */
-        .encryption-panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .encryption-panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--gradient-hybrid);
-            opacity: 0.05;
-            animation: hybridGlow 8s ease-in-out infinite;
-        }
-
-        @keyframes hybridGlow {
-            0%, 100% { opacity: 0.05; }
-            50% { opacity: 0.1; }
-        }
-
-        .encryption-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .encryption-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .encryption-title {
-            font-size: 24px;
-            font-weight: bold;
-            background: var(--gradient-hybrid);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .encryption-badge {
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .agent-status {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: var(--gradient-quantum);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 13px;
-        }
-
-        .encryption-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .crypto-card {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 255, 136, 0.02) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
+            gap: 15px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .crypto-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
-            border-color: var(--primary);
+        .agent-status:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
         }
 
-        .crypto-card.quantum {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-            border-color: rgba(124, 58, 237, 0.3);
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: var(--danger);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .crypto-card.quantum:hover {
-            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
-            border-color: var(--accent);
+        .logout-btn:hover {
+            background: rgba(255, 0, 68, 0.1);
         }
 
-        .crypto-icon {
-            font-size: 32px;
-            margin-bottom: 15px;
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
         }
 
-        .crypto-name {
-            font-weight: bold;
-            font-size: 16px;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .crypto-name.quantum {
-            color: var(--accent);
-        }
-
-        .crypto-details {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .crypto-metrics {
+        /* Sub-Agent Status */
+        .sub-agent-status {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 170, 102, 0.05) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .crypto-metric {
+        .sub-agent-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sub-agent-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-defense);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .sub-agent-details h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .sub-agent-details p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .sub-agent-metrics {
+            display: flex;
+            gap: 30px;
+        }
+
+        .metric {
             text-align: center;
         }
 
         .metric-value {
-            font-size: 16px;
+            font-size: 24px;
             font-weight: bold;
             color: var(--primary);
         }
 
         .metric-label {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-secondary);
             text-transform: uppercase;
         }
 
-        /* Defense Status */
-        .defense-status {
+        /* Compact Encryption Status */
+        .encryption-compact {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Defense Status Bar */
+        .defense-status-bar {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             flex-wrap: wrap;
-            gap: 25px;
-            backdrop-filter: blur(20px);
+            gap: 20px;
+            backdrop-filter: blur(15px);
         }
 
-        .status-card {
+        .status-item {
             text-align: center;
-            padding: 20px;
-            min-width: 160px;
         }
 
         .status-icon {
-            font-size: 36px;
-            margin-bottom: 15px;
+            font-size: 32px;
+            margin-bottom: 10px;
         }
 
         .status-label {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
-            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .status-value {
-            font-size: 28px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--primary);
         }
@@ -308,8 +278,8 @@
             margin-bottom: 30px;
         }
 
-        /* Defense Panel */
-        .defense-panel {
+        /* Honeypot Panel */
+        .honeypot-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 15px;
@@ -327,14 +297,13 @@
         }
 
         .panel-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Honeypot List */
         .honeypot-list {
             display: grid;
             gap: 15px;
@@ -353,7 +322,7 @@
         }
 
         .honeypot-item:hover {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 204, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 170, 102, 0.05) 100%);
             border-color: var(--primary);
             transform: translateX(5px);
         }
@@ -364,22 +333,23 @@
 
         .honeypot-name {
             font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 17px;
+            font-size: 16px;
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 8px;
         }
 
         .honeypot-details {
             font-size: 14px;
             color: var(--text-secondary);
+            margin-bottom: 5px;
         }
 
-        .honeypot-encryption {
-            font-size: 12px;
+        .honeypot-ai-status {
+            font-size: 13px;
             color: var(--accent);
-            margin-top: 5px;
             font-style: italic;
         }
 
@@ -399,12 +369,21 @@
         }
 
         /* Response Timeline */
-        .timeline-container {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 255, 136, 0.05) 100%);
+        .timeline-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 15px;
             padding: 25px;
-            height: 450px;
+            backdrop-filter: blur(20px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-container {
+            flex: 1;
             overflow-y: auto;
+            padding-right: 10px;
         }
 
         .timeline-event {
@@ -417,14 +396,8 @@
         }
 
         @keyframes timelineSlide {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .timeline-icon {
@@ -438,11 +411,6 @@
             flex-shrink: 0;
             font-size: 24px;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-
-        .timeline-icon.quantum {
-            background: var(--gradient-quantum);
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
         }
 
         .timeline-content {
@@ -461,7 +429,7 @@
             font-weight: bold;
             color: var(--primary);
             margin-bottom: 8px;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .timeline-details {
@@ -470,17 +438,15 @@
             line-height: 1.5;
         }
 
-        .timeline-encryption {
+        .timeline-agent {
             font-size: 12px;
             color: var(--accent);
             margin-top: 8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            font-style: italic;
         }
 
-        /* Security Playbooks */
-        .playbook-section {
+        /* Playbooks Section */
+        .playbooks-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 15px;
@@ -490,14 +456,14 @@
 
         .playbook-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 25px;
         }
 
         .playbook-card {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 204, 255, 0.05) 100%);
-            border: 1px solid rgba(124, 58, 237, 0.3);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 204, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.3);
             border-radius: 12px;
             padding: 25px;
             text-align: center;
@@ -507,7 +473,7 @@
 
         .playbook-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
         }
 
         .playbook-icon {
@@ -522,44 +488,16 @@
             font-size: 16px;
         }
 
-        .playbook-status {
+        .playbook-stats {
             font-size: 13px;
             color: var(--text-secondary);
+            margin-bottom: 10px;
         }
 
-        .playbook-encryption {
-            font-size: 11px;
+        .playbook-agent {
+            font-size: 12px;
             color: var(--accent);
-            margin-top: 10px;
-        }
-
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 24px;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .back-btn:hover {
-            background: var(--primary);
-            color: var(--bg-darker);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            font-style: italic;
         }
 
         /* AI Chat Widget */
@@ -571,9 +509,9 @@
         }
 
         .ai-chat-toggle {
-            width: 70px;
-            height: 70px;
-            background: var(--gradient-hybrid);
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -581,16 +519,16 @@
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
             transition: all 0.3s ease;
-            font-size: 32px;
+            font-size: 28px;
         }
 
         .ai-chat-toggle:hover {
-            transform: scale(1.1) rotate(10deg);
+            transform: scale(1.1);
         }
 
         .ai-chat-window {
             position: absolute;
-            bottom: 90px;
+            bottom: 80px;
             right: 0;
             width: 400px;
             height: 600px;
@@ -610,37 +548,54 @@
         }
 
         @keyframes chatSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .ai-chat-header {
-            background: var(--gradient-hybrid);
-            color: white;
+            background: var(--gradient-1);
+            color: var(--bg-darker);
             padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        .ai-chat-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .chat-status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bg-darker);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .ai-chat-close {
             cursor: pointer;
             font-size: 24px;
-            transition: transform 0.3s ease;
         }
 
-        .ai-chat-close:hover {
-            transform: rotate(90deg);
+        .cli-mode-indicator {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 0 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--warning);
+            display: none;
+        }
+
+        .cli-mode-indicator.active {
+            display: block;
         }
 
         .ai-chat-messages {
@@ -652,15 +607,6 @@
             gap: 15px;
         }
 
-        .ai-message {
-            animation: messageSlide 0.3s ease;
-        }
-
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .ai-message-bubble {
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid var(--border);
@@ -668,14 +614,19 @@
             padding: 15px 20px;
             max-width: 80%;
             word-wrap: break-word;
-            position: relative;
-            backdrop-filter: blur(10px);
         }
 
         .ai-message-bubble.user {
             background: rgba(0, 204, 255, 0.1);
             border-color: var(--secondary);
             align-self: flex-end;
+        }
+
+        .ai-message-bubble.system {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent);
+            font-size: 13px;
+            font-style: italic;
         }
 
         .ai-message-time {
@@ -690,7 +641,6 @@
             display: flex;
             gap: 15px;
             align-items: center;
-            background: rgba(0, 0, 0, 0.3);
         }
 
         .ai-chat-input {
@@ -701,23 +651,84 @@
             padding: 12px 15px;
             color: var(--text-primary);
             font-size: 14px;
-            font-family: inherit;
-            transition: all 0.3s ease;
         }
 
         .ai-chat-input:focus {
             outline: none;
             border-color: var(--primary);
-            background: rgba(0, 255, 136, 0.05);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
         .ai-chat-send {
-            background: var(--gradient-hybrid);
+            background: var(--gradient-1);
             border: none;
             border-radius: 10px;
             padding: 12px 20px;
-            color: white;
+            color: var(--bg-darker);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* Agent Shutdown Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .modal-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -725,9 +736,20 @@
             letter-spacing: 1px;
         }
 
-        .ai-chat-send:hover {
+        .modal-btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* Mobile Responsive */
@@ -738,47 +760,17 @@
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
+            .sub-agent-status {
+                flex-direction: column;
+                text-align: center;
             }
             
-            .page-header {
-                padding: 25px;
+            .defense-status-bar {
+                flex-direction: column;
             }
             
-            .page-title {
-                font-size: 32px;
-            }
-            
-            .defense-status {
-                gap: 20px;
-            }
-            
-            .status-card {
-                min-width: 140px;
-                padding: 15px;
-            }
-            
-            .back-btn {
-                top: 10px;
-                left: 10px;
-                padding: 10px 18px;
-                font-size: 13px;
-            }
-            
-            .timeline-container {
-                height: 400px;
-            }
-            
-            .ai-chat-widget {
-                bottom: 20px;
-                right: 20px;
-            }
-            
-            .ai-chat-toggle {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
+            .playbook-grid {
+                grid-template-columns: 1fr;
             }
             
             .ai-chat-window {
@@ -824,152 +816,89 @@
         }
     </script>
 
-    <!-- Back Button -->
-    <a href="dashboard.html" class="back-btn">
-        <span>←</span>
-        <span>Back</span>
-    </a>
-
-    <!-- Defense Background -->
-    <div class="defense-bg">
-        <div class="shield-grid"></div>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="dot-grid"></div>
     </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div>
+                    <h1 class="brand-title">AI SENTINEL-X | ACTIVE DEFENSE</h1>
+                    <p class="page-subtitle">DefenseOrchestrator Sub-Agent Active</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="agent-status" onclick="showAgentShutdownModal()">
+                    <span>🤖 AI Agent Active • Fully Autonomous</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
 
     <!-- Container -->
     <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">ACTIVE DEFENSE</h1>
-            <p class="page-subtitle">Hybrid-Encrypted Response & Deception Systems</p>
-        </div>
-
-        <!-- Defense Alert -->
-        <div class="defense-alert">
-            🛡️ All defense systems operating autonomously. Honeypots active. AI orchestrating responses with hybrid NIST + post-quantum encryption.
-        </div>
-
-        <!-- Hybrid Encryption Status Panel -->
-        <div class="encryption-panel">
-            <div class="encryption-content">
-                <div class="encryption-header">
-                    <h2 class="encryption-title">Hybrid Protection Layer</h2>
-                    <div class="encryption-badge">
-                        <span>🔒</span>
-                        <span>CLASSICAL + QUANTUM ACTIVE</span>
-                    </div>
+        <!-- Sub-Agent Status -->
+        <div class="sub-agent-status">
+            <div class="sub-agent-info">
+                <div class="sub-agent-icon">⚔️</div>
+                <div class="sub-agent-details">
+                    <h3>DefenseOrchestrator Sub-Agent</h3>
+                    <p>Deploying honeypots • Coordinating responses • Reports to Main Agent</p>
                 </div>
-                
-                <div class="encryption-grid">
-                    <!-- Classical Algorithms -->
-                    <div class="crypto-card">
-                        <div class="crypto-icon">🔐</div>
-                        <div class="crypto-name">AES-256-GCM</div>
-                        <div class="crypto-details">
-                            Primary encryption for honeypot data and defense logs. Real-time protection with 256-bit security.
-                        </div>
-                        <div class="crypto-metrics">
-                            <div class="crypto-metric">
-                                <div class="metric-value">1.2ms</div>
-                                <div class="metric-label">Latency</div>
-                            </div>
-                            <div class="crypto-metric">
-                                <div class="metric-value">Active</div>
-                                <div class="metric-label">Status</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="crypto-card">
-                        <div class="crypto-icon">✓</div>
-                        <div class="crypto-name">HMAC-SHA256</div>
-                        <div class="crypto-details">
-                            Message authentication for all defense actions. Prevents tampering with response logs.
-                        </div>
-                        <div class="crypto-metrics">
-                            <div class="crypto-metric">
-                                <div class="metric-value">0.3ms</div>
-                                <div class="metric-label">Verify</div>
-                            </div>
-                            <div class="crypto-metric">
-                                <div class="metric-value">Active</div>
-                                <div class="metric-label">Status</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Post-Quantum Algorithms -->
-                    <div class="crypto-card quantum">
-                        <div class="crypto-icon">💠</div>
-                        <div class="crypto-name quantum">CRYSTALS-Kyber</div>
-                        <div class="crypto-details">
-                            Post-quantum key encapsulation for honeypot communications. Future-proof defense coordination.
-                        </div>
-                        <div class="crypto-metrics">
-                            <div class="crypto-metric">
-                                <div class="metric-value">0.8ms</div>
-                                <div class="metric-label">KEM Time</div>
-                            </div>
-                            <div class="crypto-metric">
-                                <div class="metric-value">Active</div>
-                                <div class="metric-label">Status</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="crypto-card quantum">
-                        <div class="crypto-icon">✍️</div>
-                        <div class="crypto-name quantum">CRYSTALS-Dilithium</div>
-                        <div class="crypto-details">
-                            Digital signatures for all automated responses. Quantum-resistant audit trails.
-                        </div>
-                        <div class="crypto-metrics">
-                            <div class="crypto-metric">
-                                <div class="metric-value">1.5ms</div>
-                                <div class="metric-label">Sign Time</div>
-                            </div>
-                            <div class="crypto-metric">
-                                <div class="metric-value">Active</div>
-                                <div class="metric-label">Status</div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="sub-agent-metrics">
+                <div class="metric">
+                    <div class="metric-value" id="activeHoneypots">8</div>
+                    <div class="metric-label">Honeypots</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="attacksTrapped">47</div>
+                    <div class="metric-label">Trapped</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="responsesExecuted">124</div>
+                    <div class="metric-label">Responses</div>
                 </div>
             </div>
         </div>
 
-        <!-- Defense Status -->
-        <div class="defense-status">
-            <div class="status-card">
-                <div class="status-icon">🍯</div>
-                <div class="status-label">Active Honeypots</div>
-                <div class="status-value" id="activeHoneypots">8</div>
+        <!-- Compact Encryption Status -->
+        <div class="encryption-compact">
+            🔒 CLASSICAL + QUANTUM ACTIVE
+        </div>
+
+        <!-- Defense Status Bar -->
+        <div class="defense-status-bar">
+            <div class="status-item">
+                <div class="status-icon">🛡️</div>
+                <div class="status-value">ACTIVE</div>
+                <div class="status-label">Defense Mode</div>
             </div>
-            <div class="status-card">
-                <div class="status-icon">🎯</div>
-                <div class="status-label">Threats Trapped</div>
-                <div class="status-value" id="threatsTrapped">47</div>
-            </div>
-            <div class="status-card">
-                <div class="status-icon">🤖</div>
-                <div class="status-label">Auto Responses</div>
-                <div class="status-value" id="autoResponses">124</div>
-            </div>
-            <div class="status-card">
+            <div class="status-item">
                 <div class="status-icon">⏱️</div>
+                <div class="status-value">0.3s</div>
                 <div class="status-label">Avg Response</div>
-                <div class="status-value" id="avgResponse">0.3s</div>
             </div>
-            <div class="status-card">
-                <div class="status-icon">📊</div>
+            <div class="status-item">
+                <div class="status-icon">🎯</div>
+                <div class="status-value">99.7%</div>
                 <div class="status-label">Success Rate</div>
-                <div class="status-value" style="color: var(--success);">99.7%</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon">🤖</div>
+                <div class="status-value">FULL</div>
+                <div class="status-label">Automation</div>
             </div>
         </div>
 
         <!-- Main Grid -->
         <div class="defense-grid">
             <!-- Honeypot Management -->
-            <div class="defense-panel">
+            <div class="honeypot-panel">
                 <div class="panel-header">
                     <h2 class="panel-title">Deception Systems</h2>
                 </div>
@@ -980,8 +909,8 @@
                                 <span>🔐</span>
                                 <span>SSH Honeypot</span>
                             </div>
-                            <div class="honeypot-details">Port 22 • 12 intrusion attempts trapped</div>
-                            <div class="honeypot-encryption">Logs: AES-256-GCM + Kyber-768 encrypted</div>
+                            <div class="honeypot-details">Port 22 • 12 intrusions trapped</div>
+                            <div class="honeypot-ai-status">DefenseOrchestrator: Monitoring brute force attempts</div>
                         </div>
                         <div class="honeypot-status">ACTIVE</div>
                     </div>
@@ -991,8 +920,8 @@
                                 <span>🌐</span>
                                 <span>Web Application Decoy</span>
                             </div>
-                            <div class="honeypot-details">Port 8080 • Simulating vulnerable WordPress</div>
-                            <div class="honeypot-encryption">Sessions: HMAC-SHA256 + Dilithium3 signed</div>
+                            <div class="honeypot-details">Port 8080 • WordPress simulation</div>
+                            <div class="honeypot-ai-status">DefenseOrchestrator: Collecting attack patterns</div>
                         </div>
                         <div class="honeypot-status">ACTIVE</div>
                     </div>
@@ -1002,8 +931,8 @@
                                 <span>🗄️</span>
                                 <span>Database Honeypot</span>
                             </div>
-                            <div class="honeypot-details">Port 3306 • MySQL decoy with fake data</div>
-                            <div class="honeypot-encryption">Data: Hybrid encrypted with SPHINCS+ backup</div>
+                            <div class="honeypot-details">Port 3306 • MySQL with fake data</div>
+                            <div class="honeypot-ai-status">DefenseOrchestrator: Learning SQL injection patterns</div>
                         </div>
                         <div class="honeypot-status">ACTIVE</div>
                     </div>
@@ -1014,7 +943,7 @@
                                 <span>FTP Server Trap</span>
                             </div>
                             <div class="honeypot-details">Port 21 • Ready to deploy</div>
-                            <div class="honeypot-encryption">Files: PBKDF2 + FALCON-512 protected</div>
+                            <div class="honeypot-ai-status">DefenseOrchestrator: On standby</div>
                         </div>
                         <div class="honeypot-status status-inactive">STANDBY</div>
                     </div>
@@ -1024,8 +953,8 @@
                                 <span>📧</span>
                                 <span>Email Server Decoy</span>
                             </div>
-                            <div class="honeypot-details">Port 25 • Collecting phishing attempts</div>
-                            <div class="honeypot-encryption">Messages: TLS 1.3 + post-quantum ready</div>
+                            <div class="honeypot-details">Port 25 • Collecting phishing</div>
+                            <div class="honeypot-ai-status">DefenseOrchestrator: 89 phishing attempts trapped</div>
                         </div>
                         <div class="honeypot-status">ACTIVE</div>
                     </div>
@@ -1033,18 +962,18 @@
             </div>
 
             <!-- Response Timeline -->
-            <div class="defense-panel">
+            <div class="timeline-panel">
                 <div class="panel-header">
                     <h2 class="panel-title">Automated Response Timeline</h2>
                 </div>
                 <div class="timeline-container" id="responseTimeline">
-                    <!-- Timeline events will be populated here -->
+                    <!-- Timeline events will be populated by JavaScript -->
                 </div>
             </div>
         </div>
 
         <!-- Security Playbooks -->
-        <div class="playbook-section">
+        <div class="playbooks-section">
             <div class="panel-header">
                 <h2 class="panel-title">Active Security Playbooks</h2>
             </div>
@@ -1052,39 +981,55 @@
                 <div class="playbook-card" onclick="showPlaybookDetails('ddos')">
                     <div class="playbook-icon">⚡</div>
                     <div class="playbook-name">DDoS Mitigation</div>
-                    <div class="playbook-status">Executed 34 times</div>
-                    <div class="playbook-encryption">Actions signed with Dilithium3</div>
+                    <div class="playbook-stats">Executed 34 times today</div>
+                    <div class="playbook-agent">DefenseOrchestrator → ThreatScanner</div>
                 </div>
                 <div class="playbook-card" onclick="showPlaybookDetails('malware')">
                     <div class="playbook-icon">🦠</div>
                     <div class="playbook-name">Malware Containment</div>
-                    <div class="playbook-status">Executed 12 times</div>
-                    <div class="playbook-encryption">Samples: AES-256 + Kyber secured</div>
+                    <div class="playbook-stats">Executed 12 times today</div>
+                    <div class="playbook-agent">DefenseOrchestrator → NetworkMapper</div>
                 </div>
                 <div class="playbook-card" onclick="showPlaybookDetails('phishing')">
                     <div class="playbook-icon">🎣</div>
                     <div class="playbook-name">Phishing Response</div>
-                    <div class="playbook-status">Executed 89 times</div>
-                    <div class="playbook-encryption">URLs: HMAC + SPHINCS+ verified</div>
+                    <div class="playbook-stats">Executed 89 times today</div>
+                    <div class="playbook-agent">DefenseOrchestrator → ThreatScanner</div>
                 </div>
                 <div class="playbook-card" onclick="showPlaybookDetails('insider')">
                     <div class="playbook-icon">👤</div>
                     <div class="playbook-name">Insider Threat</div>
-                    <div class="playbook-status">Executed 5 times</div>
-                    <div class="playbook-encryption">Evidence: Hybrid encrypted chain</div>
+                    <div class="playbook-stats">Executed 5 times today</div>
+                    <div class="playbook-agent">DefenseOrchestrator → LogAgent</div>
                 </div>
                 <div class="playbook-card" onclick="showPlaybookDetails('ransomware')">
                     <div class="playbook-icon">🔒</div>
                     <div class="playbook-name">Ransomware Defense</div>
-                    <div class="playbook-status">Executed 8 times</div>
-                    <div class="playbook-encryption">Backups: Quantum-safe storage</div>
+                    <div class="playbook-stats">Executed 8 times today</div>
+                    <div class="playbook-agent">DefenseOrchestrator → EncryptionManager</div>
                 </div>
                 <div class="playbook-card" onclick="showPlaybookDetails('zeroday')">
                     <div class="playbook-icon">🎯</div>
                     <div class="playbook-name">Zero-Day Response</div>
-                    <div class="playbook-status">Executed 3 times</div>
-                    <div class="playbook-encryption">Patches: FALCON-512 signed</div>
+                    <div class="playbook-stats">Executed 3 times today</div>
+                    <div class="playbook-agent">DefenseOrchestrator → AnalyticsEngine</div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Shutdown Modal -->
+    <div class="modal-overlay" id="agentShutdownModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Emergency AI Shutdown</h2>
+            </div>
+            <div class="modal-content">
+                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. If external APIs or keys are offline, the agent will fallback to local control mode.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="confirmAgentShutdown()">Confirm Shutdown</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
             </div>
         </div>
     </div>
@@ -1093,23 +1038,27 @@
     <div class="ai-chat-widget">
         <div class="ai-chat-window" id="aiChatWindow">
             <div class="ai-chat-header">
-                <span>DEFENSE AI</span>
+                <div class="ai-chat-status">
+                    <span class="chat-status-dot"></span>
+                    <span>MAIN AGENT ONLINE</span>
+                </div>
                 <span class="ai-chat-close" onclick="toggleChat()">×</span>
             </div>
+            <div class="cli-mode-indicator" id="cliModeIndicator">
+                ⚠️ CLI MODE - Main Agent Offline
+            </div>
             <div class="ai-chat-messages" id="aiChatMessages">
-                <div class="ai-message">
-                    <div class="ai-message-bubble">
-                        Welcome to Active Defense with hybrid cryptography. I manage honeypots and responses using both classical (AES, HMAC) and post-quantum (Kyber, Dilithium) protection. How can I assist?
-                    </div>
-                    <div class="ai-message-time">Just now</div>
+                <div class="ai-message-bubble">
+                    Connected to Main Agent. I can route commands to DefenseOrchestrator for honeypot management and automated responses. All defensive actions are protected with hybrid encryption.
                 </div>
+                <div class="ai-message-time">Just now</div>
             </div>
             <div class="ai-chat-input-container">
                 <input 
                     type="text" 
                     class="ai-chat-input" 
                     id="aiChatInput" 
-                    placeholder="Ask about honeypots, playbooks, or hybrid encryption..."
+                    placeholder="Enter command or ask about defenses..."
                     onkeypress="handleChatKeyPress(event)"
                 >
                 <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
@@ -1118,99 +1067,51 @@
         <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
     </div>
 
+    <script src="shared.js"></script>
     <script>
-        // Show honeypot details
-        function showHoneypotDetails(type) {
-            if (!chatOpen) {
-                toggleChat();
-            }
-            setTimeout(() => {
-                const messages = {
-                    'ssh': '🔐 SSH Honeypot: 3 active sessions being monitored. All captured data encrypted with hybrid system: AES-256-GCM for real-time storage + CRYSTALS-Kyber for quantum-safe key exchange. 147 login attempts logged with Dilithium3 signatures.',
-                    'web': '🌐 Web Decoy: WordPress 4.5 simulation capturing SQL injections. Session data protected with HMAC-SHA256 for immediate verification + CRYSTALS-Dilithium for long-term non-repudiation. AI learning attack patterns.',
-                    'database': '🗄️ Database Honeypot: MySQL with fake customer records. Data encrypted with AES-256-GCM, queries signed with Dilithium3, backup signatures using SPHINCS+-256s for ultimate quantum resistance.',
-                    'ftp': '📁 FTP Trap: On standby with hybrid protection ready. When activated: PBKDF2-HMAC-SHA256 for credentials + experimental FALCON-512 for compact file signatures (40% smaller than Dilithium).',
-                    'email': '📧 Email Decoy: 89 phishing emails trapped. TLS 1.3 with classical ciphers + post-quantum key exchange ready. All emails dual-signed: HMAC for speed, Dilithium for quantum safety.'
-                };
-                addChatMessage(messages[type], false);
-            }, 300);
-        }
-
-        // Show playbook details
-        function showPlaybookDetails(type) {
-            if (!chatOpen) {
-                toggleChat();
-            }
-            setTimeout(() => {
-                const messages = {
-                    'ddos': '⚡ DDoS Playbook: Rate limiting with hybrid crypto audit trail. Every blocked IP logged with AES-256-GCM encryption + Dilithium3 signature. Mitigation time: 1.2s including all crypto operations.',
-                    'malware': '🦠 Malware Playbook: Samples stored in AES-256 encrypted containers with Kyber-768 key encapsulation. Analysis results signed with Dilithium3. Hybrid protection ensures samples remain secure even against quantum attacks.',
-                    'phishing': '🎣 Phishing Playbook: URLs verified with HMAC-SHA256 (0.3ms) then permanently recorded with SPHINCS+-256s signatures. Dual protection: fast classical verification + quantum-proof archival.',
-                    'insider': '👤 Insider Threat: Complete hybrid evidence chain. Actions logged with AES-256, authenticated with HMAC, signed with Dilithium, and archived with SPHINCS+. Unbreakable chain of custody.',
-                    'ransomware': '🔒 Ransomware Defense: Instant backup with hybrid encryption. Files: AES-256-GCM for speed. Keys: Kyber-768 for quantum safety. Signatures: Dilithium3 for verification. Saved $2.3M in ransoms.',
-                    'zeroday': '🎯 Zero-Day Response: Virtual patches with experimental FALCON-512 signatures (testing phase). Primary signatures still use Dilithium3. Hybrid approach ensures both innovation and reliability.'
-                };
-                addChatMessage(messages[type], false);
-            }, 300);
-        }
-
         // Timeline events
         const timelineEvents = [
             { 
                 icon: '🛡️', 
                 action: 'Blocked Attack', 
-                time: new Date(), 
-                details: 'SQL injection attempt blocked. Vector analysis encrypted with AES-256-GCM.',
-                encryption: 'Classical: AES-256 | Quantum: Kyber-768',
-                quantum: false
+                time: new Date(),
+                details: 'SQL injection attempt blocked on web honeypot.',
+                agent: 'DefenseOrchestrator'
             },
             { 
                 icon: '🍯', 
                 action: 'Honeypot Triggered', 
-                time: new Date(), 
-                details: 'SSH honeypot accessed from quantum-capable adversary. Enhanced protection engaged.',
-                encryption: 'Full hybrid stack activated',
-                quantum: true
+                time: new Date(),
+                details: 'SSH honeypot accessed from 185.220.101.45.',
+                agent: 'DefenseOrchestrator'
             },
             { 
                 icon: '🔒', 
                 action: 'Ransomware Prevented', 
-                time: new Date(), 
-                details: 'Encryption behavior detected. Files backed up with dual protection.',
-                encryption: 'AES-256-GCM + Dilithium3 signatures',
-                quantum: false
+                time: new Date(),
+                details: 'Encryption behavior detected, files backed up.',
+                agent: 'DefenseOrchestrator → EncryptionManager'
             },
             { 
                 icon: '📧', 
                 action: 'Phishing Blocked', 
-                time: new Date(), 
-                details: '23 emails quarantined. All verified with hybrid signatures.',
-                encryption: 'HMAC-SHA256 + SPHINCS+-256s',
-                quantum: true
+                time: new Date(),
+                details: '23 emails quarantined by email honeypot.',
+                agent: 'DefenseOrchestrator'
             },
             { 
                 icon: '🎯', 
                 action: 'Zero-Day Mitigated', 
-                time: new Date(), 
-                details: 'Unknown exploit detected. Virtual patch with experimental FALCON signatures.',
-                encryption: 'Testing: FALCON-512 (40% smaller)',
-                quantum: true
+                time: new Date(),
+                details: 'Unknown exploit detected, virtual patch deployed.',
+                agent: 'DefenseOrchestrator → AnalyticsEngine'
             },
             { 
                 icon: '⚡', 
                 action: 'DDoS Deflected', 
-                time: new Date(), 
-                details: '45,000 req/sec mitigated. All logs dual-encrypted.',
-                encryption: 'Classical speed + quantum safety',
-                quantum: false
-            },
-            { 
-                icon: '🔐', 
-                action: 'Keys Rotated', 
-                time: new Date(), 
-                details: 'Hybrid encryption keys rotated. Both layers refreshed.',
-                encryption: 'HKDF-SHA256 + Kyber KEM',
-                quantum: true
+                time: new Date(),
+                details: '45,000 req/sec mitigated autonomously.',
+                agent: 'DefenseOrchestrator → ThreatScanner'
             }
         ];
 
@@ -1223,15 +1124,12 @@
             const time = event.time.toLocaleTimeString();
             
             eventDiv.innerHTML = `
-                <div class="timeline-icon ${event.quantum ? 'quantum' : ''}">${event.icon}</div>
+                <div class="timeline-icon">${event.icon}</div>
                 <div class="timeline-content">
                     <div class="timeline-time">${time}</div>
                     <div class="timeline-action">${event.action}</div>
                     <div class="timeline-details">${event.details}</div>
-                    <div class="timeline-encryption">
-                        <span>🔐</span>
-                        <span>${event.encryption}</span>
-                    </div>
+                    <div class="timeline-agent">Handled by: ${event.agent}</div>
                 </div>
             `;
             
@@ -1243,136 +1141,59 @@
             }
         }
 
+        // Show honeypot details
+        function showHoneypotDetails(honeypot) {
+            if (!chatOpen) {
+                toggleChat();
+            }
+            setTimeout(() => {
+                addChatMessage(`Routing to DefenseOrchestrator sub-agent...`, false, 'system');
+                setTimeout(() => {
+                    const details = {
+                        'ssh': 'SSH Honeypot: 3 active sessions being monitored. 147 login attempts logged. All data encrypted with AES-256-GCM + Kyber-1024.',
+                        'web': 'Web Decoy: WordPress 4.5 simulation capturing SQL injections. Session data protected with hybrid encryption.',
+                        'database': 'Database Honeypot: MySQL with fake customer records. DefenseOrchestrator learning attack patterns in real-time.',
+                        'ftp': 'FTP Trap: On standby. Ready to deploy on Main Agent command.',
+                        'email': 'Email Decoy: 89 phishing emails trapped. DefenseOrchestrator analyzing patterns with AnalyticsEngine.'
+                    };
+                    addChatMessage(`DefenseOrchestrator: ${details[honeypot]}`, false);
+                }, 800);
+            }, 300);
+        }
+
+        // Show playbook details
+        function showPlaybookDetails(playbook) {
+            if (!chatOpen) {
+                toggleChat();
+            }
+            setTimeout(() => {
+                const details = {
+                    'ddos': 'DDoS Playbook: Rate limiting + traffic filtering. DefenseOrchestrator coordinates with ThreatScanner. Mitigation time: 1.2s.',
+                    'malware': 'Malware Playbook: Instant isolation by DefenseOrchestrator. NetworkMapper identifies infected hosts. All samples encrypted.',
+                    'phishing': 'Phishing Playbook: Email quarantine + user alerts. DefenseOrchestrator works with ThreatScanner. 89 attacks blocked today.',
+                    'insider': 'Insider Threat: Evidence collection by LogAgent. DefenseOrchestrator ensures chain of custody with Dilithium signatures.',
+                    'ransomware': 'Ransomware Defense: Instant backup by EncryptionManager. DefenseOrchestrator coordinates response. Zero data loss.',
+                    'zeroday': 'Zero-Day Response: Virtual patches deployed. DefenseOrchestrator + AnalyticsEngine predict attack patterns.'
+                };
+                addChatMessage(`DefenseOrchestrator: ${details[playbook]}`, false);
+            }, 300);
+        }
+
         // Update metrics
         function updateMetrics() {
-            // Update random metrics
-            document.getElementById('threatsTrapped').textContent = Math.floor(40 + Math.random() * 20);
-            document.getElementById('autoResponses').textContent = Math.floor(120 + Math.random() * 20);
-            document.getElementById('avgResponse').textContent = (0.2 + Math.random() * 0.3).toFixed(1) + 's';
+            const trapped = document.getElementById('attacksTrapped');
+            trapped.textContent = parseInt(trapped.textContent) + Math.floor(Math.random() * 3);
+            
+            const responses = document.getElementById('responsesExecuted');
+            responses.textContent = parseInt(responses.textContent) + 1;
         }
 
-        // AI Chat System
-        let chatOpen = false;
-        
-        function toggleChat() {
-            chatOpen = !chatOpen;
-            const chatWindow = document.getElementById('aiChatWindow');
-            if (chatOpen) {
-                chatWindow.classList.add('active');
-            } else {
-                chatWindow.classList.remove('active');
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Logout? The AI agent will continue protecting your systems.')) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
             }
-        }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('aiChatInput');
-            const message = input.value.trim();
-            if (!message) return;
-
-            const messagesContainer = document.getElementById('aiChatMessages');
-            
-            // Add user message
-            addChatMessage(message, true);
-            input.value = '';
-
-            // Show typing indicator
-            showTypingIndicator();
-
-            // Simulate AI response
-            setTimeout(() => {
-                removeTypingIndicator();
-                const response = generateAIResponse(message);
-                addChatMessage(response, false);
-            }, 1500 + Math.random() * 1000);
-        }
-
-        function addChatMessage(message, isUser) {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'ai-message';
-            
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="ai-message-bubble ${isUser ? 'user' : ''}">
-                    ${message}
-                </div>
-                <div class="ai-message-time">${time}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function showTypingIndicator() {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'ai-typing';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.style.display = 'flex';
-            typingDiv.style.gap = '5px';
-            typingDiv.style.padding = '10px';
-            
-            for (let i = 0; i < 3; i++) {
-                const dot = document.createElement('div');
-                dot.style.width = '8px';
-                dot.style.height = '8px';
-                dot.style.background = 'var(--primary)';
-                dot.style.borderRadius = '50%';
-                dot.style.animation = 'typingDot 1.4s ease-in-out infinite';
-                dot.style.animationDelay = `${i * 0.2}s`;
-                typingDiv.appendChild(dot);
-            }
-            
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        }
-
-        function generateAIResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage.includes('hybrid') || lowerMessage.includes('encryption')) {
-                return '🔐 Hybrid encryption protects all defense systems: Classical layer (AES-256-GCM + HMAC-SHA256) provides real-time protection with 1.5ms latency. Quantum layer (Kyber-768 + Dilithium3) adds 2.3ms for future-proof security. Both layers work simultaneously.';
-            }
-            
-            if (lowerMessage.includes('honeypot') || lowerMessage.includes('deception')) {
-                return '🍯 8 honeypots active with full hybrid protection. Each trap uses AES-256 for immediate encryption, Kyber for quantum-safe key exchange, HMAC for quick verification, and Dilithium for permanent signatures. 47 attackers trapped today.';
-            }
-            
-            if (lowerMessage.includes('playbook') || lowerMessage.includes('response')) {
-                return '📋 Security playbooks execute with hybrid verification. Fast path: AES+HMAC (1.5ms total). Secure path: Kyber+Dilithium (2.3ms total). Critical actions use both paths. 165 executions today with 99.7% success rate.';
-            }
-            
-            if (lowerMessage.includes('quantum') || lowerMessage.includes('post-quantum')) {
-                return '💠 Post-quantum defense active: CRYSTALS-Kyber-768 for key encapsulation, CRYSTALS-Dilithium3 for signatures, SPHINCS+-256s for long-term archival, FALCON-512 in testing for compact signatures. Full protection against future quantum computers.';
-            }
-            
-            if (lowerMessage.includes('falcon') || lowerMessage.includes('sphincs')) {
-                return '🦅 FALCON-512: Experimental compact signatures, 40% smaller than Dilithium. Currently testing in zero-day responses. SPHINCS+-256s: Stateless hash-based signatures for ultimate security in evidence archival. Both add defense-in-depth.';
-            }
-            
-            if (lowerMessage.includes('manual') || lowerMessage.includes('control')) {
-                return '🎛️ Manual control options: 1) Deploy/disable honeypots, 2) Modify playbook crypto (classical/quantum/hybrid), 3) Override automated responses, 4) Rotate encryption keys. Current mode: Full autonomous with hybrid protection.';
-            }
-            
-            if (lowerMessage.includes('status') || lowerMessage.includes('defense')) {
-                return '🛡️ Defense status: All systems operational with hybrid crypto. 8 honeypots active. 124 automated responses (all dual-signed). 99.7% success rate. Classical crypto handles speed, quantum crypto ensures future-proof security.';
-            }
-            
-            return '🤖 I manage active defense with hybrid cryptography. Classical algorithms (AES, HMAC) for speed, post-quantum algorithms (Kyber, Dilithium, SPHINCS+, FALCON) for future-proof security. What would you like to know?';
         }
 
         // Initialize
@@ -1388,43 +1209,9 @@
                 const event = timelineEvents[Math.floor(Math.random() * timelineEvents.length)];
                 event.time = new Date();
                 addTimelineEvent(event);
+                updateMetrics();
             }, 10000);
-            
-            // Update metrics
-            setInterval(updateMetrics, 5000);
-            
-            // Add periodic defense events to chat
-            setInterval(() => {
-                if (Math.random() > 0.85 && chatOpen) {
-                    const events = [
-                        '🛡️ New attack pattern detected. Playbook updated with Dilithium3 signatures.',
-                        '🍯 Honeypot evolution: SSH trap now using Kyber-768 for quantum-safe comms.',
-                        '⚡ Response time: 0.25s classical + 2.1ms quantum overhead = ultra-fast hybrid.',
-                        '🔒 Ransomware blocked. Backup verified with dual signatures (HMAC + Dilithium).',
-                        '📊 Defense effectiveness: 99.8% with full hybrid crypto. Zero quantum vulnerabilities.',
-                        '🔐 Key rotation complete. Fresh AES-256 + new Kyber-768 keypairs deployed.',
-                        '🦅 FALCON test successful: 40% smaller signatures with same security level.'
-                    ];
-                    addChatMessage(events[Math.floor(Math.random() * events.length)], false);
-                }
-            }, 25000);
         });
-
-        // Add CSS animation for typing dots
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes typingDot {
-                0%, 60%, 100% {
-                    transform: translateY(0);
-                    opacity: 0.7;
-                }
-                30% {
-                    transform: translateY(-10px);
-                    opacity: 1;
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>

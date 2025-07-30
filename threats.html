@@ -34,10 +34,11 @@
             background: var(--bg-darker);
             color: var(--text-primary);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Threat Background */
-        .threat-bg {
+        /* Animated Dot Background */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -45,44 +46,34 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            background: 
-                radial-gradient(circle at 30% 20%, rgba(255, 0, 68, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(255, 170, 0, 0.08) 0%, transparent 50%);
+            overflow: hidden;
         }
 
-        .scan-grid {
+        .dot-grid {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: 
-                repeating-linear-gradient(0deg, rgba(255, 0, 68, 0.02) 0px, transparent 2px, transparent 100px, rgba(255, 0, 68, 0.02) 102px),
-                repeating-linear-gradient(90deg, rgba(255, 0, 68, 0.02) 0px, transparent 2px, transparent 100px, rgba(255, 0, 68, 0.02) 102px);
-            animation: gridScan 20s linear infinite;
+            background-image: radial-gradient(circle, rgba(0, 255, 136, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: dotMove 40s linear infinite;
         }
 
-        @keyframes gridScan {
+        @keyframes dotMove {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(100px, 100px); }
+            100% { transform: translate(30px, 30px); }
         }
 
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Page Header */
-        .page-header {
+        /* Header */
+        .header {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 15px;
-            padding: 35px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            margin: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             position: relative;
-            overflow: hidden;
+            z-index: 10;
         }
 
         .header-content {
@@ -93,114 +84,159 @@
             gap: 20px;
         }
 
-        .page-title {
-            font-size: 40px;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-title {
+            font-size: 24px;
             font-weight: bold;
-            background: var(--gradient-danger);
+            background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
-        .threat-summary {
-            display: flex;
-            gap: 35px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .summary-item {
-            text-align: center;
-        }
-
-        .summary-value {
-            font-size: 36px;
-            font-weight: bold;
-            color: var(--danger);
-            text-shadow: 0 0 20px currentColor;
-        }
-
-        .summary-label {
-            font-size: 13px;
+        .page-subtitle {
             color: var(--text-secondary);
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Status Alert */
-        .status-alert {
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            padding: 20px 25px;
-            margin-bottom: 25px;
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .agent-status {
             display: flex;
             align-items: center;
-            gap: 20px;
-            font-weight: bold;
-            color: var(--primary);
+            gap: 15px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .status-alert-icon {
-            font-size: 32px;
+        .agent-status:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* Encryption Banner */
-        .encryption-banner {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
-            border: 1px solid rgba(124, 58, 237, 0.3);
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: var(--danger);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 68, 0.1);
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        /* Sub-Agent Status */
+        .sub-agent-status {
+            background: linear-gradient(135deg, rgba(255, 0, 68, 0.1) 0%, rgba(255, 170, 0, 0.05) 100%);
+            border: 1px solid rgba(255, 0, 68, 0.3);
             border-radius: 12px;
-            padding: 15px 20px;
+            padding: 20px;
             margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .sub-agent-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sub-agent-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-danger);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            text-align: center;
-            font-size: 14px;
-            animation: encryptionGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes encryptionGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.2); }
-            50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); }
-        }
-
-        .encryption-icon {
             font-size: 24px;
+            box-shadow: 0 4px 20px rgba(255, 0, 68, 0.3);
         }
 
-        .encryption-text {
+        .sub-agent-details h3 {
+            font-size: 18px;
+            color: var(--danger);
+            margin-bottom: 5px;
+        }
+
+        .sub-agent-details p {
+            font-size: 14px;
             color: var(--text-secondary);
         }
 
-        .encryption-badges {
+        .sub-agent-metrics {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 30px;
         }
 
-        .enc-badge {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 11px;
-            color: var(--primary);
-            font-weight: 600;
+        .metric {
+            text-align: center;
         }
 
-        .enc-badge.quantum {
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--danger);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* Compact Encryption Status */
+        .encryption-compact {
             background: rgba(124, 58, 237, 0.1);
-            border-color: var(--accent);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 14px;
             color: var(--accent);
+            font-weight: 600;
         }
 
         /* Threat Grid */
         .threat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 25px;
             margin-bottom: 30px;
         }
@@ -245,10 +281,9 @@
         }
 
         .threat-title {
-            font-size: 19px;
+            font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
-            line-height: 1.3;
         }
 
         .threat-type {
@@ -264,7 +299,6 @@
             font-size: 12px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .severity-critical {
@@ -305,40 +339,25 @@
         .detail-value {
             color: var(--text-primary);
             font-weight: bold;
-            text-align: right;
         }
 
-        .threat-status {
+        .threat-ai-status {
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 10px 20px;
-            background: var(--gradient-1);
-            color: var(--bg-darker);
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .encryption-status {
-            margin-top: 15px;
-            font-size: 12px;
-            color: var(--text-secondary);
+        .ai-status-text {
+            font-size: 14px;
+            color: var(--accent);
+            font-style: italic;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
         }
 
-        .encryption-status-icon {
-            color: var(--accent);
+        .ai-status-icon {
+            font-size: 18px;
         }
 
         /* Real-time Feed */
@@ -363,7 +382,7 @@
         }
 
         .feed-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--primary);
             text-transform: uppercase;
@@ -389,14 +408,8 @@
         }
 
         @keyframes livePulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.5);
-                opacity: 0.5;
-            }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
         }
 
         .feed-content {
@@ -415,17 +428,11 @@
         }
 
         @keyframes feedSlide {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .feed-item.encryption {
+        .feed-item.ai-action {
             border-left-color: var(--accent);
         }
 
@@ -442,33 +449,11 @@
             line-height: 1.5;
         }
 
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 24px;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .back-btn:hover {
-            background: var(--primary);
-            color: var(--bg-darker);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        .feed-agent {
+            font-size: 12px;
+            color: var(--accent);
+            margin-top: 5px;
+            font-style: italic;
         }
 
         /* AI Chat Widget */
@@ -480,8 +465,8 @@
         }
 
         .ai-chat-toggle {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
@@ -490,16 +475,16 @@
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
             transition: all 0.3s ease;
-            font-size: 32px;
+            font-size: 28px;
         }
 
         .ai-chat-toggle:hover {
-            transform: scale(1.1) rotate(10deg);
+            transform: scale(1.1);
         }
 
         .ai-chat-window {
             position: absolute;
-            bottom: 90px;
+            bottom: 80px;
             right: 0;
             width: 400px;
             height: 600px;
@@ -519,14 +504,8 @@
         }
 
         @keyframes chatSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .ai-chat-header {
@@ -537,19 +516,42 @@
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        .ai-chat-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .chat-status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bg-darker);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .ai-chat-close {
             cursor: pointer;
             font-size: 24px;
-            transition: transform 0.3s ease;
         }
 
-        .ai-chat-close:hover {
-            transform: rotate(90deg);
+        .cli-mode-indicator {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 0 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--warning);
+            display: none;
+        }
+
+        .cli-mode-indicator.active {
+            display: block;
         }
 
         .ai-chat-messages {
@@ -561,15 +563,6 @@
             gap: 15px;
         }
 
-        .ai-message {
-            animation: messageSlide 0.3s ease;
-        }
-
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .ai-message-bubble {
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid var(--border);
@@ -577,14 +570,19 @@
             padding: 15px 20px;
             max-width: 80%;
             word-wrap: break-word;
-            position: relative;
-            backdrop-filter: blur(10px);
         }
 
         .ai-message-bubble.user {
             background: rgba(0, 204, 255, 0.1);
             border-color: var(--secondary);
             align-self: flex-end;
+        }
+
+        .ai-message-bubble.system {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent);
+            font-size: 13px;
+            font-style: italic;
         }
 
         .ai-message-time {
@@ -599,7 +597,6 @@
             display: flex;
             gap: 15px;
             align-items: center;
-            background: rgba(0, 0, 0, 0.3);
         }
 
         .ai-chat-input {
@@ -610,15 +607,11 @@
             padding: 12px 15px;
             color: var(--text-primary);
             font-size: 14px;
-            font-family: inherit;
-            transition: all 0.3s ease;
         }
 
         .ai-chat-input:focus {
             outline: none;
             border-color: var(--primary);
-            background: rgba(0, 255, 136, 0.05);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
         .ai-chat-send {
@@ -629,58 +622,101 @@
             color: var(--bg-darker);
             font-weight: bold;
             cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* Agent Shutdown Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .modal-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .ai-chat-send:hover {
+        .modal-btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .page-header {
-                padding: 25px;
-            }
-            
-            .page-title {
-                font-size: 32px;
-            }
-            
             .threat-grid {
                 grid-template-columns: 1fr;
             }
             
-            .threat-summary {
-                justify-content: center;
-            }
-            
-            .back-btn {
-                top: 10px;
-                left: 10px;
-                padding: 10px 18px;
-                font-size: 13px;
-            }
-            
-            .feed-section {
-                height: 400px;
-            }
-            
-            .ai-chat-widget {
-                bottom: 20px;
-                right: 20px;
-            }
-            
-            .ai-chat-toggle {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
+            .sub-agent-status {
+                flex-direction: column;
+                text-align: center;
             }
             
             .ai-chat-window {
@@ -726,66 +762,59 @@
         }
     </script>
 
-    <!-- Back Button -->
-    <a href="dashboard.html" class="back-btn">
-        <span>←</span>
-        <span>Back</span>
-    </a>
-
-    <!-- Threat Background -->
-    <div class="threat-bg">
-        <div class="scan-grid"></div>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="dot-grid"></div>
     </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div>
+                    <h1 class="brand-title">AI SENTINEL-X | THREAT DETECTION</h1>
+                    <p class="page-subtitle">ThreatScanner Sub-Agent Active</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="agent-status" onclick="showAgentShutdownModal()">
+                    <span>🤖 AI Agent Active • Fully Autonomous</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
 
     <!-- Container -->
     <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="header-content">
-                <div>
-                    <h1 class="page-title">THREAT DETECTION</h1>
-                    <p style="color: var(--text-secondary); margin-top: 5px;">AI-Powered Real-time Threat Analysis</p>
+        <!-- Sub-Agent Status -->
+        <div class="sub-agent-status">
+            <div class="sub-agent-info">
+                <div class="sub-agent-icon">🛡️</div>
+                <div class="sub-agent-details">
+                    <h3>ThreatScanner Sub-Agent</h3>
+                    <p>Analyzing 147K events/sec • Reports to Main Agent</p>
                 </div>
-                <div class="threat-summary">
-                    <div class="summary-item">
-                        <div class="summary-value" id="activeThreats">7</div>
-                        <div class="summary-label">Active Threats</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-value" style="color: var(--warning);" id="pendingThreats">3</div>
-                        <div class="summary-label">Processing</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-value" style="color: var(--success);" id="neutralizedThreats">124</div>
-                        <div class="summary-label">Neutralized</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-value" style="color: var(--accent);" id="predictedThreats">12</div>
-                        <div class="summary-label">Predicted</div>
-                    </div>
+            </div>
+            <div class="sub-agent-metrics">
+                <div class="metric">
+                    <div class="metric-value" id="activeThreats">7</div>
+                    <div class="metric-label">Active Threats</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="blockedToday">2,847</div>
+                    <div class="metric-label">Blocked Today</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">99.8%</div>
+                    <div class="metric-label">Detection Rate</div>
                 </div>
             </div>
         </div>
 
-        <!-- Status Alert -->
-        <div class="status-alert">
-            <div class="status-alert-icon">🤖</div>
-            <div>
-                <div style="font-size: 16px;">AI Protection Active</div>
-                <div style="font-size: 14px; font-weight: normal; margin-top: 5px;">All threats are being analyzed and neutralized autonomously. Manual intervention available.</div>
-            </div>
-        </div>
-
-        <!-- Encryption Banner -->
-        <div class="encryption-banner">
-            <div class="encryption-icon">🔐</div>
-            <div class="encryption-text">All threat data encrypted with hybrid protection:</div>
-            <div class="encryption-badges">
-                <span class="enc-badge">AES-256-GCM</span>
-                <span class="enc-badge">HMAC-SHA256</span>
-                <span class="enc-badge quantum">CRYSTALS-Kyber</span>
-                <span class="enc-badge quantum">Dilithium</span>
-            </div>
+        <!-- Compact Encryption Status -->
+        <div class="encryption-compact">
+            🔒 CLASSICAL + QUANTUM ACTIVE
         </div>
 
         <!-- Threat Grid -->
@@ -796,7 +825,7 @@
         <!-- Real-time Feed -->
         <div class="feed-section">
             <div class="feed-header">
-                <h2 class="feed-title">AI Defense Actions</h2>
+                <h2 class="feed-title">Sub-Agent Activity Feed</h2>
                 <div class="live-indicator">
                     <div class="live-dot"></div>
                     <span>LIVE</span>
@@ -808,27 +837,47 @@
         </div>
     </div>
 
+    <!-- Agent Shutdown Modal -->
+    <div class="modal-overlay" id="agentShutdownModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Emergency AI Shutdown</h2>
+            </div>
+            <div class="modal-content">
+                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. If external APIs or keys are offline, the agent will fallback to local control mode.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="confirmAgentShutdown()">Confirm Shutdown</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- AI Chat Widget -->
     <div class="ai-chat-widget">
         <div class="ai-chat-window" id="aiChatWindow">
             <div class="ai-chat-header">
-                <span>THREAT ANALYSIS AI</span>
+                <div class="ai-chat-status">
+                    <span class="chat-status-dot"></span>
+                    <span>MAIN AGENT ONLINE</span>
+                </div>
                 <span class="ai-chat-close" onclick="toggleChat()">×</span>
             </div>
+            <div class="cli-mode-indicator" id="cliModeIndicator">
+                ⚠️ CLI MODE - Main Agent Offline
+            </div>
             <div class="ai-chat-messages" id="aiChatMessages">
-                <div class="ai-message">
-                    <div class="ai-message-bubble">
-                        Welcome to Threat Analysis. I can provide real-time threat intelligence, impact analysis, and manual control options. All data is protected with hybrid encryption. What would you like to know?
-                    </div>
-                    <div class="ai-message-time">Just now</div>
+                <div class="ai-message-bubble">
+                    Connected to Main Agent. I can route commands to ThreatScanner or other sub-agents. All threat data is protected with hybrid encryption.
                 </div>
+                <div class="ai-message-time">Just now</div>
             </div>
             <div class="ai-chat-input-container">
                 <input 
                     type="text" 
                     class="ai-chat-input" 
                     id="aiChatInput" 
-                    placeholder="Ask about specific threats or request manual control..."
+                    placeholder="Enter command or ask about threats..."
                     onkeypress="handleChatKeyPress(event)"
                 >
                 <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
@@ -837,8 +886,9 @@
         <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
     </div>
 
+    <script src="shared.js"></script>
     <script>
-        // Realistic threats data
+        // Threat data
         const threats = [
             {
                 id: 1,
@@ -847,11 +897,10 @@
                 severity: 'critical',
                 source: '45.12.78.* (Botnet)',
                 target: 'API Gateway',
-                status: '🤖 AI Mitigating',
-                duration: '12 minutes',
                 attempts: '45,892',
-                prediction: '87% chance of escalation',
-                encryption: 'Traffic analysis: AES-256-GCM + Kyber-1024'
+                aiAnalysis: 'Pattern matches known botnet. 87% chance of escalation.',
+                subAgent: 'ThreatScanner',
+                status: 'Mitigating'
             },
             {
                 id: 2,
@@ -860,11 +909,10 @@
                 severity: 'critical',
                 source: '192.168.1.105',
                 target: '/api/users endpoint',
-                status: '🛡️ Blocked',
-                duration: '3 minutes',
                 attempts: '127',
-                prediction: 'Pattern matches known exploit',
-                encryption: 'Logs secured: HMAC-SHA256 + Dilithium-3'
+                aiAnalysis: 'Payload contains DROP TABLE. Blocked by WAF.',
+                subAgent: 'ThreatScanner',
+                status: 'Blocked'
             },
             {
                 id: 3,
@@ -873,63 +921,58 @@
                 severity: 'high',
                 source: 'Multiple IPs',
                 target: 'Admin Panel',
-                status: '🔒 Rate Limited',
-                duration: '8 minutes',
                 attempts: '3,247',
-                prediction: 'Credential stuffing detected',
-                encryption: 'Auth data: PBKDF2 + SPHINCS+'
+                aiAnalysis: 'Credential stuffing detected. Rate limiting applied.',
+                subAgent: 'ThreatScanner',
+                status: 'Rate Limited'
             },
             {
                 id: 4,
-                name: 'Malware Communication',
-                type: 'C2 Traffic',
+                name: 'Malware C2 Communication',
+                type: 'Malware',
                 severity: 'high',
-                source: 'Internal Host',
-                target: 'External C2 Server',
-                status: '🔐 Isolated',
-                duration: '5 minutes',
+                source: '192.168.1.87',
+                target: 'External C2',
                 attempts: '892',
-                prediction: 'Ransomware variant detected',
-                encryption: 'Quarantine: AES-256 + Kyber-768'
+                aiAnalysis: 'Ransomware variant. Host isolated by DefenseOrchestrator.',
+                subAgent: 'ThreatScanner → DefenseOrchestrator',
+                status: 'Isolated'
             },
             {
                 id: 5,
-                name: 'Data Exfiltration',
-                type: 'Insider Threat',
-                severity: 'medium',
-                source: 'User Account',
-                target: 'Database',
-                status: '👁️ Monitoring',
-                duration: '15 minutes',
-                attempts: '445',
-                prediction: '73% anomaly score',
-                encryption: 'Data at rest: AES-256-GCM'
-            },
-            {
-                id: 6,
                 name: 'Port Scanning',
                 type: 'Reconnaissance',
                 severity: 'medium',
-                source: '185.*.*.* ',
+                source: '185.220.101.*',
                 target: 'Network Perimeter',
-                status: '🚫 Blocked',
-                duration: '7 minutes',
                 attempts: '1,024',
-                prediction: 'Pre-attack reconnaissance',
-                encryption: 'Scan logs: HMAC-SHA256'
+                aiAnalysis: 'Tor exit node. Pre-attack reconnaissance likely.',
+                subAgent: 'ThreatScanner',
+                status: 'Blocked'
             },
             {
-                id: 7,
+                id: 6,
                 name: 'Phishing Campaign',
                 type: 'Email Threat',
                 severity: 'high',
-                source: 'External Email',
-                target: 'Employee Mailboxes',
-                status: '📧 Quarantined',
-                duration: '10 minutes',
-                attempts: '178',
-                prediction: 'Spear phishing detected',
-                encryption: 'Email analysis: Dilithium-5'
+                source: 'External',
+                target: 'Finance Department',
+                attempts: '89',
+                aiAnalysis: 'Spear phishing with CEO impersonation.',
+                subAgent: 'ThreatScanner',
+                status: 'Quarantined'
+            },
+            {
+                id: 7,
+                name: 'Zero-Day Exploit',
+                type: 'Unknown',
+                severity: 'medium',
+                source: 'Unknown',
+                target: 'Web Server',
+                attempts: '12',
+                aiAnalysis: 'New attack pattern detected. ML model analyzing.',
+                subAgent: 'ThreatScanner → AnalyticsEngine',
+                status: 'Analyzing'
             }
         ];
 
@@ -959,175 +1002,57 @@
                             <span class="detail-value">${threat.target}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-label">Duration</span>
-                            <span class="detail-value">${threat.duration}</span>
-                        </div>
-                        <div class="detail-row">
                             <span class="detail-label">Attempts</span>
                             <span class="detail-value">${threat.attempts}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-label">AI Analysis</span>
-                            <span class="detail-value" style="color: var(--accent);">${threat.prediction}</span>
+                            <span class="detail-label">Status</span>
+                            <span class="detail-value" style="color: var(--primary);">${threat.status}</span>
                         </div>
                     </div>
-                    <div class="threat-status">
-                        <span class="status-badge">${threat.status}</span>
-                        <div class="encryption-status">
-                            <span class="encryption-status-icon">🔐</span>
-                            <span>${threat.encryption}</span>
+                    <div class="threat-ai-status">
+                        <div class="ai-status-text">
+                            <span class="ai-status-icon">🤖</span>
+                            <span>${threat.aiAnalysis}</span>
+                        </div>
+                        <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">
+                            Handled by: ${threat.subAgent}
                         </div>
                     </div>
                 `;
                 
-                card.style.animationDelay = `${index * 0.1}s`;
-                card.addEventListener('click', () => showThreatDetails(threat));
+                card.onclick = () => showThreatDetails(threat);
                 grid.appendChild(card);
             });
         }
 
-        // Show threat details in chat
+        // Show threat details
         function showThreatDetails(threat) {
             if (!chatOpen) {
                 toggleChat();
             }
             setTimeout(() => {
-                addChatMessage(`Analyzing ${threat.name}: ${threat.prediction}. Current status: ${threat.status}. Data protection: ${threat.encryption}. Would you like to take manual control of this threat response?`, false);
+                addChatMessage(`Routing to ThreatScanner sub-agent...`, false, 'system');
+                setTimeout(() => {
+                    addChatMessage(`ThreatScanner: ${threat.name} - ${threat.aiAnalysis} Current status: ${threat.status}. Handled by ${threat.subAgent}. Would you like manual control?`, false);
+                }, 800);
             }, 300);
-        }
-
-        // AI Chat System
-        let chatOpen = false;
-        
-        function toggleChat() {
-            chatOpen = !chatOpen;
-            const chatWindow = document.getElementById('aiChatWindow');
-            if (chatOpen) {
-                chatWindow.classList.add('active');
-            } else {
-                chatWindow.classList.remove('active');
-            }
-        }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('aiChatInput');
-            const message = input.value.trim();
-            if (!message) return;
-
-            const messagesContainer = document.getElementById('aiChatMessages');
-            
-            // Add user message
-            addChatMessage(message, true);
-            input.value = '';
-
-            // Show typing indicator
-            showTypingIndicator();
-
-            // Simulate AI response
-            setTimeout(() => {
-                removeTypingIndicator();
-                const response = generateAIResponse(message);
-                addChatMessage(response, false);
-            }, 1500 + Math.random() * 1000);
-        }
-
-        function addChatMessage(message, isUser) {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'ai-message';
-            
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="ai-message-bubble ${isUser ? 'user' : ''}">
-                    ${message}
-                </div>
-                <div class="ai-message-time">${time}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function showTypingIndicator() {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'ai-typing';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.style.display = 'flex';
-            typingDiv.style.gap = '5px';
-            typingDiv.style.padding = '10px';
-            
-            for (let i = 0; i < 3; i++) {
-                const dot = document.createElement('div');
-                dot.style.width = '8px';
-                dot.style.height = '8px';
-                dot.style.background = 'var(--primary)';
-                dot.style.borderRadius = '50%';
-                dot.style.animation = 'typingDot 1.4s ease-in-out infinite';
-                dot.style.animationDelay = `${i * 0.2}s`;
-                typingDiv.appendChild(dot);
-            }
-            
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        }
-
-        function generateAIResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage.includes('encryption') || lowerMessage.includes('crypto')) {
-                return '🔐 All threat data is protected with hybrid encryption: Classical AES-256-GCM for real-time analysis + Post-Quantum CRYSTALS-Kyber for long-term storage. Digital signatures use Dilithium-3.';
-            }
-            
-            if (lowerMessage.includes('ddos') || lowerMessage.includes('attack')) {
-                return '⚡ The DDoS attack is being handled by rate limiting and traffic filtering. Current mitigation: 94% effective. Blocking 45,892 requests/second. All logs encrypted with AES-256-GCM + Kyber-1024.';
-            }
-            
-            if (lowerMessage.includes('manual') || lowerMessage.includes('control')) {
-                return '🎛️ Manual control available for: 1) Block specific IPs, 2) Adjust rate limits, 3) Deploy honeypots, 4) Isolate systems. All actions logged with post-quantum signatures. Which action?';
-            }
-            
-            if (lowerMessage.includes('quantum') || lowerMessage.includes('post-quantum')) {
-                return '🔮 Post-quantum encryption active: CRYSTALS-Kyber for key encapsulation, Dilithium for signatures. Protects against future quantum computer attacks while maintaining classical security.';
-            }
-            
-            if (lowerMessage.includes('status') || lowerMessage.includes('overview')) {
-                return '📊 Current threat landscape: 7 active threats (2 critical, 3 high, 2 medium). AI handling all autonomously with 99.7% success rate. Hybrid encryption protecting all data flows.';
-            }
-            
-            return '🤖 I\'m analyzing your query. Please specify which threat or system you\'d like to investigate or control.';
         }
 
         // Feed messages
         const feedMessages = [
-            '🛡️ Blocked 1,247 malicious requests from botnet - logged with AES-256-GCM',
-            '🔍 AI detected new SQL injection pattern - rules updated with Dilithium signature',
-            '⚡ DDoS attack mitigated - 45k requests blocked - data encrypted with Kyber-1024',
-            '🔐 Suspicious login attempt quarantined - credentials protected with PBKDF2',
-            '📊 Threat model updated with new attack vectors - signed with Dilithium-5',
-            '🎯 Zero-day vulnerability patched - update verified with post-quantum signatures',
-            '🧠 Machine learning model accuracy: 99.8% - weights encrypted with hybrid crypto',
-            '🔒 Encrypted C2 communication blocked - traffic analysis using CRYSTALS-Kyber',
-            '📧 Phishing email quarantined - 178 similar blocked - HMAC-SHA256 verification',
-            '🚨 Port scan detected - source IP blacklisted - logs secured with AES-256'
+            { msg: '🛡️ ThreatScanner blocked SQL injection on /api/login', agent: 'ThreatScanner', type: 'threat' },
+            { msg: '🤖 Main Agent coordinating response to DDoS attack', agent: 'Main Agent', type: 'ai-action' },
+            { msg: '⚡ DefenseOrchestrator isolated infected host', agent: 'DefenseOrchestrator', type: 'ai-action' },
+            { msg: '🔍 ThreatScanner detected new attack pattern', agent: 'ThreatScanner', type: 'threat' },
+            { msg: '📊 AnalyticsEngine updated threat model', agent: 'AnalyticsEngine', type: 'ai-action' },
+            { msg: '🔐 EncryptionManager rotated keys after breach attempt', agent: 'EncryptionManager', type: 'ai-action' },
+            { msg: '🎯 ThreatScanner predicted zero-day exploit', agent: 'ThreatScanner', type: 'threat' },
+            { msg: '📝 LogAgent recorded all actions with Dilithium signatures', agent: 'LogAgent', type: 'ai-action' }
         ];
 
         // Add feed item
-        function addFeedItem(message, type = '') {
+        function addFeedItem(message, agent, type = 'threat') {
             const feed = document.getElementById('threatFeed');
             const item = document.createElement('div');
             item.className = `feed-item ${type}`;
@@ -1136,6 +1061,7 @@
             item.innerHTML = `
                 <div class="feed-time">${time}</div>
                 <div class="feed-message">${message}</div>
+                <div class="feed-agent">via ${agent}</div>
             `;
             
             feed.insertBefore(item, feed.firstChild);
@@ -1146,21 +1072,24 @@
             }
         }
 
-        // Update threat counts
-        function updateThreatCounts() {
-            const active = document.getElementById('activeThreats');
-            const neutralized = document.getElementById('neutralizedThreats');
-            const predicted = document.getElementById('predictedThreats');
+        // Update metrics
+        function updateMetrics() {
+            const blocked = document.getElementById('blockedToday');
+            const current = parseInt(blocked.textContent.replace(',', ''));
+            blocked.textContent = (current + Math.floor(Math.random() * 10)).toLocaleString();
             
-            // Occasionally neutralize a threat
-            if (Math.random() > 0.7) {
-                active.textContent = Math.max(0, parseInt(active.textContent) - 1);
-                neutralized.textContent = parseInt(neutralized.textContent) + 1;
-            }
-            
-            // Update predictions
+            // Occasionally change threat count
             if (Math.random() > 0.8) {
-                predicted.textContent = Math.floor(Math.random() * 5 + 10);
+                const threats = document.getElementById('activeThreats');
+                threats.textContent = Math.max(0, parseInt(threats.textContent) + Math.floor(Math.random() * 3 - 1));
+            }
+        }
+
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Logout? The AI agent will continue protecting your systems.')) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
             }
         }
 
@@ -1168,34 +1097,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             populateThreats();
             
-            // Add initial feed items
-            addFeedItem('🤖 Threat monitoring system online. AI analyzing patterns with hybrid encryption.', 'encryption');
-            addFeedItem('🛡️ Autonomous defense activated. Zero human intervention required.');
+            // Initial feed
+            addFeedItem('🤖 ThreatScanner sub-agent initialized', 'Main Agent', 'ai-action');
+            addFeedItem('🔐 All threat data encrypted with hybrid protection', 'EncryptionManager', 'ai-action');
             
-            // Auto-generate feed items
+            // Auto-generate feed
             setInterval(() => {
-                const isEncryption = Math.random() > 0.7;
-                const message = feedMessages[Math.floor(Math.random() * feedMessages.length)];
-                addFeedItem(message, isEncryption ? 'encryption' : '');
-                updateThreatCounts();
+                const item = feedMessages[Math.floor(Math.random() * feedMessages.length)];
+                addFeedItem(item.msg, item.agent, item.type);
+                updateMetrics();
             }, 5000);
         });
-
-        // Add CSS animation for typing dots
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes typingDot {
-                0%, 60%, 100% {
-                    transform: translateY(0);
-                    opacity: 0.7;
-                }
-                30% {
-                    transform: translateY(-10px);
-                    opacity: 1;
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>

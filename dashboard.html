@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Sentinel-X | Security Operations Center</title>
+    <title>Dashboard | AI Sentinel-X</title>
     <style>
         * {
             margin: 0;
@@ -29,6 +29,7 @@
             --gradient-shield: linear-gradient(135deg, #1a4d2e 0%, #00ff88 50%, #00ccff 100%);
             --gradient-encryption: linear-gradient(135deg, #00ff88 0%, #00aa66 100%);
             --gradient-quantum: linear-gradient(135deg, #7c3aed 0%, #ff00ff 50%, #00ccff 100%);
+            --gradient-hybrid: linear-gradient(135deg, #00ff88 0%, #7c3aed 50%, #00ccff 100%);
         }
 
         body {
@@ -39,8 +40,8 @@
             min-height: 100vh;
         }
 
-        /* Neural Network Background */
-        .neural-bg {
+        /* Animated Dot Background */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -48,37 +49,21 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.3;
+            overflow: hidden;
         }
 
-        /* Matrix Background */
-        .matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            background: 
-                radial-gradient(ellipse at 30% 30%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 70%, rgba(0, 204, 255, 0.08) 0%, transparent 50%);
-        }
-
-        .quantum-grid {
+        .dot-grid {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
-            background-size: 100px 100px;
-            animation: quantumShift 20s linear infinite;
+            background-image: radial-gradient(circle, rgba(0, 255, 136, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: dotMove 40s linear infinite;
         }
 
-        @keyframes quantumShift {
+        @keyframes dotMove {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(100px, 100px); }
+            100% { transform: translate(30px, 30px); }
         }
 
         /* Container */
@@ -115,7 +100,7 @@
             gap: 25px;
         }
 
-        /* Enhanced Logo with Orbiting Particles */
+        /* Logo */
         .logo-container {
             width: 80px;
             height: 80px;
@@ -125,39 +110,6 @@
             justify-content: center;
         }
 
-        .logo-particles {
-            position: absolute;
-            width: 130%;
-            height: 130%;
-            top: -15%;
-            left: -15%;
-            pointer-events: none;
-        }
-
-        .particle-orbit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            animation: particleOrbit 10s linear infinite;
-        }
-
-        @keyframes particleOrbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 50%;
-            box-shadow: 0 0 6px currentColor;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
         .logo-shield {
             width: 50px;
             height: 50px;
@@ -165,23 +117,14 @@
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             position: relative;
             animation: shieldPulse 3s ease-in-out infinite;
-            box-shadow: 
-                0 0 30px rgba(0, 255, 136, 0.5),
-                inset 0 0 20px rgba(0, 255, 136, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         @keyframes shieldPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-            }
-            50% { 
-                transform: scale(1.05);
-                box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .logo-eye {
@@ -193,9 +136,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 
-                inset 0 0 15px rgba(0, 255, 136, 0.3),
-                0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .logo-iris {
@@ -203,31 +143,34 @@
             height: 20px;
             background: var(--gradient-1);
             border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            animation: irisGlow 2s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                0 0 15px rgba(0, 255, 136, 0.8),
-                inset 0 0 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
         }
 
-        .logo-iris::before {
-            content: '';
+        .rotating-dots {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--bg-darker);
-            border-radius: 50%;
-            box-shadow: inset 0 0 5px rgba(0, 255, 136, 0.5);
+            width: 100%;
+            height: 100%;
+            animation: rotate 10s linear infinite;
         }
 
-        @keyframes irisGlow {
-            0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
-            50% { box-shadow: 0 0 25px rgba(0, 204, 255, 0.8); }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
+
+        .dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--primary);
+        }
+
+        .dot:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .dot:nth-child(2) { top: 50%; right: 0; transform: translateY(-50%); }
+        .dot:nth-child(3) { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .dot:nth-child(4) { top: 50%; left: 0; transform: translateY(-50%); }
 
         .brand-info {
             display: flex;
@@ -393,7 +336,7 @@
 
         .modal-btn-secondary {
             background: transparent;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             color: var(--text-secondary);
         }
 
@@ -445,12 +388,6 @@
             font-weight: bold;
         }
 
-        /* Main Dashboard */
-        .dashboard-content {
-            display: grid;
-            gap: 25px;
-        }
-
         /* Alert Banner */
         .alert-banner {
             background: var(--gradient-1);
@@ -463,152 +400,115 @@
             letter-spacing: 2px;
             font-size: 14px;
             box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+            margin-bottom: 25px;
         }
 
-        /* Hybrid Encryption Status Bar */
-        .encryption-status-bar {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(15px);
+        /* Hybrid Encryption Status */
+        .encryption-status-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
         }
 
-        .encryption-status-bar::before {
+        .encryption-status-section::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.2), transparent);
-            animation: encryptionScan 4s linear infinite;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-hybrid);
+            opacity: 0.05;
+            animation: hybridPulse 8s ease-in-out infinite;
         }
 
-        @keyframes encryptionScan {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        @keyframes hybridPulse {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.1; }
         }
 
         .encryption-content {
             position: relative;
             z-index: 1;
+        }
+
+        .encryption-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .encryption-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .encryption-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-quantum);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
-            animation: quantumPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes quantumPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(124, 58, 237, 0.6); }
-        }
-
-        .encryption-details {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
         }
 
         .encryption-title {
+            font-size: 24px;
             font-weight: bold;
-            font-size: 18px;
-            background: var(--gradient-quantum);
+            background: var(--gradient-hybrid);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .encryption-badge {
+            background: var(--gradient-quantum);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .encryption-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .crypto-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(124, 58, 237, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2);
+            border-color: var(--accent);
+        }
+
+        .crypto-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .crypto-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary);
             margin-bottom: 8px;
         }
 
-        .encryption-algorithms {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .algorithm-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .algorithm-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .algorithm-badges {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .algorithm-badge {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 11px;
-            color: var(--primary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .algorithm-badge.quantum {
-            background: rgba(124, 58, 237, 0.1);
-            border-color: var(--accent);
+        .crypto-name.quantum {
             color: var(--accent);
         }
 
-        .encryption-metrics {
-            display: flex;
-            gap: 30px;
-        }
-
-        .encryption-metric {
-            text-align: center;
-        }
-
-        .metric-value {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
-
-        .metric-label {
-            font-size: 11px;
+        .crypto-details {
+            font-size: 13px;
             color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            line-height: 1.5;
         }
 
-        /* Sub-Agent Status Grid */
+        /* Sub-Agents Grid */
         .sub-agents-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -637,7 +537,7 @@
 
         .sub-agents-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 15px;
         }
 
@@ -697,6 +597,11 @@
             animation: pulse 2s ease-in-out infinite;
         }
 
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
         /* Security Feed */
         .security-feed {
             background: var(--bg-card);
@@ -739,11 +644,6 @@
             background: var(--danger);
             border-radius: 50%;
             animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.5); }
         }
 
         .feed-content {
@@ -1083,19 +983,6 @@
                 bottom: 80px;
             }
 
-            .encryption-status-bar {
-                padding: 20px;
-            }
-
-            .encryption-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .encryption-metrics {
-                justify-content: center;
-            }
-
             .sub-agents-grid {
                 grid-template-columns: 1fr;
             }
@@ -1119,3 +1006,533 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--secondary);
         }
+    </style>
+</head>
+<body>
+    <script>
+        // Check authentication
+        const auth = localStorage.getItem('sentinel_auth');
+        if (!auth) {
+            window.location.href = 'index.html';
+        } else {
+            const authData = JSON.parse(auth);
+            if (Date.now() - authData.timestamp > 24 * 60 * 60 * 1000) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="dot-grid"></div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-container">
+                        <div class="rotating-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <div class="logo-shield">
+                            <div class="logo-eye">
+                                <div class="logo-iris"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="brand-info">
+                        <h1 class="brand-name">AI SENTINEL-X</h1>
+                        <p class="brand-tagline">Autonomous Cyber Defense</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="agent-status" onclick="showAgentShutdownModal()">
+                        <span class="agent-icon">🤖</span>
+                        <div class="agent-info">
+                            <span class="agent-title">AI Agent Active</span>
+                            <span class="agent-status-text">Fully Autonomous</span>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <a href="#" class="nav-tab active">
+                <span>🏠</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="threats.html" class="nav-tab">
+                <span>🛡️</span>
+                <span>Threats</span>
+            </a>
+            <a href="network.html" class="nav-tab">
+                <span>🌐</span>
+                <span>Network</span>
+            </a>
+            <a href="defense.html" class="nav-tab">
+                <span>⚔️</span>
+                <span>Defense</span>
+            </a>
+            <a href="analytics.html" class="nav-tab">
+                <span>📊</span>
+                <span>Analytics</span>
+            </a>
+            <a href="ai-engine.html" class="nav-tab">
+                <span>🧠</span>
+                <span>AI Engine</span>
+            </a>
+            <a href="settings.html" class="nav-tab">
+                <span>⚙️</span>
+                <span>Settings</span>
+            </a>
+            <a href="encryption.html" class="nav-tab">
+                <span>🔐</span>
+                <span>Encryption</span>
+            </a>
+        </nav>
+
+        <!-- Alert Banner -->
+        <div class="alert-banner">
+            🚀 AI SENTINEL-X OPERATIONAL • 247 DEVICES PROTECTED • ZERO HUMAN INTERVENTION REQUIRED
+        </div>
+
+        <!-- Hybrid Encryption Status -->
+        <div class="encryption-status-section">
+            <div class="encryption-content">
+                <div class="encryption-header">
+                    <h2 class="encryption-title">Hybrid Encryption Protection</h2>
+                    <div class="encryption-badge">CLASSICAL + QUANTUM ACTIVE</div>
+                </div>
+                
+                <div class="encryption-grid">
+                    <!-- Classical Algorithms -->
+                    <div class="crypto-card">
+                        <div class="crypto-icon">🔐</div>
+                        <div class="crypto-name">AES-256-GCM</div>
+                        <div class="crypto-details">
+                            Primary encryption for all data at rest and in transit. Hardware accelerated.
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-card">
+                        <div class="crypto-icon">✓</div>
+                        <div class="crypto-name">HMAC-SHA256</div>
+                        <div class="crypto-details">
+                            Message authentication for all API requests and agent communications.
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-card">
+                        <div class="crypto-icon">🔑</div>
+                        <div class="crypto-name">PBKDF2-HMAC-SHA256</div>
+                        <div class="crypto-details">
+                            Secure password hashing with 600K iterations for all credentials.
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-card">
+                        <div class="crypto-icon">🔄</div>
+                        <div class="crypto-name">HKDF-SHA256</div>
+                        <div class="crypto-details">
+                            Session key derivation for perfect forward secrecy.
+                        </div>
+                    </div>
+                    
+                    <!-- Post-Quantum Algorithms -->
+                    <div class="crypto-card">
+                        <div class="crypto-icon">💠</div>
+                        <div class="crypto-name quantum">CRYSTALS-Kyber</div>
+                        <div class="crypto-details">
+                            Post-quantum key encapsulation protecting against future quantum attacks.
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-card">
+                        <div class="crypto-icon">✍️</div>
+                        <div class="crypto-name quantum">CRYSTALS-Dilithium</div>
+                        <div class="crypto-details">
+                            Quantum-resistant digital signatures for all critical operations.
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-card">
+                        <div class="crypto-icon">🔷</div>
+                        <div class="crypto-name quantum">SPHINCS+</div>
+                        <div class="crypto-details">
+                            Stateless hash-based signatures for long-term security.
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-card">
+                        <div class="crypto-icon">🦅</div>
+                        <div class="crypto-name quantum">FALCON</div>
+                        <div class="crypto-details">
+                            Compact lattice-based signatures (experimental deployment).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-Agents Status -->
+        <div class="sub-agents-section">
+            <div class="sub-agents-header">
+                <h2 class="sub-agents-title">Active Sub-Agents</h2>
+                <span style="color: var(--text-secondary); font-size: 14px;">Main Agent orchestrating all operations</span>
+            </div>
+            
+            <div class="sub-agents-grid">
+                <div class="sub-agent-card" onclick="window.location.href='threats.html'">
+                    <div class="sub-agent-icon">🛡️</div>
+                    <div class="sub-agent-info">
+                        <div class="sub-agent-name">ThreatScanner</div>
+                        <div class="sub-agent-status">Analyzing 147K events/sec</div>
+                        <div class="sub-agent-activity">
+                            <span class="activity-dot"></span>
+                            <span>7 active threats detected</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-agent-card" onclick="window.location.href='network.html'">
+                    <div class="sub-agent-icon">🌐</div>
+                    <div class="sub-agent-info">
+                        <div class="sub-agent-name">NetworkMapper</div>
+                        <div class="sub-agent-status">Monitoring 247 devices</div>
+                        <div class="sub-agent-activity">
+                            <span class="activity-dot"></span>
+                            <span>12 new devices today</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-agent-card" onclick="window.location.href='defense.html'">
+                    <div class="sub-agent-icon">⚔️</div>
+                    <div class="sub-agent-info">
+                        <div class="sub-agent-name">DefenseOrchestrator</div>
+                        <div class="sub-agent-status">8 honeypots active</div>
+                        <div class="sub-agent-activity">
+                            <span class="activity-dot"></span>
+                            <span>124 attacks neutralized</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-agent-card" onclick="window.location.href='encryption.html'">
+                    <div class="sub-agent-icon">🔐</div>
+                    <div class="sub-agent-info">
+                        <div class="sub-agent-name">EncryptionManager</div>
+                        <div class="sub-agent-status">Hybrid mode active</div>
+                        <div class="sub-agent-activity">
+                            <span class="activity-dot"></span>
+                            <span>8 algorithms protecting data</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-agent-card" onclick="window.location.href='analytics.html'">
+                    <div class="sub-agent-icon">📊</div>
+                    <div class="sub-agent-info">
+                        <div class="sub-agent-name">AnalyticsEngine</div>
+                        <div class="sub-agent-status">Processing 2.4M metrics</div>
+                        <div class="sub-agent-activity">
+                            <span class="activity-dot"></span>
+                            <span>99.8% prediction accuracy</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-agent-card">
+                    <div class="sub-agent-icon">📝</div>
+                    <div class="sub-agent-info">
+                        <div class="sub-agent-name">LogAgent</div>
+                        <div class="sub-agent-status">Securing audit trails</div>
+                        <div class="sub-agent-activity">
+                            <span class="activity-dot"></span>
+                            <span>All logs Dilithium signed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-content">
+            <!-- Security Feed -->
+            <div class="security-feed">
+                <div class="feed-header">
+                    <h2 class="feed-title">Live Security Feed</h2>
+                    <div class="live-indicator">
+                        <div class="live-dot"></div>
+                        <span>LIVE</span>
+                    </div>
+                </div>
+                <div class="feed-content" id="securityFeed">
+                    <!-- Feed items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="threats.html" class="action-card">
+                    <div class="action-icon">🛡️</div>
+                    <div class="action-content">
+                        <div class="action-title">View Threats</div>
+                        <div class="action-description">7 active threats being handled by AI</div>
+                    </div>
+                </a>
+                
+                <a href="network.html" class="action-card">
+                    <div class="action-icon">🌐</div>
+                    <div class="action-content">
+                        <div class="action-title">Network Discovery</div>
+                        <div class="action-description">247 devices protected with hybrid encryption</div>
+                    </div>
+                </a>
+                
+                <a href="defense.html" class="action-card">
+                    <div class="action-icon">⚔️</div>
+                    <div class="action-content">
+                        <div class="action-title">Active Defense</div>
+                        <div class="action-description">8 honeypots deployed autonomously</div>
+                    </div>
+                </a>
+                
+                <a href="ai-engine.html" class="action-card">
+                    <div class="action-icon">🧠</div>
+                    <div class="action-content">
+                        <div class="action-title">AI Engine</div>
+                        <div class="action-description">Neural network with 99.8% accuracy</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- System Metrics -->
+            <div class="system-metrics">
+                <div class="metric-card">
+                    <div class="metric-value" id="threatCount">7</div>
+                    <div class="metric-label">Active Threats</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="deviceCount">247</div>
+                    <div class="metric-label">Protected Devices</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="uptime">99.98%</div>
+                    <div class="metric-label">System Uptime</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="blockedCount">12.4K</div>
+                    <div class="metric-label">Attacks Blocked</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="encryptionOps">2.1M</div>
+                    <div class="metric-label">Crypto Ops/Sec</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Shutdown Modal -->
+    <div class="modal-overlay" id="agentShutdownModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Emergency AI Shutdown</h2>
+            </div>
+            <div class="modal-content">
+                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. If external APIs or keys are offline, the agent will fallback to local control mode.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="confirmAgentShutdown()">Confirm Shutdown</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Widget -->
+    <div class="ai-chat-widget">
+        <div class="ai-chat-window" id="aiChatWindow">
+            <div class="ai-chat-header">
+                <div class="ai-chat-status">
+                    <span class="chat-status-dot"></span>
+                    <span>MAIN AGENT ONLINE</span>
+                </div>
+                <span class="ai-chat-close" onclick="toggleChat()">×</span>
+            </div>
+            <div class="cli-mode-indicator" id="cliModeIndicator">
+                ⚠️ CLI MODE - Main Agent Offline
+            </div>
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-message-bubble">
+                    Welcome to AI Sentinel-X. I'm the Main Agent coordinating all security operations. Type commands to control sub-agents or ask about system status. All communications protected with hybrid encryption.
+                </div>
+                <div class="ai-message-time">Just now</div>
+            </div>
+            <div class="ai-chat-input-container">
+                <input 
+                    type="text" 
+                    class="ai-chat-input" 
+                    id="aiChatInput" 
+                    placeholder="Enter command or ask a question..."
+                    onkeypress="handleChatKeyPress(event)"
+                >
+                <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
+            </div>
+        </div>
+        <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize security feed
+            addFeedItem('🤖 Main Agent initialized. All sub-agents online.', '', 'Main Agent');
+            addFeedItem('🔐 Hybrid encryption active: Classical + Post-Quantum', 'encryption', 'EncryptionManager');
+            addFeedItem('🛡️ ThreatScanner detected suspicious activity on port 445', 'warning', 'ThreatScanner');
+            
+            // Auto-generate feed items
+            setInterval(() => {
+                generateRandomFeedItem();
+            }, 5000);
+            
+            // Update metrics
+            setInterval(() => {
+                updateMetrics();
+            }, 3000);
+        });
+
+        // Add feed item
+        function addFeedItem(message, type = '', agent = '') {
+            const feed = document.getElementById('securityFeed');
+            const item = document.createElement('div');
+            item.className = `feed-item ${type}`;
+            
+            const time = new Date().toLocaleTimeString();
+            item.innerHTML = `
+                <div class="feed-time">${time}</div>
+                <div class="feed-message">${message}</div>
+                ${agent ? `<div class="feed-agent">via ${agent}</div>` : ''}
+            `;
+            
+            feed.insertBefore(item, feed.firstChild);
+            
+            // Keep only last 10 items
+            while (feed.children.length > 10) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        // Generate random feed items
+        const feedMessages = [
+            { msg: '🛡️ Blocked SQL injection attempt on /api/users', type: 'danger', agent: 'ThreatScanner' },
+            { msg: '🌐 New device discovered: 192.168.1.${Math.floor(Math.random() * 254)}', type: '', agent: 'NetworkMapper' },
+            { msg: '🔐 Key rotation completed. Kyber-1024 + AES-256', type: 'encryption', agent: 'EncryptionManager' },
+            { msg: '⚔️ Honeypot triggered by external scanner', type: 'warning', agent: 'DefenseOrchestrator' },
+            { msg: '📊 AI model accuracy: 99.${Math.floor(Math.random() * 9)}%', type: '', agent: 'AnalyticsEngine' },
+            { msg: '🔒 All logs signed with Dilithium-3', type: 'encryption', agent: 'LogAgent' },
+            { msg: '🎯 Predicted attack pattern, preemptive defense deployed', type: 'warning', agent: 'ThreatScanner' },
+            { msg: '✅ System health check passed. All agents operational', type: '', agent: 'Main Agent' }
+        ];
+
+        function generateRandomFeedItem() {
+            const item = feedMessages[Math.floor(Math.random() * feedMessages.length)];
+            let msg = item.msg;
+            
+            // Add some variation to device discovery
+            if (msg.includes('${')) {
+                msg = msg.replace(/\$\{[^}]+\}/g, (match) => eval(match.slice(2, -1)));
+            }
+            
+            addFeedItem(msg, item.type, item.agent);
+        }
+
+        // Update metrics
+        function updateMetrics() {
+            // Occasionally change threat count
+            if (Math.random() > 0.9) {
+                const threatEl = document.getElementById('threatCount');
+                const current = parseInt(threatEl.textContent);
+                threatEl.textContent = Math.max(0, current + Math.floor(Math.random() * 3 - 1));
+            }
+            
+            // Update device count
+            if (Math.random() > 0.95) {
+                const deviceEl = document.getElementById('deviceCount');
+                const current = parseInt(deviceEl.textContent);
+                deviceEl.textContent = current + Math.floor(Math.random() * 3);
+            }
+            
+            // Update blocked count
+            const blockedEl = document.getElementById('blockedCount');
+            const blocked = parseFloat(blockedEl.textContent.replace('K', ''));
+            blockedEl.textContent = (blocked + 0.1).toFixed(1) + 'K';
+            
+            // Update crypto ops
+            const cryptoEl = document.getElementById('encryptionOps');
+            const ops = 2.0 + Math.random() * 0.3;
+            cryptoEl.textContent = ops.toFixed(1) + 'M';
+        }
+
+        // Modal functions
+        function showAgentShutdownModal() {
+            const modal = document.getElementById('agentShutdownModal');
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('agentShutdownModal');
+            modal.style.display = 'none';
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        }
+
+        function confirmAgentShutdown() {
+            agentActive = false;
+            
+            // Update header status
+            const agentStatus = document.querySelector('.agent-status');
+            agentStatus.style.background = 'rgba(255, 170, 0, 0.1)';
+            agentStatus.style.borderColor = '#ffaa00';
+            
+            const statusTitle = document.querySelector('.agent-title');
+            const statusText = document.querySelector('.agent-status-text');
+            statusTitle.textContent = 'AI Agent Paused';
+            statusTitle.style.color = '#ffaa00';
+            statusText.textContent = 'Manual Control Only';
+            
+            closeModal();
+            
+            // Show notification in chat
+            if (chatOpen) {
+                addChatMessage('⚠️ Main Agent has been paused. Manual control is now active. I will operate in local CLI mode if external connections fail.', false, 'system');
+            }
+            
+            // Add feed notification
+            addFeedItem('⚠️ AI Agent switched to manual control mode', 'warning', 'Main Agent');
+        }
+
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout? The AI agent will continue protecting your systems autonomously.')) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

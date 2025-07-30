@@ -588,6 +588,18 @@
             padding: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
+            animation: deviceSlideIn 0.5s ease;
+        }
+
+        @keyframes deviceSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .device-card:hover {
@@ -641,6 +653,24 @@
             display: flex;
             align-items: center;
             gap: 5px;
+        }
+
+        /* Pulse animation for new devices */
+        .device-card.new-device {
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            animation: newDevicePulse 2s ease-in-out;
+        }
+
+        @keyframes newDevicePulse {
+            0%, 100% { 
+                border-color: var(--secondary);
+                box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            }
+            50% { 
+                border-color: var(--primary);
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            }
         }
 
         /* AI Chat Widget */
@@ -1377,7 +1407,7 @@
         <div class="device-discovery">
             <div class="panel-header">
                 <h2 class="panel-title">Live Device Discovery</h2>
-                <span style="color: var(--text-secondary); font-size: 14px;">Auto-updating every 0.3 seconds</span>
+                <span style="color: var(--text-secondary); font-size: 14px;">Auto-updating every 3 seconds</span>
             </div>
             
             <div class="discovery-grid" id="deviceGrid">
@@ -1437,26 +1467,133 @@
     <script src="shared.js"></script>
     <script>
         // Sample devices for demonstration
-        const internalDevices = [
-            { name: 'DC-PRIMARY', ip: '192.168.1.10', type: 'Domain Controller', icon: '🖥️', services: 'AD, DNS, DHCP', status: 'Secure', encryption: 'Hybrid: AES-256 + Kyber' },
-            { name: 'DC-SECONDARY', ip: '192.168.1.11', type: 'Domain Controller', icon: '🖥️', services: 'AD, DNS', status: 'Secure', encryption: 'Hybrid: AES-256 + Kyber' },
-            { name: 'FILE-SERVER-01', ip: '192.168.1.20', type: 'File Server', icon: '📁', services: 'SMB, FTP', status: 'Monitoring', encryption: 'AES-256-GCM' },
-            { name: 'DB-PROD-01', ip: '192.168.1.30', type: 'Database', icon: '🗄️', services: 'MySQL 8.0', status: 'Secure', encryption: 'TDE: AES-256 + Kyber' },
-            { name: 'WEB-APP-01', ip: '192.168.1.40', type: 'Web Server', icon: '🌐', services: 'HTTPS, SSH', status: 'Secure', encryption: 'TLS 1.3 + PQ Certs' },
-            { name: 'SECURITY-CAM-01', ip: '192.168.1.50', type: 'IoT Device', icon: '📹', services: 'RTSP, HTTP', status: 'Vulnerable', encryption: 'Weak/None' },
-            { name: 'WORKSTATION-101', ip: '192.168.1.101', type: 'Workstation', icon: '💻', services: 'RDP, SMB', status: 'Update Required', encryption: 'BitLocker: Hybrid' },
-            { name: 'PRINTER-FINANCE', ip: '192.168.1.200', type: 'Network Printer', icon: '🖨️', services: 'IPP, SNMP', status: 'Default Password', encryption: 'TLS Optional' },
-            { name: 'HVAC-CONTROLLER', ip: '192.168.1.230', type: 'Building System', icon: '🌡️', services: 'BACnet, HTTP', status: 'Monitoring', encryption: 'Basic Auth' }
+        let internalDevices = [
+            { 
+                id: 'dc-primary', 
+                name: 'DC-PRIMARY', 
+                ip: '192.168.1.10', 
+                type: 'Domain Controller', 
+                icon: '🖥️', 
+                services: 'AD, DNS, DHCP', 
+                status: 'Secure', 
+                encryption: 'Hybrid: AES-256 + Kyber',
+                isNew: false 
+            },
+            { 
+                id: 'dc-secondary', 
+                name: 'DC-SECONDARY', 
+                ip: '192.168.1.11', 
+                type: 'Domain Controller', 
+                icon: '🖥️', 
+                services: 'AD, DNS', 
+                status: 'Secure', 
+                encryption: 'Hybrid: AES-256 + Kyber',
+                isNew: false 
+            },
+            { 
+                id: 'file-server-01', 
+                name: 'FILE-SERVER-01', 
+                ip: '192.168.1.20', 
+                type: 'File Server', 
+                icon: '📁', 
+                services: 'SMB, FTP', 
+                status: 'Monitoring', 
+                encryption: 'AES-256-GCM',
+                isNew: false 
+            },
+            { 
+                id: 'db-prod-01', 
+                name: 'DB-PROD-01', 
+                ip: '192.168.1.30', 
+                type: 'Database', 
+                icon: '🗄️', 
+                services: 'MySQL 8.0', 
+                status: 'Secure', 
+                encryption: 'TDE: AES-256 + Kyber',
+                isNew: false 
+            },
+            { 
+                id: 'web-app-01', 
+                name: 'WEB-APP-01', 
+                ip: '192.168.1.40', 
+                type: 'Web Server', 
+                icon: '🌐', 
+                services: 'HTTPS, SSH', 
+                status: 'Secure', 
+                encryption: 'TLS 1.3 + PQ Certs',
+                isNew: false 
+            },
+            { 
+                id: 'security-cam-01', 
+                name: 'SECURITY-CAM-01', 
+                ip: '192.168.1.50', 
+                type: 'IoT Device', 
+                icon: '📹', 
+                services: 'RTSP, HTTP', 
+                status: 'Vulnerable', 
+                encryption: 'Weak/None',
+                isNew: false 
+            },
+            { 
+                id: 'workstation-101', 
+                name: 'WORKSTATION-101', 
+                ip: '192.168.1.101', 
+                type: 'Workstation', 
+                icon: '💻', 
+                services: 'RDP, SMB', 
+                status: 'Update Required', 
+                encryption: 'BitLocker: Hybrid',
+                isNew: false 
+            },
+            { 
+                id: 'printer-finance', 
+                name: 'PRINTER-FINANCE', 
+                ip: '192.168.1.200', 
+                type: 'Network Printer', 
+                icon: '🖨️', 
+                services: 'IPP, SNMP', 
+                status: 'Default Password', 
+                encryption: 'TLS Optional',
+                isNew: false 
+            },
+            { 
+                id: 'hvac-controller', 
+                name: 'HVAC-CONTROLLER', 
+                ip: '192.168.1.230', 
+                type: 'Building System', 
+                icon: '🌡️', 
+                services: 'BACnet, HTTP', 
+                status: 'Monitoring', 
+                encryption: 'Basic Auth',
+                isNew: false 
+            }
         ];
+
+        // Additional device pool for dynamic discovery
+        const devicePool = [
+            { name: 'LAPTOP-USER-{ID}', type: 'Workstation', icon: '💻', services: 'SMB, SSH', status: 'Scanning', encryption: 'BitLocker: AES-256' },
+            { name: 'PHONE-MOBILE-{ID}', type: 'Mobile Device', icon: '📱', services: 'WiFi, VPN', status: 'Connected', encryption: 'WPA3 + TLS' },
+            { name: 'IOT-SENSOR-{ID}', type: 'IoT Device', icon: '🔆', services: 'MQTT, HTTP', status: 'Monitoring', encryption: 'Basic TLS' },
+            { name: 'TABLET-CONF-{ID}', type: 'Tablet', icon: '📲', services: 'WiFi, RDP', status: 'Active', encryption: 'Device Encryption' },
+            { name: 'CAMERA-HALL-{ID}', type: 'Security Camera', icon: '📹', services: 'RTSP, ONVIF', status: 'Recording', encryption: 'WEP (Weak)' },
+            { name: 'SWITCH-FLOOR-{ID}', type: 'Network Switch', icon: '🔄', services: 'SNMP, Telnet', status: 'Managed', encryption: 'SNMPv3' },
+            { name: 'ACCESS-POINT-{ID}', type: 'Wireless AP', icon: '📶', services: 'WiFi, HTTP', status: 'Broadcasting', encryption: 'WPA3-Enterprise' },
+            { name: 'NAS-BACKUP-{ID}', type: 'Storage', icon: '💾', services: 'FTP, SMB', status: 'Backup Active', encryption: 'AES-256 + Kyber' }
+        ];
+
+        let deviceCounter = 250;
+        let discoveryActive = true;
 
         // Populate device grid
         function populateDeviceGrid() {
             const grid = document.getElementById('deviceGrid');
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             internalDevices.forEach((device, index) => {
                 const card = document.createElement('div');
-                card.className = 'device-card';
+                card.className = `device-card ${device.isNew ? 'new-device' : ''}`;
                 card.innerHTML = `
                     <div class="device-header">
                         <div class="device-icon">${device.icon}</div>
@@ -1473,6 +1610,14 @@
                 card.style.animationDelay = `${index * 0.1}s`;
                 card.onclick = () => showDeviceDetails(device);
                 grid.appendChild(card);
+                
+                // Remove new device class after animation
+                if (device.isNew) {
+                    setTimeout(() => {
+                        device.isNew = false;
+                        card.classList.remove('new-device');
+                    }, 2000);
+                }
             });
         }
 
@@ -1493,35 +1638,72 @@
                     encryptionStatus = '🔒 Encryption: ' + device.encryption;
                 }
                 
-                addChatMessage(`Analyzing ${device.name} (${device.ip}): Type: ${device.type}, Services: ${device.services}. Status: ${device.status}. ${encryptionStatus} ${device.status.includes('Vulnerable') ? 'Immediate action recommended!' : 'Being monitored by AI.'}`, false);
+                addChatMessage(`NetworkMapper: Analyzing ${device.name} (${device.ip}) - Type: ${device.type}, Services: ${device.services}. Status: ${device.status}. ${encryptionStatus} ${device.status.includes('Vulnerable') ? 'Immediate action recommended!' : 'Being monitored by AI.'}`, false);
             }, 300);
+        }
+
+        // Add new device to discovery
+        function addNewDevice() {
+            if (!discoveryActive) return;
+            
+            const template = devicePool[Math.floor(Math.random() * devicePool.length)];
+            const deviceId = deviceCounter++;
+            
+            const newDevice = {
+                id: `device-${deviceId}`,
+                name: template.name.replace('{ID}', String(deviceId).padStart(2, '0')),
+                ip: `192.168.1.${Math.floor(Math.random() * 200) + 50}`,
+                type: template.type,
+                icon: template.icon,
+                services: template.services,
+                status: template.status,
+                encryption: template.encryption,
+                isNew: true
+            };
+            
+            internalDevices.push(newDevice);
+            
+            // Update metrics
+            updateNewDeviceMetrics();
+            
+            // Repopulate grid to show new device with animation
+            populateDeviceGrid();
+            
+            // Show in chat if open
+            if (chatOpen && Math.random() > 0.7) {
+                setTimeout(() => {
+                    addChatMessage(`NetworkMapper: New device discovered - ${newDevice.name} (${newDevice.ip}). Scanning services and encryption capabilities...`, false);
+                }, 1000);
+            }
+        }
+
+        // Update metrics when new device found
+        function updateNewDeviceMetrics() {
+            const discovered = document.getElementById('discoveredDevices');
+            const current = parseInt(discovered.textContent);
+            discovered.textContent = current + 1;
+            
+            const discoveredCard = document.getElementById('discoveredDevicesCard');
+            discoveredCard.textContent = discovered.textContent;
+            
+            const newDev = document.getElementById('newDevices');
+            newDev.textContent = parseInt(newDev.textContent) + 1;
+            
+            const newDevInt = document.getElementById('newDevicesInternal');
+            newDevInt.textContent = newDev.textContent;
+            
+            const activeHosts = document.getElementById('activeHosts');
+            activeHosts.textContent = discovered.textContent;
         }
 
         // Update metrics
         function updateMetrics() {
             // Simulate real-time updates
-            const discovered = document.getElementById('discoveredDevices');
-            const current = parseInt(discovered.textContent);
-            discovered.textContent = Math.max(240, current + Math.floor(Math.random() * 3 - 1));
-            
-            const active = document.getElementById('activeHosts');
-            active.textContent = discovered.textContent;
-            
             const services = document.getElementById('openServices');
             services.textContent = Math.floor(40 + Math.random() * 5);
             
             // Update card values to match
-            document.getElementById('discoveredDevicesCard').textContent = discovered.textContent;
             document.getElementById('openServicesCard').textContent = services.textContent;
-            
-            // Occasionally find new devices
-            if (Math.random() > 0.9) {
-                const newDev = document.getElementById('newDevices');
-                newDev.textContent = parseInt(newDev.textContent) + 1;
-                
-                const newDevInt = document.getElementById('newDevicesInternal');
-                newDevInt.textContent = newDev.textContent;
-            }
             
             // Update threat exposure based on vulnerabilities
             const vulns = parseInt(document.getElementById('vulnCount').textContent);
@@ -1537,6 +1719,15 @@
             } else {
                 rating.textContent = 'LOW';
                 rating.className = 'exposure-rating exposure-low';
+            }
+        }
+
+        // Start/stop discovery
+        function toggleDiscovery() {
+            discoveryActive = !discoveryActive;
+            if (chatOpen) {
+                const status = discoveryActive ? 'resumed' : 'paused';
+                addChatMessage(`NetworkMapper: Device discovery ${status}. Discovery mode: ${discoveryActive ? 'ACTIVE' : 'PAUSED'}`, false, 'system');
             }
         }
 
@@ -1557,52 +1748,70 @@
                 updateMetrics();
             }, 3000);
             
-            // Simulate discovering new devices
+            // Simulate discovering new devices every 8-15 seconds
             setInterval(() => {
-                if (Math.random() > 0.7) {
-                    const newDevices = document.getElementById('newDevices');
-                    newDevices.textContent = parseInt(newDevices.textContent) + 1;
-                    
-                    // Add a brief highlight effect
-                    newDevices.style.color = 'var(--primary)';
-                    setTimeout(() => {
-                        newDevices.style.color = 'var(--secondary)';
-                    }, 1000);
+                if (Math.random() > 0.4 && discoveryActive) {
+                    addNewDevice();
                 }
-            }, 10000);
+            }, Math.random() * 7000 + 8000);
             
             // Add periodic network events to chat
             setInterval(() => {
                 if (Math.random() > 0.85 && chatOpen) {
                     const events = [
-                        '🌐 External scan update: New service detected on port 8080 with quantum-resistant TLS 1.3.',
-                        '📡 Internal discovery: New device joined network - checking hybrid encryption support...',
-                        '🔒 Security update: Vulnerable device upgraded to AES-256-GCM + Kyber.',
-                        '✅ Quantum-ready status: 3 systems upgraded to hybrid BitLocker encryption.',
-                        '🛡️ Firewall rule suggested to protect non-quantum-ready IoT device.',
-                        '🔬 Hybrid encryption verification: Domain controllers fully quantum-protected.',
-                        '⚡ Performance check: Quantum algorithms running efficiently on all critical systems.'
+                        '🌐 NetworkMapper: External scan update - New service detected on port 8080 with quantum-resistant TLS 1.3.',
+                        '📡 NetworkMapper: Internal discovery - New device joined network, checking hybrid encryption support...',
+                        '🔒 NetworkMapper: Security update - Vulnerable device upgraded to AES-256-GCM + Kyber.',
+                        '✅ NetworkMapper: Quantum-ready status - 3 systems upgraded to hybrid BitLocker encryption.',
+                        '🛡️ NetworkMapper: Firewall rule suggested to protect non-quantum-ready IoT device.',
+                        '🔬 NetworkMapper: Hybrid encryption verification - Domain controllers fully quantum-protected.',
+                        '⚡ NetworkMapper: Performance check - Quantum algorithms running efficiently on all critical systems.'
                     ];
                     addChatMessage(events[Math.floor(Math.random() * events.length)], false);
                 }
             }, 25000);
         });
 
-        // Add CSS animation for typing dots
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes typingDot {
-                0%, 60%, 100% {
-                    transform: translateY(0);
-                    opacity: 0.7;
-                }
-                30% {
-                    transform: translateY(-10px);
-                    opacity: 1;
-                }
+        // Agent shutdown modal functions
+        function showAgentShutdownModal() {
+            const modal = document.getElementById('agentShutdownModal');
+            if (modal) {
+                modal.style.display = 'flex';
             }
-        `;
-        document.head.appendChild(style);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('agentShutdownModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeModal();
+            }
+        }
+
+        function confirmAgentShutdown() {
+            agentActive = false;
+            discoveryActive = false;
+            
+            // Update header status
+            const agentStatus = document.querySelector('.agent-status');
+            if (agentStatus) {
+                agentStatus.style.background = 'rgba(255, 170, 0, 0.1)';
+                agentStatus.style.borderColor = '#ffaa00';
+                agentStatus.innerHTML = '<span>⚠️ AI Agent Paused • Manual Control Only</span>';
+            }
+            
+            closeModal();
+            
+            // Show notification in chat
+            if (chatOpen) {
+                addChatMessage('⚠️ NetworkMapper: Main Agent has been paused. Device discovery stopped. Manual control is now active.', false, 'system');
+            }
+        }
     </script>
 </body>
 </html>

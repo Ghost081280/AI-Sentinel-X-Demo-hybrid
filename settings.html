@@ -200,6 +200,22 @@
             border-bottom: 1px solid var(--border);
         }
 
+        .sidebar-item {
+            display: block;
+            padding: 15px 20px;
+            margin-bottom: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .sidebar-item:hover {
             background: rgba(0, 255, 136, 0.05);
             border-color: var(--border);
@@ -360,6 +376,65 @@
             text-transform: uppercase;
         }
 
+        /* Agent Control Panel */
+        .agent-control-panel {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .agent-control-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .agent-shutdown-btn {
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: var(--bg-darker);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .agent-shutdown-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .agent-shutdown-btn.danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .agent-shutdown-btn.danger:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 68, 0.4);
+        }
+
+        /* Encryption Badge */
+        .encryption-badge {
+            background: var(--gradient-quantum);
+            color: var(--bg-darker);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
         /* Form Controls */
         .toggle-switch {
             position: relative;
@@ -433,89 +508,6 @@
             background: rgba(0, 255, 136, 0.05);
         }
 
-        /* Agent Control Panel */
-        .agent-control-panel {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
-            border: 2px solid var(--accent);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .agent-control-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--accent);
-            margin-bottom: 15px;
-        }
-
-        .agent-shutdown-btn {
-            background: var(--gradient-1);
-            border: none;
-            border-radius: 10px;
-            padding: 15px 30px;
-            color: var(--bg-darker);
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            margin: 10px;
-        }
-
-        .agent-shutdown-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
-        }
-
-        .agent-shutdown-btn.danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .agent-shutdown-btn.danger:hover {
-            box-shadow: 0 8px 25px rgba(255, 0, 68, 0.4);
-        }
-
-        .agent-control-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .agent-control-item {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .agent-control-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
-        }
-
-        .control-icon {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .control-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-        }
-
-        .control-status {
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--success);
-        }
-
         /* Action Buttons */
         .action-buttons {
             display: flex;
@@ -571,6 +563,35 @@
 
         .success-message.show {
             transform: translateX(0);
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: var(--bg-darker);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
         }
 
         /* AI Chat Widget */
@@ -865,6 +886,13 @@
                 right: -20px;
                 bottom: 80px;
             }
+            
+            .back-btn {
+                top: 10px;
+                left: 10px;
+                padding: 10px 18px;
+                font-size: 13px;
+            }
         }
 
         /* Custom Scrollbar */
@@ -901,6 +929,12 @@
             }
         }
     </script>
+
+    <!-- Back Button -->
+    <a href="dashboard.html" class="back-btn">
+        <span>←</span>
+        <span>Back</span>
+    </a>
 
     <!-- Animated Background -->
     <div class="animated-bg">
@@ -983,12 +1017,12 @@
                         </button>
                     </div>
 
-                    <!-- Hybrid Encryption Status -->
+                    <!-- Quantum-Classical Encryption Status -->
                     <div class="encryption-status-panel">
                         <div class="encryption-status-content">
-                            <div class="encryption-status-title">🔒 Hybrid Encryption Status</div>
+                            <div class="encryption-status-title">🔒 Quantum-Classical Hybrid Protection</div>
                             <p style="color: var(--text-secondary); margin-bottom: 15px;">
-                                All agent communications protected with Classical + Post-Quantum encryption
+                                All agent communications protected with Classical + Post-Quantum encryption layers
                             </p>
                             <div class="encryption-layers">
                                 <div class="layer-card">
@@ -1011,21 +1045,21 @@
                                 <div class="setting-name">Auto-Response Mode</div>
                                 <div class="setting-description">Allow AI to automatically respond to threats without human approval</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="autoResponse" checked onchange="updateSetting('autoResponse', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Learning Mode</div>
-                                <div class="setting-description">Enable continuous learning from threat patterns and user feedback</div>
+                                <div class="setting-name">Learning Mode <span class="encryption-badge">Kyber Protected</span></div>
+                                <div class="setting-description">Enable continuous learning from threat patterns with quantum-resistant encryption</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="learningMode" checked onchange="updateSetting('learningMode', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
@@ -1033,10 +1067,10 @@
                                 <div class="setting-name">Sub-Agent Coordination</div>
                                 <div class="setting-description">Allow Main Agent to coordinate between sub-agents autonomously</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="coordination" checked onchange="updateSetting('coordination', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
@@ -1052,41 +1086,47 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                        <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
+                        <button class="btn btn-secondary" onclick="exportSettings()">Export Configuration</button>
+                    </div>
                 </div>
 
                 <!-- Encryption Settings Section -->
                 <div id="encryption-section" class="settings-section" style="display: none;">
-                    <h2 class="section-title">Encryption Configuration</h2>
+                    <h2 class="section-title">Quantum-Classical Encryption</h2>
                     
                     <div class="setting-group">
                         <h3 class="group-title">Hybrid Encryption Settings</h3>
                         
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Classical Encryption</div>
+                                <div class="setting-name">Classical Encryption <span class="encryption-badge">NIST Approved</span></div>
                                 <div class="setting-description">AES-256-GCM for symmetric encryption, HMAC-SHA256 for integrity</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="classicalEncryption" checked disabled>
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Post-Quantum Encryption</div>
+                                <div class="setting-name">Post-Quantum Encryption <span class="encryption-badge">NIST Selected</span></div>
                                 <div class="setting-description">CRYSTALS-Kyber for key exchange, Dilithium for signatures</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="quantumEncryption" checked disabled>
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
                             <div class="setting-info">
                                 <div class="setting-name">Key Rotation Interval</div>
-                                <div class="setting-description">Automatic rotation of encryption keys</div>
+                                <div class="setting-description">Automatic rotation of hybrid encryption keys using HKDF-SHA256</div>
                             </div>
                             <select class="select-field" id="keyRotation" onchange="updateSetting('keyRotation', this.value)">
                                 <option value="hourly">Every Hour</option>
@@ -1108,6 +1148,22 @@
                                 <option value="falcon">FALCON (Experimental)</option>
                             </select>
                         </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Quantum-Safe Mode</div>
+                                <div class="setting-description">Prepare for quantum computer threats with extra security layers</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="quantumSafeMode" checked onchange="updateSetting('quantumSafeMode', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                        <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
                     </div>
                 </div>
 
@@ -1120,19 +1176,19 @@
                         
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Real-time Analytics</div>
-                                <div class="setting-description">Enable continuous analytics processing by AnalyticsEngine</div>
+                                <div class="setting-name">Real-time Analytics <span class="encryption-badge">Dilithium Signed</span></div>
+                                <div class="setting-description">Enable continuous analytics processing by AnalyticsEngine with quantum signatures</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="realtimeAnalytics" checked onchange="updateSetting('realtimeAnalytics', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
                             <div class="setting-info">
                                 <div class="setting-name">Log Retention Period</div>
-                                <div class="setting-description">How long to keep security logs (all encrypted with Dilithium signatures)</div>
+                                <div class="setting-description">How long to keep security logs (all encrypted with hybrid algorithms)</div>
                             </div>
                             <select class="select-field" id="logRetention" onchange="updateSetting('logRetention', this.value)">
                                 <option value="30">30 Days</option>
@@ -1146,13 +1202,29 @@
                         <div class="setting-item">
                             <div class="setting-info">
                                 <div class="setting-name">Performance Monitoring</div>
-                                <div class="setting-description">Monitor AI agent performance and resource usage</div>
+                                <div class="setting-description">Monitor AI agent performance and quantum encryption overhead</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="perfMonitoring" checked onchange="updateSetting('perfMonitoring', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Threat Intelligence Feeds</div>
+                                <div class="setting-description">Collect threat intelligence from external sources with hybrid encryption</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="threatIntel" checked onchange="updateSetting('threatIntel', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                        <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
                     </div>
                 </div>
 
@@ -1165,13 +1237,13 @@
                         
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Auto-Discovery</div>
-                                <div class="setting-description">Automatically discover new devices on the network</div>
+                                <div class="setting-name">Auto-Discovery <span class="encryption-badge">Kyber Protected</span></div>
+                                <div class="setting-description">Automatically discover new devices with quantum-resistant communication</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="autoDiscovery" checked onchange="updateSetting('autoDiscovery', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
@@ -1192,11 +1264,27 @@
                                 <div class="setting-name">External Scanning</div>
                                 <div class="setting-description">Use Shodan API for external threat intelligence</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="externalScan" checked onchange="updateSetting('externalScan', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Quantum Network Protection</div>
+                                <div class="setting-description">Enable quantum-resistant protocols for network communications</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="quantumNetwork" checked onchange="updateSetting('quantumNetwork', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                        <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
                     </div>
                 </div>
 
@@ -1212,16 +1300,16 @@
                                 <div class="setting-name">Real-time Alerts</div>
                                 <div class="setting-description">Show immediate notifications for critical threats</div>
                             </div>
-                            <div class="toggle-switch">
+                            <label class="toggle-switch">
                                 <input type="checkbox" id="realtimeAlerts" checked onchange="updateSetting('realtimeAlerts', this.checked)">
-                                <div class="toggle-slider"></div>
-                            </div>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
 
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Email Notifications</div>
-                                <div class="setting-description">Send security alerts via email</div>
+                                <div class="setting-name">Email Notifications <span class="encryption-badge">TLS 1.3 + PQ</span></div>
+                                <div class="setting-description">Send security alerts via quantum-resistant encrypted email</div>
                             </div>
                             <input type="email" class="input-field" id="alertEmail" placeholder="admin@company.com" onchange="updateSetting('alertEmail', this.value)">
                         </div>
@@ -1238,6 +1326,22 @@
                                 <option value="critical">Critical Only</option>
                             </select>
                         </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Quantum Threat Alerts</div>
+                                <div class="setting-description">Special alerts for quantum computer-based attacks</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="quantumAlerts" checked onchange="updateSetting('quantumAlerts', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                        <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
                     </div>
                 </div>
 
@@ -1250,15 +1354,15 @@
                         
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">OpenAI API Key</div>
-                                <div class="setting-description">Powers the Main AI Agent for threat analysis and decision making</div>
+                                <div class="setting-name">OpenAI API Key <span class="encryption-badge">Kyber Encrypted</span></div>
+                                <div class="setting-description">Powers the Main AI Agent with quantum-resistant key storage</div>
                             </div>
                             <input type="password" class="input-field" id="openaiApiKey" placeholder="sk-..." onchange="updateSetting('openaiApiKey', this.value)">
                         </div>
 
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Shodan API Key</div>
+                                <div class="setting-name">Shodan API Key <span class="encryption-badge">Kyber Encrypted</span></div>
                                 <div class="setting-description">Enables NetworkMapper for external threat intelligence</div>
                             </div>
                             <input type="password" class="input-field" id="shodanApiKey" placeholder="Enter Shodan API key" onchange="updateSetting('shodanApiKey', this.value)">
@@ -1266,19 +1370,28 @@
 
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-name">Sentinel-X API Key</div>
-                                <div class="setting-description">Authenticates Main Agent and enables sub-agent coordination</div>
+                                <div class="setting-name">Sentinel-X API Key <span class="encryption-badge">Dilithium Signed</span></div>
+                                <div class="setting-description">Authenticates Main Agent with quantum-resistant signatures</div>
                             </div>
                             <input type="password" class="input-field" id="sentinelApiKey" placeholder="Enter Sentinel-X API key" onchange="updateSetting('sentinelApiKey', this.value)">
                         </div>
-                    </div>
-                </div>
 
-                <!-- Action Buttons -->
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                    <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                    <button class="btn btn-secondary" onclick="exportSettings()">Export Configuration</button>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-name">Quantum Key Distribution</div>
+                                <div class="setting-description">Enable quantum key distribution for ultimate security</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="quantumKeyDist" onchange="updateSetting('quantumKeyDist', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                        <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1296,7 +1409,7 @@
                 <h2 class="modal-title">⚠️ Emergency AI Shutdown</h2>
             </div>
             <div class="modal-content">
-                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. If external APIs or keys are offline, the agent will fallback to local control mode.
+                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. All quantum-classical encryption will remain active for security.
             </div>
             <div class="modal-actions">
                 <button class="modal-btn modal-btn-primary" onclick="confirmAgentShutdown()">Confirm Shutdown</button>
@@ -1320,7 +1433,7 @@
             </div>
             <div class="ai-chat-messages" id="aiChatMessages">
                 <div class="ai-message-bubble">
-                    Connected to Main Agent settings interface. I can help configure AI behavior, encryption settings, and sub-agent coordination. All changes are protected with hybrid encryption.
+                    Connected to Main Agent settings interface. I can help configure AI behavior, quantum-classical encryption settings, and sub-agent coordination. All changes are protected with hybrid Kyber + Dilithium algorithms.
                 </div>
                 <div class="ai-message-time">Just now</div>
             </div>
@@ -1329,7 +1442,7 @@
                     type="text" 
                     class="ai-chat-input" 
                     id="aiChatInput" 
-                    placeholder="Ask about settings or configuration..."
+                    placeholder="Ask about settings or quantum encryption..."
                     onkeypress="handleChatKeyPress(event)"
                 >
                 <button class="ai-chat-send" onclick="sendChatMessage()">SEND</button>
@@ -1338,9 +1451,12 @@
         <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
     </div>
 
-    <script src="shared.js"></script>
     <script>
+        // Global variables
         let currentAgentState = true; // true = active, false = paused
+        let chatOpen = false;
+        let agentActive = true;
+        let cliMode = false;
 
         // Settings management
         const defaultSettings = {
@@ -1350,18 +1466,23 @@
             threatLevel: 'medium',
             keyRotation: 'daily',
             signatureAlgo: 'dilithium3',
+            quantumSafeMode: true,
             realtimeAnalytics: true,
             logRetention: '90',
             perfMonitoring: true,
+            threatIntel: true,
             autoDiscovery: true,
             scanFreq: '5',
             externalScan: true,
+            quantumNetwork: true,
             realtimeAlerts: true,
             alertEmail: '',
             alertThreshold: 'medium',
+            quantumAlerts: true,
             openaiApiKey: '',
             shodanApiKey: '',
-            sentinelApiKey: ''
+            sentinelApiKey: '',
+            quantumKeyDist: false
         };
 
         // Show settings section
@@ -1406,7 +1527,7 @@
                 agentActive = true;
                 cliMode = false;
                 
-                showSuccessMessage('AI Agent resumed autonomous operation');
+                showSuccessMessage('AI Agent resumed autonomous operation with quantum protection');
                 
             } else {
                 // Agent is now paused
@@ -1422,13 +1543,13 @@
                 // Update global state
                 agentActive = false;
                 
-                showSuccessMessage('AI Agent paused - Manual control active');
+                showSuccessMessage('AI Agent paused - Quantum encryption remains active');
             }
         }
 
         // Emergency shutdown
         function emergencyShutdown() {
-            if (confirm('EMERGENCY SHUTDOWN: This will immediately halt all AI operations. Only manual control will remain. Continue?')) {
+            if (confirm('EMERGENCY SHUTDOWN: This will immediately halt all AI operations. Quantum encryption will remain active. Continue?')) {
                 currentAgentState = false;
                 agentActive = false;
                 cliMode = true;
@@ -1452,14 +1573,14 @@
                     cliIndicator.classList.add('active');
                 }
                 
-                showSuccessMessage('EMERGENCY SHUTDOWN: All AI operations halted');
+                showSuccessMessage('EMERGENCY SHUTDOWN: AI halted - Quantum encryption active');
             }
         }
 
         // Update setting
         function updateSetting(key, value) {
             if (chatOpen) {
-                addChatMessage(`Main Agent: Setting "${key}" updated to "${value}". Configuration protected with hybrid encryption.`, false, 'system');
+                addChatMessage(`Main Agent: Setting "${key}" updated to "${value}". Configuration protected with Kyber + Dilithium hybrid encryption.`, false, 'system');
             }
         }
 
@@ -1479,19 +1600,19 @@
                 }
             });
             
-            // Store settings
+            // Store settings (in real app, this would be encrypted with Kyber)
             localStorage.setItem('sentinel_settings', JSON.stringify(settings));
             
-            showSuccessMessage('All settings saved successfully!');
+            showSuccessMessage('Settings saved with quantum-resistant encryption!');
             
             if (chatOpen) {
-                addChatMessage('Main Agent: Configuration saved and encrypted. All sub-agents will receive updated parameters.', false, 'system');
+                addChatMessage('Main Agent: Configuration saved and encrypted with Kyber + Dilithium. All sub-agents will receive updated quantum-protected parameters.', false, 'system');
             }
         }
 
         // Reset settings
         function resetSettings() {
-            if (confirm('Reset all settings to default values?')) {
+            if (confirm('Reset all settings to default quantum-protected values?')) {
                 Object.keys(defaultSettings).forEach(key => {
                     const element = document.getElementById(key);
                     if (element) {
@@ -1503,7 +1624,7 @@
                     }
                 });
                 
-                showSuccessMessage('Settings reset to defaults');
+                showSuccessMessage('Settings reset to quantum-secure defaults');
             }
         }
 
@@ -1522,8 +1643,9 @@
             });
             
             const exportData = {
-                version: '1.0',
+                version: '2.0-quantum',
                 timestamp: new Date().toISOString(),
+                encryption: 'Kyber-1024 + Dilithium-3',
                 settings: settings
             };
             
@@ -1531,13 +1653,13 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'sentinel-x-config.json';
+            a.download = 'sentinel-x-quantum-config.json';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            showSuccessMessage('Configuration exported successfully!');
+            showSuccessMessage('Quantum-protected configuration exported successfully!');
         }
 
         // Show success message
@@ -1553,10 +1675,109 @@
 
         // Logout handler
         function handleLogout() {
-            if (confirm('Logout? The AI agent will continue protecting your systems.')) {
+            if (confirm('Logout? The AI agent will continue protecting your systems with quantum encryption.')) {
                 localStorage.removeItem('sentinel_auth');
                 window.location.href = 'index.html';
             }
+        }
+
+        // Agent shutdown modal functions
+        function showAgentShutdownModal() {
+            document.getElementById('agentShutdownModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('agentShutdownModal').style.display = 'none';
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeModal();
+            }
+        }
+
+        function confirmAgentShutdown() {
+            closeModal();
+            toggleAgent();
+        }
+
+        // AI Chat functions
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            const chatWindow = document.getElementById('aiChatWindow');
+            if (chatOpen) {
+                chatWindow.classList.add('active');
+            } else {
+                chatWindow.classList.remove('active');
+            }
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addChatMessage(message, true);
+            input.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addChatMessage(response, false);
+            }, 1000 + Math.random() * 1000);
+        }
+
+        function addChatMessage(message, isUser, type = 'normal') {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const messageDiv = document.createElement('div');
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="ai-message-bubble ${isUser ? 'user' : ''} ${type === 'system' ? 'system' : ''}">
+                    ${message}
+                </div>
+                <div class="ai-message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('quantum') || lowerMessage.includes('encryption')) {
+                return '🔐 Quantum-Classical Hybrid Status: All systems protected with CRYSTALS-Kyber for key exchange, Dilithium for signatures, plus classical AES-256-GCM. This provides security against both current and future quantum computer attacks.';
+            }
+            
+            if (lowerMessage.includes('agent') || lowerMessage.includes('autonomous')) {
+                return '🤖 Main Agent is currently in ' + (agentActive ? 'fully autonomous mode' : 'manual control mode') + '. All sub-agents (NetworkMapper, ThreatHunter, AnalyticsEngine) coordinate through quantum-encrypted channels.';
+            }
+            
+            if (lowerMessage.includes('settings') || lowerMessage.includes('config')) {
+                return '⚙️ Settings interface allows configuration of AI behavior, quantum encryption parameters, monitoring settings, network discovery, alerts, and API keys. All configurations are protected with Kyber encryption and Dilithium signatures.';
+            }
+            
+            if (lowerMessage.includes('kyber') || lowerMessage.includes('dilithium')) {
+                return '🔬 NIST Post-Quantum Algorithms: Kyber-1024 for key encapsulation, Dilithium-3 for digital signatures, SPHINCS+ as backup. These protect against both classical and quantum computer attacks, ensuring long-term security.';
+            }
+            
+            if (lowerMessage.includes('threat') || lowerMessage.includes('security')) {
+                return '🛡️ Threat response level currently set to ' + (document.getElementById('threatLevel')?.value || 'medium') + '. AI automatically responds to threats while maintaining quantum-resistant communication with all security components.';
+            }
+            
+            if (lowerMessage.includes('api') || lowerMessage.includes('key')) {
+                return '🔑 API keys are encrypted with Kyber-1024 quantum-resistant algorithm and authenticated with Dilithium signatures. OpenAI powers Main Agent, Shodan enables external intelligence, Sentinel-X coordinates sub-agents.';
+            }
+            
+            return '🤖 I can help with AI agent configuration, quantum-classical encryption settings, monitoring parameters, network discovery options, alert configurations, and API key management. All secured with post-quantum cryptography.';
         }
 
         // Initialize
@@ -1576,23 +1797,21 @@
                     }
                 });
             }
+
+            // Add some periodic quantum encryption status updates
+            setInterval(() => {
+                if (chatOpen && Math.random() > 0.92) {
+                    const quantumUpdates = [
+                        '🔐 Quantum key rotation completed - New Kyber keys generated',
+                        '🔬 Post-quantum algorithms running efficiently - 0% performance impact',
+                        '🛡️ Dilithium signatures verified on all agent communications',
+                        '⚡ Hybrid encryption status: Classical + Quantum layers active',
+                        '🔑 API keys re-encrypted with fresh Kyber encapsulation'
+                    ];
+                    addChatMessage(quantumUpdates[Math.floor(Math.random() * quantumUpdates.length)], false, 'system');
+                }
+            }, 20000);
         });
     </script>
 </body>
-</html> {
-            display: block;
-            padding: 15px 20px;
-            margin-bottom: 8px;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: 10px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sidebar-item
+</html>

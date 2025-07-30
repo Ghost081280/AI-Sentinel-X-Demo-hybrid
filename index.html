@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Sentinel-X | Autonomous Cyber Defense Platform</title>
+    <title>AI Sentinel-X | Autonomous Cyber Defense Agent</title>
     <style>
         * {
             margin: 0;
@@ -40,6 +40,23 @@
             justify-content: center;
             padding: 20px;
             overflow-x: hidden;
+        }
+
+        /* Neural Network Background */
+        .neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .neural-bg canvas {
+            width: 100%;
+            height: 100%;
         }
 
         /* Enhanced Matrix Background */
@@ -282,8 +299,8 @@
             letter-spacing: 2px;
         }
 
-        /* Security Badge */
-        .security-badge {
+        /* Agent Status Badge */
+        .agent-status-badge {
             background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(0, 255, 136, 0.1) 100%);
             border: 1px solid rgba(124, 58, 237, 0.5);
             border-radius: 12px;
@@ -294,7 +311,7 @@
             overflow: hidden;
         }
 
-        .security-badge::before {
+        .agent-status-badge::before {
             content: '';
             position: absolute;
             top: 0;
@@ -310,7 +327,7 @@
             100% { left: 100%; }
         }
 
-        .security-badge-content {
+        .agent-status-content {
             position: relative;
             z-index: 1;
             font-size: 12px;
@@ -319,10 +336,11 @@
             letter-spacing: 1px;
         }
 
-        .security-badge-title {
+        .agent-status-title {
             color: var(--accent);
             font-weight: bold;
             margin-bottom: 5px;
+            font-size: 14px;
         }
 
         /* Enhanced Form */
@@ -651,6 +669,11 @@
     </style>
 </head>
 <body>
+    <!-- Neural Network Background -->
+    <div class="neural-bg">
+        <canvas id="neuralCanvas"></canvas>
+    </div>
+
     <!-- Enhanced Matrix Background -->
     <div class="matrix-bg">
         <div class="hologram-grid"></div>
@@ -680,15 +703,15 @@
                 </div>
             </div>
             <h1 class="login-title">AI SENTINEL-X</h1>
-            <p class="login-subtitle">Autonomous Cyber Defense Platform</p>
+            <p class="login-subtitle">Autonomous Cyber Defense Agent</p>
         </div>
 
-        <!-- Security Badge -->
-        <div class="security-badge">
-            <div class="security-badge-content">
-                <div class="security-badge-title">🔐 HYBRID ENCRYPTION ACTIVE</div>
-                <div>Classical: AES-256-GCM + HMAC-SHA256</div>
-                <div>Post-Quantum: CRYSTALS-Kyber + Dilithium</div>
+        <!-- Agent Status Badge -->
+        <div class="agent-status-badge">
+            <div class="agent-status-content">
+                <div class="agent-status-title">🤖 MAIN AGENT INITIALIZING</div>
+                <div>Hybrid Encryption: Classical + Post-Quantum</div>
+                <div>Sub-Agents: Ready for Deployment</div>
             </div>
         </div>
 
@@ -706,7 +729,7 @@
                     required
                     autocomplete="off"
                 >
-                <div class="input-description">Powers AI-driven threat analysis, log parsing, and automated response generation</div>
+                <div class="input-description">Powers the Main AI Agent for threat analysis and autonomous decision-making</div>
             </div>
 
             <div class="input-group">
@@ -722,7 +745,7 @@
                     required
                     autocomplete="off"
                 >
-                <div class="input-description">Enables external threat intelligence and internet-wide vulnerability scanning</div>
+                <div class="input-description">Enables NetworkScanner sub-agent for external threat intelligence</div>
             </div>
 
             <div class="input-group">
@@ -738,18 +761,18 @@
                     required
                     autocomplete="off"
                 >
-                <div class="input-description">Authenticates access to the autonomous defense agent and security orchestration</div>
+                <div class="input-description">Authenticates Main Agent and enables sub-agent orchestration</div>
             </div>
 
             <button type="submit" class="login-btn" id="loginBtn">
-                INITIALIZE AI DEFENSE AGENT
+                ACTIVATE AI AGENT
             </button>
 
             <div class="status-message" id="statusMessage"></div>
         </form>
 
         <div class="demo-info">
-            <p>🚀 Experience autonomous cyber defense powered by AI</p>
+            <p>🚀 Experience autonomous cyber defense with modular AI sub-agents</p>
             <div class="demo-credentials">
                 Demo credentials: demo / demo / demo
             </div>
@@ -757,6 +780,75 @@
     </div>
 
     <script>
+        // Neural Network Background Animation
+        function initNeuralBackground() {
+            const canvas = document.getElementById('neuralCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const nodes = [];
+            const nodeCount = 100;
+            
+            for (let i = 0; i < nodeCount; i++) {
+                nodes.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Update nodes
+                nodes.forEach(node => {
+                    node.x += node.vx;
+                    node.y += node.vy;
+                    
+                    if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                    if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+                });
+                
+                // Draw connections
+                ctx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
+                ctx.lineWidth = 0.5;
+                
+                nodes.forEach((node1, i) => {
+                    nodes.slice(i + 1).forEach(node2 => {
+                        const dist = Math.hypot(node1.x - node2.x, node1.y - node2.y);
+                        if (dist < 100) {
+                            ctx.globalAlpha = 1 - dist / 100;
+                            ctx.beginPath();
+                            ctx.moveTo(node1.x, node1.y);
+                            ctx.lineTo(node2.x, node2.y);
+                            ctx.stroke();
+                        }
+                    });
+                });
+                
+                // Draw nodes
+                ctx.globalAlpha = 1;
+                nodes.forEach(node => {
+                    const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, node.radius * 2);
+                    gradient.addColorStop(0, 'rgba(0, 255, 136, 0.8)');
+                    gradient.addColorStop(1, 'rgba(0, 255, 136, 0)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius * 2, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
         // Enhanced Matrix Background
         function initMatrix() {
             const matrixBg = document.getElementById('matrixBg');
@@ -799,13 +891,13 @@
             // Validate inputs
             if (!openaiKey || !shodanKey || !sentinelKey) {
                 statusMessage.className = 'status-message error';
-                statusMessage.textContent = '⚠️ All API keys are required for system initialization';
+                statusMessage.textContent = '⚠️ All API keys are required for agent initialization';
                 return;
             }
             
             // Show loading state
             loginBtn.disabled = true;
-            loginBtn.innerHTML = '<span class="loading"></span>AUTHENTICATING...';
+            loginBtn.innerHTML = '<span class="loading"></span>INITIALIZING AGENT...';
             statusMessage.textContent = '🔐 Establishing secure connection...';
             
             // Multi-stage authentication simulation
@@ -813,15 +905,15 @@
                 statusMessage.textContent = '🔍 Validating API credentials...';
                 
                 setTimeout(() => {
-                    statusMessage.textContent = '🛡️ Initializing hybrid encryption...';
+                    statusMessage.textContent = '🛡️ Activating hybrid encryption...';
                     
                     setTimeout(() => {
-                        statusMessage.textContent = '🤖 Activating AI models...';
+                        statusMessage.textContent = '🤖 Deploying Main Agent and sub-agents...';
                         
                         setTimeout(() => {
                             // Check demo credentials
                             if (openaiKey === 'demo' && shodanKey === 'demo' && sentinelKey === 'demo') {
-                                statusMessage.textContent = '⚡ Activating defense systems...';
+                                statusMessage.textContent = '⚡ Activating autonomous defense systems...';
                                 
                                 setTimeout(() => {
                                     // Store credentials
@@ -833,7 +925,7 @@
                                     }));
                                     
                                     statusMessage.className = 'status-message success';
-                                    statusMessage.textContent = '✅ AI DEFENSE AGENT ONLINE - HYBRID ENCRYPTION ACTIVE';
+                                    statusMessage.textContent = '✅ AI AGENT ONLINE - SUB-AGENTS DEPLOYED';
                                     
                                     // Redirect to dashboard
                                     setTimeout(() => {
@@ -844,7 +936,7 @@
                                 statusMessage.className = 'status-message error';
                                 statusMessage.textContent = '❌ Invalid API credentials. Please verify your keys.';
                                 loginBtn.disabled = false;
-                                loginBtn.innerHTML = 'INITIALIZE AI DEFENSE AGENT';
+                                loginBtn.innerHTML = 'ACTIVATE AI AGENT';
                             }
                         }, 800);
                     }, 800);
@@ -855,6 +947,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initMatrix();
+            initNeuralBackground();
             
             // Check if already authenticated
             const auth = localStorage.getItem('sentinel_auth');
@@ -887,6 +980,7 @@
             resizeTimeout = setTimeout(() => {
                 document.getElementById('matrixBg').innerHTML = '';
                 initMatrix();
+                initNeuralBackground();
             }, 250);
         });
     </script>

@@ -565,35 +565,6 @@
             transform: translateX(0);
         }
 
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 24px;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .back-btn:hover {
-            background: var(--primary);
-            color: var(--bg-darker);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
-        }
-
         /* AI Chat Widget */
         .ai-chat-widget {
             position: fixed;
@@ -886,13 +857,6 @@
                 right: -20px;
                 bottom: 80px;
             }
-            
-            .back-btn {
-                top: 10px;
-                left: 10px;
-                padding: 10px 18px;
-                font-size: 13px;
-            }
         }
 
         /* Custom Scrollbar */
@@ -929,12 +893,6 @@
             }
         }
     </script>
-
-    <!-- Back Button -->
-    <a href="dashboard.html" class="back-btn">
-        <span>←</span>
-        <span>Back</span>
-    </a>
 
     <!-- Animated Background -->
     <div class="animated-bg">
@@ -1451,6 +1409,7 @@
         <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
     </div>
 
+    <script src="shared.js"></script>
     <script>
         // Global variables
         let currentAgentState = true; // true = active, false = paused
@@ -1490,7 +1449,9 @@
             // Hide all sections
             document.querySelectorAll('.settings-section').forEach(section => {
                 section.style.display = 'none';
-            });
+        </script>
+</body>
+</html>
             
             // Remove active class from all sidebar items
             document.querySelectorAll('.sidebar-item').forEach(item => {
@@ -1600,9 +1561,6 @@
                 }
             });
             
-            // Store settings (in real app, this would be encrypted with Kyber)
-            localStorage.setItem('sentinel_settings', JSON.stringify(settings));
-            
             showSuccessMessage('Settings saved with quantum-resistant encryption!');
             
             if (chatOpen) {
@@ -1701,85 +1659,6 @@
             toggleAgent();
         }
 
-        // AI Chat functions
-        function toggleChat() {
-            chatOpen = !chatOpen;
-            const chatWindow = document.getElementById('aiChatWindow');
-            if (chatOpen) {
-                chatWindow.classList.add('active');
-            } else {
-                chatWindow.classList.remove('active');
-            }
-        }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('aiChatInput');
-            const message = input.value.trim();
-            if (!message) return;
-
-            addChatMessage(message, true);
-            input.value = '';
-
-            // Simulate AI response
-            setTimeout(() => {
-                const response = generateAIResponse(message);
-                addChatMessage(response, false);
-            }, 1000 + Math.random() * 1000);
-        }
-
-        function addChatMessage(message, isUser, type = 'normal') {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const messageDiv = document.createElement('div');
-            
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="ai-message-bubble ${isUser ? 'user' : ''} ${type === 'system' ? 'system' : ''}">
-                    ${message}
-                </div>
-                <div class="ai-message-time">${time}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function generateAIResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage.includes('quantum') || lowerMessage.includes('encryption')) {
-                return '🔐 Quantum-Classical Hybrid Status: All systems protected with CRYSTALS-Kyber for key exchange, Dilithium for signatures, plus classical AES-256-GCM. This provides security against both current and future quantum computer attacks.';
-            }
-            
-            if (lowerMessage.includes('agent') || lowerMessage.includes('autonomous')) {
-                return '🤖 Main Agent is currently in ' + (agentActive ? 'fully autonomous mode' : 'manual control mode') + '. All sub-agents (NetworkMapper, ThreatHunter, AnalyticsEngine) coordinate through quantum-encrypted channels.';
-            }
-            
-            if (lowerMessage.includes('settings') || lowerMessage.includes('config')) {
-                return '⚙️ Settings interface allows configuration of AI behavior, quantum encryption parameters, monitoring settings, network discovery, alerts, and API keys. All configurations are protected with Kyber encryption and Dilithium signatures.';
-            }
-            
-            if (lowerMessage.includes('kyber') || lowerMessage.includes('dilithium')) {
-                return '🔬 NIST Post-Quantum Algorithms: Kyber-1024 for key encapsulation, Dilithium-3 for digital signatures, SPHINCS+ as backup. These protect against both classical and quantum computer attacks, ensuring long-term security.';
-            }
-            
-            if (lowerMessage.includes('threat') || lowerMessage.includes('security')) {
-                return '🛡️ Threat response level currently set to ' + (document.getElementById('threatLevel')?.value || 'medium') + '. AI automatically responds to threats while maintaining quantum-resistant communication with all security components.';
-            }
-            
-            if (lowerMessage.includes('api') || lowerMessage.includes('key')) {
-                return '🔑 API keys are encrypted with Kyber-1024 quantum-resistant algorithm and authenticated with Dilithium signatures. OpenAI powers Main Agent, Shodan enables external intelligence, Sentinel-X coordinates sub-agents.';
-            }
-            
-            return '🤖 I can help with AI agent configuration, quantum-classical encryption settings, monitoring parameters, network discovery options, alert configurations, and API key management. All secured with post-quantum cryptography.';
-        }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             // Load saved settings
@@ -1812,6 +1691,3 @@
                 }
             }, 20000);
         });
-    </script>
-</body>
-</html>

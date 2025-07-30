@@ -38,8 +38,8 @@
             min-height: 100vh;
         }
 
-        /* Settings Background */
-        .settings-bg {
+        /* Animated Dot Background */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -47,46 +47,114 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(0, 255, 136, 0.08) 0%, transparent 40%);
+            overflow: hidden;
         }
 
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
+        .dot-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(0, 255, 136, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: dotMove 40s linear infinite;
         }
 
-        /* Page Header */
-        .page-header {
+        @keyframes dotMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        /* Header */
+        .header {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 15px;
-            padding: 35px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            text-align: center;
+            padding: 20px 30px;
+            margin: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
         }
 
-        .page-title {
-            font-size: 42px;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-title {
+            font-size: 24px;
             font-weight: bold;
             background: var(--gradient-2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         .page-subtitle {
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .agent-status:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: var(--danger);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 68, 0.1);
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
         }
 
         /* AI Notice */
@@ -237,41 +305,75 @@
             line-height: 1.5;
         }
 
-        /* Encryption Badges */
-        .encryption-badge {
-            background: var(--gradient-encryption);
-            color: var(--bg-darker);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            display: inline-block;
-            margin-left: 10px;
+        /* Encryption Status Panel */
+        .encryption-status-panel {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .quantum-badge {
-            background: var(--gradient-quantum);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            display: inline-block;
-            margin-left: 10px;
+        .encryption-status-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            animation: pulseGlow 15s linear infinite;
         }
 
-        .hybrid-badge {
+        @keyframes pulseGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .encryption-status-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .encryption-status-title {
+            font-size: 20px;
+            font-weight: bold;
             background: var(--gradient-hybrid);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            display: inline-block;
-            margin-left: 10px;
+            letter-spacing: 1px;
+        }
+
+        .encryption-layers {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .layer-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .layer-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .layer-status {
+            font-size: 12px;
+            color: var(--success);
+            text-transform: uppercase;
         }
 
         /* Form Controls */
@@ -347,75 +449,58 @@
             background: rgba(0, 255, 136, 0.05);
         }
 
-        /* Encryption Status Panel */
-        .encryption-status-panel {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
-            border: 2px solid var(--border);
+        /* Agent Control Panel */
+        .agent-control-panel {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+            border: 2px solid var(--accent);
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .encryption-status-panel::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
-            animation: pulseGlow 15s linear infinite;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .encryption-status-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .encryption-status-title {
-            font-size: 20px;
-            font-weight: bold;
-            background: var(--gradient-hybrid);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .encryption-layers {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .layer-card {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 15px;
             text-align: center;
         }
 
-        .layer-title {
-            font-size: 14px;
+        .agent-control-title {
+            font-size: 20px;
             font-weight: bold;
-            margin-bottom: 8px;
+            color: var(--accent);
+            margin-bottom: 15px;
         }
 
-        .layer-status {
-            font-size: 12px;
+        .agent-control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .agent-control-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .agent-control-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+        }
+
+        .control-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .control-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .control-status {
+            font-size: 13px;
+            font-weight: bold;
             color: var(--success);
-            text-transform: uppercase;
         }
 
         /* Action Buttons */
@@ -456,35 +541,6 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 24px;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .back-btn:hover {
-            background: var(--primary);
-            color: var(--bg-darker);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
-        }
-
         /* Success Message */
         .success-message {
             position: fixed;
@@ -502,6 +558,263 @@
 
         .success-message.show {
             transform: translateX(0);
+        }
+
+        /* AI Chat Widget */
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .ai-chat-toggle {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            transition: all 0.3s ease;
+            font-size: 28px;
+        }
+
+        .ai-chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 400px;
+            height: 600px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        .ai-chat-window.active {
+            display: flex;
+            animation: chatSlideIn 0.3s ease;
+        }
+
+        @keyframes chatSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-chat-header {
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .ai-chat-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .chat-status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bg-darker);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        .ai-chat-close {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .cli-mode-indicator {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 0 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--warning);
+            display: none;
+        }
+
+        .cli-mode-indicator.active {
+            display: block;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-message-bubble {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .ai-message-bubble.user {
+            background: rgba(0, 204, 255, 0.1);
+            border-color: var(--secondary);
+            align-self: flex-end;
+        }
+
+        .ai-message-bubble.system {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent);
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .ai-message-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .ai-chat-input-container {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .ai-chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .ai-chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .ai-chat-send {
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: var(--bg-darker);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* Agent Shutdown Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .modal-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* Mobile Responsive */
@@ -524,14 +837,6 @@
                 padding: 15px;
             }
             
-            .page-header {
-                padding: 25px;
-            }
-            
-            .page-title {
-                font-size: 32px;
-            }
-            
             .settings-content {
                 padding: 25px;
             }
@@ -541,11 +846,11 @@
                 align-items: flex-start;
             }
             
-            .back-btn {
-                top: 10px;
-                left: 10px;
-                padding: 10px 18px;
-                font-size: 13px;
+            .ai-chat-window {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 120px);
+                right: -20px;
+                bottom: 80px;
             }
         }
 
@@ -567,948 +872,3 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary);
         }
-    </style>
-</head>
-<body>
-    <script>
-        // Check authentication
-        const auth = localStorage.getItem('sentinel_auth');
-        if (!auth) {
-            window.location.href = 'index.html';
-        } else {
-            const authData = JSON.parse(auth);
-            if (Date.now() - authData.timestamp > 24 * 60 * 60 * 1000) {
-                localStorage.removeItem('sentinel_auth');
-                window.location.href = 'index.html';
-            }
-        }
-    </script>
-
-    <!-- Back Button -->
-    <a href="dashboard.html" class="back-btn">
-        <span>←</span>
-        <span>Back</span>
-    </a>
-
-    <!-- Success Message -->
-    <div class="success-message" id="successMessage">
-        ✅ Settings saved successfully!
-    </div>
-
-    <!-- Settings Background -->
-    <div class="settings-bg"></div>
-
-    <!-- Container -->
-    <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">SYSTEM SETTINGS</h1>
-            <p class="page-subtitle">Configure AI Agent & Security Parameters</p>
-        </div>
-
-        <!-- AI Notice -->
-        <div class="ai-notice">
-            🤖 Most settings are managed autonomously by AI. Only critical parameters require manual configuration.
-        </div>
-
-        <!-- Settings Grid -->
-        <div class="settings-grid">
-            <!-- Sidebar -->
-            <aside class="settings-sidebar">
-                <div class="sidebar-title">Configuration</div>
-                <a class="sidebar-item active" onclick="showSection('general')">
-                    <span class="sidebar-icon">⚙️</span>
-                    <span>General</span>
-                </a>
-                <a class="sidebar-item" onclick="showSection('security')">
-                    <span class="sidebar-icon">🔐</span>
-                    <span>Security</span>
-                </a>
-                <a class="sidebar-item" onclick="showSection('encryption')">
-                    <span class="sidebar-icon">🔒</span>
-                    <span>Encryption</span>
-                </a>
-                <a class="sidebar-item" onclick="showSection('ai')">
-                    <span class="sidebar-icon">🤖</span>
-                    <span>AI Agent</span>
-                </a>
-                <a class="sidebar-item" onclick="showSection('integrations')">
-                    <span class="sidebar-icon">🔗</span>
-                    <span>Integrations</span>
-                </a>
-                <a class="sidebar-item" onclick="showSection('agent')">
-                    <span class="sidebar-icon">🛸</span>
-                    <span>Agent Management</span>
-                </a>
-                <a class="sidebar-item" onclick="showSection('notifications')">
-                    <span class="sidebar-icon">🔔</span>
-                    <span>Notifications</span>
-                </a>
-            </aside>
-
-            <!-- Content -->
-            <main class="settings-content" id="settingsContent">
-                <!-- General Settings -->
-                <div class="settings-section" id="general-section">
-                    <h2 class="section-title">General Settings</h2>
-                    
-                    <div class="setting-group">
-                        <h3 class="group-title">System Configuration</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <div class="setting-name">Autonomous Mode</div>
-                                <div class="setting-description">Allow AI to operate without human intervention</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <div class="setting-name">Auto-Update</div>
-                                <div class="setting-description">Automatically update threat signatures and AI models</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <div class="setting-name">Time Zone</div>
-                                <div class="setting-description">System time zone for logs and reports</div>
-                            </div>
-                            <select class="select-field">
-                                <option>UTC</option>
-                                <option>EST</option>
-                                <option>PST</option>
-                                <option>CET</option>
-                            </select>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <div class="setting-name">Data Retention <span class="hybrid-badge">Hybrid Encrypted</span></div>
-                                <div class="setting-description">How long to keep security logs protected by AES-256-GCM + Kyber-1024</div>
-                            </div>
-                            <select class="select-field">
-                                <option>30 days</option>
-                                <option selected>90 days</option>
-                                <option>180 days</option>
-                                <option>1 year</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="setting-group">
-                        <h3 class="group-title">Dashboard Preferences</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <div class="setting-name">Real-time Updates</div>
-                                <div class="setting-description">Show live threat data on dashboard</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <div class="setting-name">Update Frequency</div>
-                                <div class="setting-description">How often to refresh dashboard metrics</div>
-                            </div>
-                            <select class="select-field">
-                                <option>Real-time</option>
-                                <option selected>5 seconds</option>
-                                <option>30 seconds</option>
-                                <option>1 minute</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                        <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <script>
-        // Show section
-        function showSection(section) {
-            // Update sidebar
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.target.closest('.sidebar-item').classList.add('active');
-            
-            // Update content
-            const content = document.getElementById('settingsContent');
-            
-            switch(section) {
-                case 'general':
-                    content.innerHTML = `
-                        <div class="settings-section" id="general-section">
-                            <h2 class="section-title">General Settings</h2>
-                            
-                            <div class="setting-group">
-                                <h3 class="group-title">System Configuration</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Autonomous Mode</div>
-                                        <div class="setting-description">Allow AI to operate without human intervention</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Auto-Update</div>
-                                        <div class="setting-description">Automatically update threat signatures and AI models</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Time Zone</div>
-                                        <div class="setting-description">System time zone for logs and reports</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>UTC</option>
-                                        <option>EST</option>
-                                        <option>PST</option>
-                                        <option>CET</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Data Retention <span class="hybrid-badge">Hybrid Encrypted</span></div>
-                                        <div class="setting-description">How long to keep security logs protected by AES-256-GCM + Kyber-1024</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>30 days</option>
-                                        <option selected>90 days</option>
-                                        <option>180 days</option>
-                                        <option>1 year</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Dashboard Preferences</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Real-time Updates</div>
-                                        <div class="setting-description">Show live threat data on dashboard</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Update Frequency</div>
-                                        <div class="setting-description">How often to refresh dashboard metrics</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Real-time</option>
-                                        <option selected>5 seconds</option>
-                                        <option>30 seconds</option>
-                                        <option>1 minute</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                                <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                            </div>
-                        </div>
-                    `;
-                    break;
-
-                case 'security':
-                    content.innerHTML = `
-                        <div class="settings-section">
-                            <h2 class="section-title">Security Settings</h2>
-                            
-                            <div class="setting-group">
-                                <h3 class="group-title">Authentication</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Multi-Factor Authentication <span class="encryption-badge">PBKDF2 Protected</span></div>
-                                        <div class="setting-description">Require MFA for all admin access with secure password hashing</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Session Timeout</div>
-                                        <div class="setting-description">Automatically logout after inactivity</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>15 minutes</option>
-                                        <option selected>30 minutes</option>
-                                        <option>1 hour</option>
-                                        <option>Never</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Password Policy</div>
-                                        <div class="setting-description">Minimum password requirements for users</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Basic (8+ chars)</option>
-                                        <option selected>Strong (12+ chars, mixed)</option>
-                                        <option>Maximum (16+ chars, all types)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Access Control</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">IP Whitelisting</div>
-                                        <div class="setting-description">Restrict access to specific IP addresses</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Audit Logging <span class="hybrid-badge">Dilithium-3 Signed</span></div>
-                                        <div class="setting-description">Log all access with quantum-resistant digital signatures</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                                <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                            </div>
-                        </div>
-                    `;
-                    break;
-
-                case 'encryption':
-                    content.innerHTML = `
-                        <div class="settings-section">
-                            <h2 class="section-title">Encryption Settings</h2>
-                            
-                            <!-- Hybrid Encryption Status Panel -->
-                            <div class="encryption-status-panel">
-                                <div class="encryption-status-content">
-                                    <h3 class="encryption-status-title">🔐 Hybrid Encryption Active</h3>
-                                    <p style="color: var(--text-secondary); margin-bottom: 15px;">
-                                        Military-grade protection combining NIST-approved classical algorithms with post-quantum cryptography
-                                    </p>
-                                    <div class="encryption-layers">
-                                        <div class="layer-card">
-                                            <div class="layer-title" style="color: var(--primary);">Classical Layer</div>
-                                            <div class="layer-status">✅ AES-256-GCM Active</div>
-                                        </div>
-                                        <div class="layer-card">
-                                            <div class="layer-title" style="color: var(--accent);">Quantum Layer</div>
-                                            <div class="layer-status">✅ Kyber-1024 Active</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="setting-group">
-                                <h3 class="group-title">Classical Encryption (NIST SP 800 Series)</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Primary Encryption <span class="encryption-badge">FIPS 197</span></div>
-                                        <div class="setting-description">AES-256-GCM for authenticated encryption of all data</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option selected>AES-256-GCM (Authenticated)</option>
-                                        <option disabled>AES-128-GCM (Lower Security)</option>
-                                        <option disabled>ChaCha20-Poly1305 (Alternative)</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Message Authentication <span class="encryption-badge">FIPS 198-1</span></div>
-                                        <div class="setting-description">HMAC-SHA256 for data integrity verification</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked disabled>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Password Hashing <span class="encryption-badge">SP 800-132</span></div>
-                                        <div class="setting-description">PBKDF2-HMAC-SHA256 with adaptive iterations</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>300,000 iterations</option>
-                                        <option selected>600,000 iterations</option>
-                                        <option>1,000,000 iterations</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Key Derivation <span class="encryption-badge">RFC 5869</span></div>
-                                        <div class="setting-description">HKDF-SHA256 for session key generation</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked disabled>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Post-Quantum Encryption (NIST PQC)</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Key Encapsulation <span class="quantum-badge">FIPS 203</span></div>
-                                        <div class="setting-description">CRYSTALS-Kyber for quantum-resistant key exchange</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Kyber-512 (Level 1)</option>
-                                        <option>Kyber-768 (Level 3)</option>
-                                        <option selected>Kyber-1024 (Level 5)</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Digital Signatures <span class="quantum-badge">FIPS 204</span></div>
-                                        <div class="setting-description">CRYSTALS-Dilithium for quantum-resistant signatures</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Dilithium-2 (Level 2)</option>
-                                        <option selected>Dilithium-3 (Level 3)</option>
-                                        <option>Dilithium-5 (Level 5)</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Backup Signatures <span class="quantum-badge">FIPS 205</span></div>
-                                        <div class="setting-description">SPHINCS+ for stateless hash-based signatures</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Experimental Layer <span class="quantum-badge">Testing</span></div>
-                                        <div class="setting-description">FALCON for compact lattice-based signatures (DoD evaluation)</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Hybrid Mode Configuration</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Encryption Mode <span class="hybrid-badge">Dual Layer</span></div>
-                                        <div class="setting-description">How classical and quantum encryption work together</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Classical Only (Legacy)</option>
-                                        <option>Quantum Only (Future)</option>
-                                        <option selected>Hybrid (Classical + Quantum)</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Key Rotation</div>
-                                        <div class="setting-description">Frequency of encryption key updates for both layers</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Every 12 hours</option>
-                                        <option selected>Daily</option>
-                                        <option>Weekly</option>
-                                        <option>Monthly</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Hardware Acceleration</div>
-                                        <div class="setting-description">Use AES-NI and quantum co-processors when available</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Crypto-Agility</div>
-                                        <div class="setting-description">Automatically update algorithms as NIST standards evolve</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                                <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                    
-                case 'ai':
-                    content.innerHTML = `
-                        <div class="settings-section">
-                            <h2 class="section-title">AI Agent Settings</h2>
-                            
-                            <div class="setting-group">
-                                <h3 class="group-title">AI Behavior</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Learning Mode</div>
-                                        <div class="setting-description">Allow AI to learn from new threats</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Response Aggression</div>
-                                        <div class="setting-description">How aggressively to respond to threats</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Conservative</option>
-                                        <option selected>Balanced</option>
-                                        <option>Aggressive</option>
-                                    </select>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">False Positive Threshold</div>
-                                        <div class="setting-description">Acceptable false positive rate</div>
-                                    </div>
-                                    <input type="text" class="input-field" value="0.2%" readonly>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Model Updates</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Auto-Update Models <span class="hybrid-badge">Dilithium Signed</span></div>
-                                        <div class="setting-description">Updates verified with quantum-resistant signatures</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Model Version</div>
-                                        <div class="setting-description">Current AI model version</div>
-                                    </div>
-                                    <input type="text" class="input-field" value="v3.2.1-hybrid" readonly>
-                                </div>
-                            </div>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                                <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                            </div>
-                        </div>
-                    `;
-                    break;
-
-                case 'integrations':
-                    content.innerHTML = `
-                        <div class="settings-section">
-                            <h2 class="section-title">Integration Settings</h2>
-                            
-                            <div class="setting-group">
-                                <h3 class="group-title">API Configuration</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">OpenAI API <span class="hybrid-badge">Hybrid Encrypted</span></div>
-                                        <div class="setting-description">Keys protected with AES-256-GCM + Kyber-1024</div>
-                                    </div>
-                                    <button class="btn btn-secondary">Configure</button>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Shodan API <span class="hybrid-badge">Hybrid Encrypted</span></div>
-                                        <div class="setting-description">Keys protected with AES-256-GCM + Kyber-1024</div>
-                                    </div>
-                                    <button class="btn btn-secondary">Configure</button>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">SIEM Integration</div>
-                                        <div class="setting-description">Connect to existing SIEM with TLS 1.3 + hybrid crypto</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Webhook Configuration</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Alert Webhooks <span class="quantum-badge">Dilithium Signed</span></div>
-                                        <div class="setting-description">Quantum-resistant signatures for webhook payloads</div>
-                                    </div>
-                                    <button class="btn btn-secondary">Add Webhook</button>
-                                </div>
-                            </div>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                                <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                            </div>
-                        </div>
-                    `;
-                    break;
-
-                case 'agent':
-                    content.innerHTML = `
-                        <div class="settings-section">
-                            <h2 class="section-title">Agent Management</h2>
-                            
-                            <div class="setting-group">
-                                <h3 class="group-title">Agent Coverage Summary</h3>
-                                
-                                <div class="setting-item" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 204, 255, 0.05) 100%); border-color: var(--primary);">
-                                    <div class="setting-info">
-                                        <div class="setting-name" style="font-size: 20px; color: var(--success);">
-                                            🟢 1 Agent Connected to <span id="connectedDevices">247</span> Devices
-                                        </div>
-                                        <div class="setting-description" style="margin-top: 10px;">
-                                            Your AI Sentinel-X agent is actively protecting all discovered systems with hybrid encryption.
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-secondary" onclick="refreshCoverage()">
-                                        <span style="margin-right: 8px;">🔄</span>
-                                        Refresh Agent Coverage
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Deployment Settings</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Enable Auto-Deployment</div>
-                                        <div class="setting-description">Allow the active agent to automatically expand to newly discovered systems</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Agent Communication <span class="hybrid-badge">Hybrid Encrypted</span></div>
-                                        <div class="setting-description">AES-256-GCM + Kyber-1024 for quantum-resistant channels</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked disabled>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Network Scan Range</div>
-                                        <div class="setting-description">Define which network segments the agent should monitor</div>
-                                    </div>
-                                    <select class="select-field">
-                                        <option>Local Network Only (192.168.x.x)</option>
-                                        <option selected>All Private Networks (RFC 1918)</option>
-                                        <option>Custom IP Ranges</option>
-                                        <option>Docker Networks Only</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Agent Status</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Agent Version</div>
-                                        <div class="setting-description">Current deployed agent version</div>
-                                    </div>
-                                    <input type="text" class="input-field" value="v2.4.1-hybrid" readonly>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Last Coverage Scan</div>
-                                        <div class="setting-description">Last time the agent scanned for new systems</div>
-                                    </div>
-                                    <input type="text" class="input-field" value="2 minutes ago" readonly>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Protection Status</div>
-                                        <div class="setting-description">Overall protection coverage status</div>
-                                    </div>
-                                    <input type="text" class="input-field" value="✅ Optimal - All systems protected with hybrid encryption" readonly style="color: var(--success);">
-                                </div>
-                            </div>
-
-                            <div style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 12px; padding: 20px; margin-top: 25px;">
-                                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
-                                    <strong style="color: var(--primary);">🔒 Security Note:</strong> All agent communications use hybrid encryption combining:
-                                    <br>• <strong>Classical:</strong> AES-256-GCM, HMAC-SHA256, HKDF-SHA256
-                                    <br>• <strong>Post-Quantum:</strong> Kyber-1024, Dilithium-3, SPHINCS+
-                                    <br>Keys rotate daily with automatic crypto-agility for future standards.
-                                </p>
-                            </div>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                                <button class="btn btn-secondary" onclick="refreshCoverage()">Re-scan Network</button>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                    
-                case 'notifications':
-                    content.innerHTML = `
-                        <div class="settings-section">
-                            <h2 class="section-title">Notification Settings</h2>
-                            
-                            <div class="setting-group">
-                                <h3 class="group-title">Alert Preferences</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Critical Threats</div>
-                                        <div class="setting-description">Notify for critical security threats</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Encryption Events</div>
-                                        <div class="setting-description">Notify for key rotations and algorithm updates</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Quantum Alerts</div>
-                                        <div class="setting-description">Notify for post-quantum crypto events</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">System Updates</div>
-                                        <div class="setting-description">Notify when system updates are available</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">AI Decisions</div>
-                                        <div class="setting-description">Notify when AI takes autonomous actions</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="setting-group">
-                                <h3 class="group-title">Delivery Methods</h3>
-                                
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Email Notifications <span class="encryption-badge">TLS 1.3</span></div>
-                                        <div class="setting-description">Send alerts via encrypted email</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Dashboard Alerts</div>
-                                        <div class="setting-description">Show alerts in dashboard</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-
-                                <div class="setting-item">
-                                    <div class="setting-info">
-                                        <div class="setting-name">Webhook Alerts <span class="quantum-badge">Dilithium Signed</span></div>
-                                        <div class="setting-description">Quantum-resistant signatures for webhook payloads</div>
-                                    </div>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-                                <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                    
-                default:
-                    // Keep general section as default
-            }
-        }
-
-        // Save settings
-        function saveSettings() {
-            const message = document.getElementById('successMessage');
-            message.classList.add('show');
-            setTimeout(() => {
-                message.classList.remove('show');
-            }, 3000);
-        }
-
-        // Reset settings
-        function resetSettings() {
-            if (confirm('Are you sure you want to reset to default settings?')) {
-                location.reload();
-            }
-        }
-
-        // Refresh agent coverage
-        function refreshCoverage() {
-            // Show loading state
-            const connectedDevices = document.getElementById('connectedDevices');
-            if (connectedDevices) {
-                const originalValue = connectedDevices.textContent;
-                connectedDevices.textContent = '...';
-                
-                // Simulate network scan
-                setTimeout(() => {
-                    // Update with new count (simulating discovery of new devices)
-                    const newCount = parseInt(originalValue) + Math.floor(Math.random() * 10);
-                    connectedDevices.textContent = newCount;
-                    
-                    // Update last scan time
-                    const scanTimeInputs = document.querySelectorAll('input[value="2 minutes ago"]');
-                    scanTimeInputs.forEach(input => {
-                        if (input.readOnly) {
-                            input.value = 'Just now';
-                        }
-                    });
-                    
-                    // Show success message
-                    const message = document.getElementById('successMessage');
-                    message.textContent = '✅ Agent coverage refreshed successfully!';
-                    message.classList.add('show');
-                    setTimeout(() => {
-                        message.classList.remove('show');
-                        // Reset message text
-                        message.textContent = '✅ Settings saved successfully!';
-                    }, 3000);
-                }, 2000);
-            }
-        }
-    </script>
-</body>
-</html>

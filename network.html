@@ -41,8 +41,8 @@
             overflow-x: hidden;
         }
 
-        /* Network Background */
-        .network-bg {
+        /* Animated Dot Background */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -50,64 +50,191 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            background: 
-                radial-gradient(circle at 25% 25%, rgba(0, 204, 255, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(0, 255, 136, 0.12) 0%, transparent 50%);
-        }
-
-        .grid-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 204, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 204, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 30s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Page Header */
-        .page-header {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 35px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            text-align: center;
-            position: relative;
             overflow: hidden;
         }
 
-        .page-title {
-            font-size: 42px;
+        .dot-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(0, 255, 136, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: dotMove 40s linear infinite;
+        }
+
+        @keyframes dotMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-title {
+            font-size: 24px;
             font-weight: bold;
             background: var(--gradient-network);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         .page-subtitle {
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .agent-status:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: var(--danger);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 68, 0.1);
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        /* Sub-Agent Status */
+        .sub-agent-status {
+            background: linear-gradient(135deg, rgba(0, 204, 255, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .sub-agent-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sub-agent-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(0, 204, 255, 0.3);
+        }
+
+        .sub-agent-details h3 {
+            font-size: 18px;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .sub-agent-details p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .sub-agent-metrics {
+            display: flex;
+            gap: 30px;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* Compact Encryption Status */
+        .encryption-compact {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 600;
         }
 
         /* Auto Scan Alert */
@@ -121,70 +248,6 @@
             font-weight: bold;
             color: var(--secondary);
             font-size: 16px;
-        }
-
-        /* Encryption Status Bar */
-        .encryption-status-bar {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px 25px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(15px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .encryption-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .encryption-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-quantum);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
-        }
-
-        .encryption-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .encryption-title {
-            font-weight: bold;
-            font-size: 16px;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .encryption-status {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .encryption-badge {
-            background: rgba(124, 58, 237, 0.2);
-            border: 1px solid var(--accent);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 11px;
-            color: var(--accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            margin-left: 10px;
         }
 
         /* Network Overview Section */
@@ -580,35 +643,6 @@
             gap: 5px;
         }
 
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 24px;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .back-btn:hover {
-            background: var(--primary);
-            color: var(--bg-darker);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
-        }
-
         /* AI Chat Widget */
         .ai-chat-widget {
             position: fixed;
@@ -688,6 +722,22 @@
 
         .ai-chat-close:hover {
             transform: rotate(90deg);
+        }
+
+        .cli-mode-indicator {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 0 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--warning);
+            display: none;
+        }
+
+        .cli-mode-indicator.active {
+            display: block;
         }
 
         .ai-chat-messages {
@@ -777,6 +827,95 @@
             box-shadow: 0 5px 20px rgba(0, 204, 255, 0.4);
         }
 
+        /* Agent Shutdown Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .modal-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-darker);
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 1200px) {
             .scanning-grid {
@@ -790,20 +929,25 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 0 15px 15px 15px;
             }
             
-            .page-header {
-                padding: 20px 15px;
+            .header {
+                margin: 15px;
+                padding: 20px;
             }
             
-            .page-title {
-                font-size: 28px;
-                letter-spacing: 1px;
+            .brand-title {
+                font-size: 20px;
             }
             
             .page-subtitle {
-                font-size: 14px;
+                font-size: 12px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
             }
             
             .auto-scan-alert {
@@ -811,7 +955,7 @@
                 padding: 15px;
             }
             
-            .encryption-status-bar {
+            .sub-agent-status {
                 flex-direction: column;
                 text-align: center;
             }
@@ -904,13 +1048,6 @@
                 padding: 15px;
             }
             
-            .back-btn {
-                top: 10px;
-                left: 10px;
-                padding: 10px 18px;
-                font-size: 13px;
-            }
-            
             .ai-chat-widget {
                 bottom: 20px;
                 right: 20px;
@@ -941,8 +1078,8 @@
         }
 
         @media (max-width: 480px) {
-            .page-title {
-                font-size: 24px;
+            .brand-title {
+                font-size: 18px;
             }
             
             .overview-grid {
@@ -1001,40 +1138,64 @@
         }
     </script>
 
-    <!-- Back Button -->
-    <a href="dashboard.html" class="back-btn">
-        <span>←</span>
-        <span>Back</span>
-    </a>
-
-    <!-- Network Background -->
-    <div class="network-bg">
-        <div class="grid-overlay"></div>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="dot-grid"></div>
     </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div>
+                    <h1 class="brand-title">AI SENTINEL-X | NETWORK DISCOVERY</h1>
+                    <p class="page-subtitle">NetworkMapper Sub-Agent Active</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="agent-status" onclick="showAgentShutdownModal()">
+                    <span>🤖 AI Agent Active • Fully Autonomous</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
 
     <!-- Container -->
     <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">NETWORK DISCOVERY</h1>
-            <p class="page-subtitle">Dual-Layer AI Network Intelligence</p>
+        <!-- Sub-Agent Status -->
+        <div class="sub-agent-status">
+            <div class="sub-agent-info">
+                <div class="sub-agent-icon">🌐</div>
+                <div class="sub-agent-details">
+                    <h3>NetworkMapper Sub-Agent</h3>
+                    <p>Dual-layer scanning • External + Internal • Reports to Main Agent</p>
+                </div>
+            </div>
+            <div class="sub-agent-metrics">
+                <div class="metric">
+                    <div class="metric-value" id="discoveredDevices">247</div>
+                    <div class="metric-label">Devices</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="openServices">42</div>
+                    <div class="metric-label">Services</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="newDevices">12</div>
+                    <div class="metric-label">New (24h)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compact Encryption Status -->
+        <div class="encryption-compact">
+            🔒 CLASSICAL + QUANTUM ACTIVE
         </div>
 
         <!-- Auto Scan Alert -->
         <div class="auto-scan-alert">
             🤖 Autonomous dual-layer scanning active • External reconnaissance via Shodan API • Internal discovery via deployed agent • No manual intervention required
-        </div>
-
-        <!-- Encryption Status Bar -->
-        <div class="encryption-status-bar">
-            <div class="encryption-info">
-                <div class="encryption-icon">🔒</div>
-                <div class="encryption-details">
-                    <div class="encryption-title">Hybrid Quantum-Classical Protection</div>
-                    <div class="encryption-status">Network secured with AES-256-GCM + CRYSTALS-Kyber • Quantum-resistant algorithms active</div>
-                </div>
-            </div>
-            <div class="encryption-badge">QUANTUM + CLASSICAL</div>
         </div>
 
         <!-- Network Overview -->
@@ -1060,12 +1221,12 @@
                 </div>
                 <div class="overview-card">
                     <div class="overview-icon">📡</div>
-                    <div class="overview-value" id="discoveredDevices">246</div>
+                    <div class="overview-value" id="discoveredDevicesCard">246</div>
                     <div class="overview-label">Discovered Devices</div>
                 </div>
                 <div class="overview-card">
                     <div class="overview-icon">⚠️</div>
-                    <div class="overview-value" id="openServices">42</div>
+                    <div class="overview-value" id="openServicesCard">42</div>
                     <div class="overview-label">Open Services</div>
                 </div>
             </div>
@@ -1163,7 +1324,7 @@
                     </div>
                     <div class="result-item">
                         <span class="result-label">New Devices (24h)</span>
-                        <span class="result-value" id="newDevices" style="color: var(--secondary);">14</span>
+                        <span class="result-value" id="newDevicesInternal" style="color: var(--secondary);">14</span>
                     </div>
                     <div class="result-item">
                         <span class="result-label">Unpatched Systems</span>
@@ -1225,12 +1386,31 @@
         </div>
     </div>
 
+    <!-- Agent Shutdown Modal -->
+    <div class="modal-overlay" id="agentShutdownModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Emergency AI Shutdown</h2>
+            </div>
+            <div class="modal-content">
+                Pause autonomous mode? AI actions will be disabled, but manual control remains available through the AI chat bot. If external APIs or keys are offline, the agent will fallback to local control mode.
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="confirmAgentShutdown()">Confirm Shutdown</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- AI Chat Widget -->
     <div class="ai-chat-widget">
         <div class="ai-chat-window" id="aiChatWindow">
             <div class="ai-chat-header">
                 <span>NETWORK SCANNER AI</span>
                 <span class="ai-chat-close" onclick="toggleChat()">×</span>
+            </div>
+            <div class="cli-mode-indicator" id="cliModeIndicator">
+                ⚠️ CLI MODE - Main Agent Offline
             </div>
             <div class="ai-chat-messages" id="aiChatMessages">
                 <div class="ai-message">
@@ -1254,6 +1434,7 @@
         <div class="ai-chat-toggle" onclick="toggleChat()">🤖</div>
     </div>
 
+    <script src="shared.js"></script>
     <script>
         // Sample devices for demonstration
         const internalDevices = [
@@ -1329,10 +1510,17 @@
             const services = document.getElementById('openServices');
             services.textContent = Math.floor(40 + Math.random() * 5);
             
+            // Update card values to match
+            document.getElementById('discoveredDevicesCard').textContent = discovered.textContent;
+            document.getElementById('openServicesCard').textContent = services.textContent;
+            
             // Occasionally find new devices
             if (Math.random() > 0.9) {
                 const newDev = document.getElementById('newDevices');
                 newDev.textContent = parseInt(newDev.textContent) + 1;
+                
+                const newDevInt = document.getElementById('newDevicesInternal');
+                newDevInt.textContent = newDev.textContent;
             }
             
             // Update threat exposure based on vulnerabilities
@@ -1352,132 +1540,12 @@
             }
         }
 
-        // AI Chat System
-        let chatOpen = false;
-        
-        function toggleChat() {
-            chatOpen = !chatOpen;
-            const chatWindow = document.getElementById('aiChatWindow');
-            if (chatOpen) {
-                chatWindow.classList.add('active');
-            } else {
-                chatWindow.classList.remove('active');
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Logout? The AI agent will continue protecting your systems.')) {
+                localStorage.removeItem('sentinel_auth');
+                window.location.href = 'index.html';
             }
-        }
-
-        function handleChatKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendChatMessage();
-            }
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('aiChatInput');
-            const message = input.value.trim();
-            if (!message) return;
-
-            const messagesContainer = document.getElementById('aiChatMessages');
-            
-            // Add user message
-            addChatMessage(message, true);
-            input.value = '';
-
-            // Show typing indicator
-            showTypingIndicator();
-
-            // Simulate AI response
-            setTimeout(() => {
-                removeTypingIndicator();
-                const response = generateAIResponse(message);
-                addChatMessage(response, false);
-            }, 1500 + Math.random() * 1000);
-        }
-
-        function addChatMessage(message, isUser) {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'ai-message';
-            
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="ai-message-bubble ${isUser ? 'user' : ''}">
-                    ${message}
-                </div>
-                <div class="ai-message-time">${time}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function showTypingIndicator() {
-            const messagesContainer = document.getElementById('aiChatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'ai-typing';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.style.display = 'flex';
-            typingDiv.style.gap = '5px';
-            typingDiv.style.padding = '10px';
-            
-            for (let i = 0; i < 3; i++) {
-                const dot = document.createElement('div');
-                dot.style.width = '8px';
-                dot.style.height = '8px';
-                dot.style.background = 'var(--secondary)';
-                dot.style.borderRadius = '50%';
-                dot.style.animation = 'typingDot 1.4s ease-in-out infinite';
-                dot.style.animationDelay = `${i * 0.2}s`;
-                typingDiv.appendChild(dot);
-            }
-            
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        }
-
-        function generateAIResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage.includes('encryption') || lowerMessage.includes('crypto') || lowerMessage.includes('quantum')) {
-                return '🔐 Hybrid encryption status: All critical systems protected with AES-256-GCM + CRYSTALS-Kyber quantum-resistant algorithms. External services: 4/7 have hybrid encryption, 2 classical-only need upgrades, 1 vulnerable. Internal: 189/246 devices quantum-ready, 47 IoT devices need upgrades, 10 using weak/no encryption.';
-            }
-            
-            if (lowerMessage.includes('external') || lowerMessage.includes('shodan')) {
-                return '🌐 External scan via Shodan API shows 7 open ports on your public IP (45.67.89.123). Critical finding: SMB port 445 exposed with outdated encryption, RDP using classical-only TLS 1.2. HTTPS and SSH have full hybrid protection. Recommend immediate quantum-resistant upgrades.';
-            }
-            
-            if (lowerMessage.includes('internal') || lowerMessage.includes('agent')) {
-                return '🏠 Internal agent has auto-discovered 246 devices on 192.168.1.0/24. All agent communications use hybrid AES-256-GCM + Kyber encryption. Domain controllers and databases have full quantum protection. 18 systems need patches, 47 IoT devices lack quantum-resistant support.';
-            }
-            
-            if (lowerMessage.includes('vulnerable') || lowerMessage.includes('risk')) {
-                return '⚠️ Critical vulnerabilities: 1) External SMB exposure without quantum protection, 2) RDP using classical-only encryption, 3) Security camera with no encryption, 4) 18 workstations missing hybrid BitLocker. AI monitoring all risks and can auto-remediate with quantum upgrades.';
-            }
-            
-            if (lowerMessage.includes('hybrid') || lowerMessage.includes('kyber')) {
-                return '🔬 Hybrid quantum-classical encryption deployed using NIST-approved CRYSTALS-Kyber for post-quantum security combined with proven AES-256-GCM. This protects against both current threats and future quantum computer attacks. Domain controllers, databases, and web services fully protected.';
-            }
-            
-            if (lowerMessage.includes('how') && lowerMessage.includes('work')) {
-                return '🤖 Sentinel X uses dual-layer scanning: External layer queries Shodan API (secured with hybrid encryption) for your public IP. Internal layer uses quantum-resistant encrypted agent to auto-discover all devices. All communications protected with AES-256-GCM + CRYSTALS-Kyber algorithms.';
-            }
-            
-            if (lowerMessage.includes('device') || lowerMessage.includes('discover')) {
-                return '📡 Device discovery is fully autonomous with quantum protection. The agent uses ARP scanning, service fingerprinting, and behavioral analysis. All communications encrypted with hybrid algorithms. New devices detected within 0.3 seconds. Currently tracking 246 devices with quantum-readiness assessment.';
-            }
-            
-            if (lowerMessage.includes('upgrade') || lowerMessage.includes('improve')) {
-                return '🚀 Recommended quantum upgrades: 1) RDP to TLS 1.3 + PQ certificates, 2) SMB to v3 with hybrid encryption, 3) IoT devices to quantum-ready firmware, 4) BitLocker to hybrid mode. AI can automate these upgrades with minimal downtime.';
-            }
-            
-            return '🤖 I\'m analyzing your network with quantum-resistant encryption from both external (Shodan) and internal (agent) perspectives. What specific aspect of your hybrid security posture would you like to investigate?';
         }
 
         // Initialize
